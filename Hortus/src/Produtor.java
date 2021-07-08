@@ -1,6 +1,7 @@
 
 public class Produtor extends Usuario {
-	String ccir;
-	int tipoProd;
+	private String ccir;
+	private int tipoProd;
+	
 	
 }
