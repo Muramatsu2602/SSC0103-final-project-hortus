@@ -25,6 +25,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JSeparator;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class LoginForm {
 
@@ -125,18 +128,32 @@ public class LoginForm {
 		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnLogin.setBounds(117, 394, 142, 42);
 		panel.add(btnLogin);
-
-		JTextArea txtrCadastrarse = new JTextArea();
-		txtrCadastrarse.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				showMessageDialog(null, "Clicou pra cadastrar");
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 124, 358, 2);
+		panel.add(separator);
+		
+		JButton btnNovoConsumidor = new JButton("Novo Consumidor");
+		btnNovoConsumidor.setForeground(new Color(255, 255, 255));
+		btnNovoConsumidor.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnNovoConsumidor.setBackground(new Color(153, 102, 255));
+		btnNovoConsumidor.setBounds(93, 514, 199, 33);
+		panel.add(btnNovoConsumidor);
+		
+		JButton btnNovoProdutor = new JButton("Novo Produtor");
+		btnNovoProdutor.setForeground(new Color(255, 255, 255));
+		btnNovoProdutor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		txtrCadastrarse.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		txtrCadastrarse.setText("Cadastrar-se");
-		txtrCadastrarse.setBounds(143, 440, 89, 22);
-		panel.add(txtrCadastrarse);
+		btnNovoProdutor.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnNovoProdutor.setBackground(new Color(153, 102, 255));
+		btnNovoProdutor.setBounds(103, 557, 176, 33);
+		panel.add(btnNovoProdutor);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(0, 491, 378, 2);
+		panel.add(separator_1);
 		
 		JTextPane txtpnDesignedAnd = new JTextPane();
 		txtpnDesignedAnd.setForeground(new Color(255, 255, 255));
