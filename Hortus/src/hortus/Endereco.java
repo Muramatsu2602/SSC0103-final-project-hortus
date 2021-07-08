@@ -7,18 +7,20 @@ public class Endereco {
 		
 	private String endRua;
 	private int endNum;
+	private String endComplemento;
 	private String endBairro;
 	private String endCEP;
 	private String endCidade;
 	private String endEstado;	
 	
-	public Endereco(String endRua, int endNum, String endBairro, String endCEP, String endCidade, String endEstado) {
+	public Endereco(String endRua, int endNum, String endComplemento, String endBairro, String endCEP, String endCidade, String endEstado) {
 		this.setEndRua(endRua);
 		this.setEndNum(endNum);
 		this.setEndBairro(endBairro);
 		this.setEndCEP(endCEP);
 		this.setEndCidade(endCidade);
 		this.setEndEstado(endEstado);
+		this.setEndComplemento(endComplemento);
 	}
 
 	public int getIdEndereco() {
@@ -75,5 +77,13 @@ public class Endereco {
 
 	public void setEndEstado(String endEstado) {
 		this.endEstado = endEstado;
+	}
+	
+	public String getEndComplemento(){
+		return endComplemento;
+	}
+	
+	public void setEndComplemento(String endComplemento){
+		this.endComplemento = endComplemento;
 	}
 }
