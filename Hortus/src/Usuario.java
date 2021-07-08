@@ -1,114 +1,86 @@
 
+import io.jsondb.annotation.Id;
+import io.jsondb.annotation.Secret;
 
 public abstract class Usuario {
-	// Informações básicas
+	// Informacoes basicas
 	private String nome;
-	private String CPF;
+	private String cpf;
 	private String telefone;
 
-	// Endereço
-	private String endRua;
-	private int endNum;
-	private String endBairro;
-	private String endCEP;
-	private String endCidade;
-	private String endEstado;
+	private Endereco endereco;
 	
-	// Informações de login
+	// Informacoes de login
+	@Id
 	private int id;
 	private String email;
+	
+	@Secret
 	private String senha;
 	
-	public Usuario()
+	public Usuario(int id, String nome, String cpf, String telefone, Endereco endereco, String email, String senha)
 	{
-		
+		this.setNome(nome);
+		this.setCpf(cpf);
+		this.setTelefone(telefone);
+		this.setEndereco(endereco);
+		this.setEmail(email);
+		this.setSenha(senha);
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public String getCPF() {
-		return CPF;
+
+	public String getCpf() {
+		return cpf;
 	}
-	
-	public void setCPF(String cPF) {
-		CPF = cPF;
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
-	
+
 	public String getTelefone() {
 		return telefone;
 	}
-	
+
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	
-	public String getEndRua() {
-		return endRua;
+
+	public Endereco getEndereco() {
+		return endereco;
 	}
-	
-	public void setEndRua(String endRua) {
-		this.endRua = endRua;
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
-	
-	public int getEndNum() {
-		return endNum;
-	}
-	
-	public void setEndNum(int endNum) {
-		this.endNum = endNum;
-	}
-	
-	public String getEndBairro() {
-		return endBairro;
-	}
-	
-	public void setEndBairro(String endBairro) {
-		this.endBairro = endBairro;
-	}
-	
-	public String getEndCEP() {
-		return endCEP;
-	}
-	
-	public void setEndCEP(String endCEP) {
-		this.endCEP = endCEP;
-	}
-	
-	public String getEndCidade() {
-		return endCidade;
-	}
-	
-	public void setEndCidade(String endCidade) {
-		this.endCidade = endCidade;
-	}
-	
-	public String getEndEstado() {
-		return endEstado;
-	}
-	
-	public void setEndEstado(String endEstado) {
-		this.endEstado = endEstado;
-	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
-	private void setId(int id) {
+
+	public void setId(int id) {
 		this.id = id;
 	}
-	
-	private void setEmail(String email) {
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	private void setSenha(String senha) {
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
 		this.senha = senha;
 	}
 }
