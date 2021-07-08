@@ -1,4 +1,4 @@
 
-public class Consumidor {
+public class Consumidor extends Usuario {
 
 }

@@ -1,4 +1,4 @@
 
-public static class SGBD {
+public class SGBD {
 	// hey there 
 }
