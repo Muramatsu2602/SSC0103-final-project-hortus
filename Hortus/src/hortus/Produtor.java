@@ -1,3 +1,6 @@
+package hortus;
+
+import io.jsondb.JsonDBTemplate;
 
 public class Produtor extends Usuario {
 	private String ccir;
@@ -36,4 +39,5 @@ public class Produtor extends Usuario {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	
 }

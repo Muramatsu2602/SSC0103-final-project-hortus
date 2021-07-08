@@ -1,3 +1,4 @@
+package hortus;
 import java.util.Map;
 import io.jsondb.annotation.Id;
 

@@ -1,3 +1,4 @@
+package hortus;
 import io.jsondb.annotation.Id;
 
 public class Endereco {

@@ -1,3 +1,4 @@
+package hortus;
 
 public class HortusException extends Exception{
 	

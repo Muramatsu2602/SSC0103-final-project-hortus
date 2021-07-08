@@ -1,3 +1,4 @@
+package hortus;
 
 import io.jsondb.annotation.Id;
 import io.jsondb.annotation.Secret;
@@ -26,6 +27,10 @@ public abstract class Usuario {
 		this.setEndereco(endereco);
 		this.setEmail(email);
 		this.setSenha(senha);
+	}
+	
+	public Usuario() {
+		
 	}
 
 	public String getNome() {

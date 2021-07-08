@@ -1,3 +1,4 @@
+package hortus;
 
 public class Produto {
 	private int idProduto;

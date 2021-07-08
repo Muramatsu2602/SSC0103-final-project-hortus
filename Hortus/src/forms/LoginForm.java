@@ -2,11 +2,35 @@ package forms;
 
 import java.awt.EventQueue;
 
+import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.JFrame;
+import java.awt.Color;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.JTabbedPane;
+import javax.swing.JLabel;
+import javax.swing.JTextPane;
+import java.awt.Font;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.layout.FormSpecs;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import javax.swing.JTextArea;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginForm {
 
-	private JFrame frame;
+	private JFrame frmLogin;
+	private JTextField textField;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -16,7 +40,7 @@ public class LoginForm {
 			public void run() {
 				try {
 					LoginForm window = new LoginForm();
-					window.frame.setVisible(true);
+					window.frmLogin.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -35,9 +59,117 @@ public class LoginForm {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+		frmLogin = new JFrame();
+		frmLogin.getContentPane().setBackground(new Color(153, 102, 255));
+		frmLogin.getContentPane().setLayout(null);
 
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(0, 0, 1000, 39);
+		frmLogin.getContentPane().add(panel_1);
+
+		JPanel panel_2 = new JPanel();
+		panel_1.add(panel_2);
+
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		panel.setBounds(622, 0, 378, 600);
+		frmLogin.getContentPane().add(panel);
+		panel.setLayout(null);
+
+		JButton btnSair = new JButton("x");
+		btnSair.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				showMessageDialog(null, "Até mais!");
+				System.exit(0);
+			}
+		});
+		btnSair.setBounds(336, 0, 42, 40);
+		panel.add(btnSair);
+		btnSair.setBackground(new Color(255, 0, 0));
+		btnSair.setForeground(new Color(255, 255, 255));
+		btnSair.setFont(new Font("Tahoma", Font.PLAIN, 17));
+
+		JTextPane txtpnLogin = new JTextPane();
+		txtpnLogin.setBounds(131, 53, 128, 61);
+		txtpnLogin.setFont(new Font("Tahoma", Font.PLAIN, 45));
+		txtpnLogin.setText("Login");
+		panel.add(txtpnLogin);
+
+		textField = new JTextField();
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		textField.setBounds(45, 209, 286, 42);
+		textField.setHorizontalAlignment(SwingConstants.LEFT);
+		panel.add(textField);
+		textField.setColumns(10);
+
+		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		passwordField.setBounds(45, 310, 286, 42);
+		panel.add(passwordField);
+
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setBounds(45, 173, 55, 25);
+		panel.add(lblEmail);
+		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
+
+		JLabel lblSenha = new JLabel("Senha:");
+		lblSenha.setBounds(45, 275, 62, 25);
+		panel.add(lblSenha);
+		lblSenha.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSenha.setFont(new Font("Tahoma", Font.PLAIN, 20));
+
+		JButton btnLogin = new JButton("Entrar");
+		btnLogin.setBackground(new Color(51, 204, 102));
+		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnLogin.setBounds(117, 394, 142, 42);
+		panel.add(btnLogin);
+
+		JTextArea txtrCadastrarse = new JTextArea();
+		txtrCadastrarse.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				showMessageDialog(null, "Clicou pra cadastrar");
+			}
+		});
+		txtrCadastrarse.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		txtrCadastrarse.setText("Cadastrar-se");
+		txtrCadastrarse.setBounds(143, 440, 89, 22);
+		panel.add(txtrCadastrarse);
+		
+		JTextPane txtpnDesignedAnd = new JTextPane();
+		txtpnDesignedAnd.setForeground(new Color(255, 255, 255));
+		txtpnDesignedAnd.setBackground(new Color(153, 102, 255));
+		txtpnDesignedAnd.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtpnDesignedAnd.setText("Designed and programmed with love by USP students ;(");
+		txtpnDesignedAnd.setBounds(10, 571, 372, 19);
+		frmLogin.getContentPane().add(txtpnDesignedAnd);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon(LoginForm.class.getResource("/assets/logo-login.png")));
+		lblNewLabel.setBounds(125, 119, 357, 292);
+		frmLogin.getContentPane().add(lblNewLabel);
+		
+		JTextArea txtrHortus = new JTextArea();
+		txtrHortus.setForeground(new Color(255, 255, 255));
+		txtrHortus.setBackground(new Color(153, 102, 255));
+		txtrHortus.setFont(new Font("Tahoma", Font.BOLD, 53));
+		txtrHortus.setText("Hortus");
+		txtrHortus.setBounds(222, 408, 210, 78);
+		frmLogin.getContentPane().add(txtrHortus);
+		
+		JTextArea txtrDaHorta = new JTextArea();
+		txtrDaHorta.setForeground(new Color(255, 255, 255));
+		txtrDaHorta.setBackground(new Color(153, 102, 255));
+		txtrDaHorta.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtrDaHorta.setText("Da horta \u00E0 mesa, sem terceiros");
+		txtrDaHorta.setBounds(171, 475, 331, 39);
+		frmLogin.getContentPane().add(txtrDaHorta);
+		frmLogin.setTitle("Login");
+		frmLogin.setBounds(100, 100, 1000, 600);
+		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogin.setUndecorated(true);
+		frmLogin.setLocationRelativeTo(null);
+	}
 }
