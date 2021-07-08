@@ -1,1 +1,1 @@
-# SSC0103-final-project-hortus
+# SSC0103 Final Project: Hortus
