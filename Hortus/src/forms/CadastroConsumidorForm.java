@@ -62,10 +62,24 @@ public class CadastroConsumidorForm {
 
 		showMessageDialog(null, cbEstado.getSelectedItem().toString());
 
+//		Consumidor consumidor = new Consumidor();
+
 		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
 
 		// limpando os campos
 		txtNome.setText("");
+		txtEmail.setText("");
+		txtCPF.setText("");
+		txtSenha.setText("");
+		txtConfirmaSenha.setText("");
+		txtTelefone.setText("");
+		txtNum.setText("");
+		cbEstado.setSelectedIndex(0);
+		txtCidade.setText("");
+		txtCEP.setText("");
+		txtBairro.setText("");
+		txtRua.setText("");
+		txtComplemento.setText("");
 	}
 
 	/**
@@ -321,13 +335,13 @@ public class CadastroConsumidorForm {
 		txtRua.setBounds(343, 383, 286, 42);
 		panel_1.add(txtRua);
 
-		JLabel lblRua = new JLabel("RUA:");
+		JLabel lblRua = new JLabel("Rua:");
 		lblRua.setHorizontalAlignment(SwingConstants.LEFT);
 		lblRua.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblRua.setBounds(343, 347, 77, 25);
 		panel_1.add(lblRua);
 
-		JLabel lblNumero = new JLabel("NUM:");
+		JLabel lblNumero = new JLabel("Num:");
 		lblNumero.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNumero.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNumero.setBounds(652, 347, 77, 25);
