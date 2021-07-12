@@ -39,17 +39,21 @@ public class LoginForm {
 	private JFrame frmLogin;
 	private JTextField txtEmail;
 	private JPasswordField txtSenha;
+	private JCheckBox ckSouProdutor;
 
 	/**
 	 * Métodos
 	 */
 	public void submitForm() {
 
+		//
+
 		showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
 
 		// Clearing fields
 		txtEmail.setText("");
 		txtSenha.setText("");
+		ckSouProdutor.setSelected(false);
 	}
 
 	/**
@@ -219,7 +223,7 @@ public class LoginForm {
 		separator_1.setBounds(0, 491, 378, 2);
 		panel.add(separator_1);
 
-		JCheckBox ckSouProdutor = new JCheckBox("Sou Produtor Rural");
+		ckSouProdutor = new JCheckBox("Sou Produtor Rural");
 		ckSouProdutor.setBackground(Color.WHITE);
 		ckSouProdutor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		ckSouProdutor.setBounds(45, 368, 176, 21);
