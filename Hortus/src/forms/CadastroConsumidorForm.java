@@ -27,7 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JFormattedTextField$AbstractFormatter;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
 import java.awt.event.FocusAdapter;

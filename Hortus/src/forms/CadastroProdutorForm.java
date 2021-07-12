@@ -7,13 +7,15 @@ import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.text.ParseException;
+
 import javax.swing.JTextPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.text.MaskFormatter;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFormattedTextField$AbstractFormatter;
 import javax.swing.JPasswordField;
 import javax.swing.JComboBox;
 
@@ -22,11 +24,12 @@ public class CadastroProdutorForm {
 	private JFrame frame;
 	private JTextField txtNome;
 	private JTextField txtEmail;
-	private JFormattedTextField txtCNPJ;
+	private JTextField txtCNPJ;
 	private JPasswordField txtSenha;
 	private JPasswordField txtConfirmaSenha;
 	
 	// 
+	private JFormattedTextField txtTelefone;
 	private JFormattedTextField txtNum;
 	private JFormattedTextField txtCEP;
 	private JTextField txtRUA;
@@ -52,15 +55,17 @@ public class CadastroProdutorForm {
 
 	/**
 	 * Create the application.
+	 * @throws ParseException 
 	 */
-	public CadastroProdutorForm() {
+	public CadastroProdutorForm() throws ParseException {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws ParseException 
 	 */
-	private void initialize() {
+	private void initialize() throws ParseException {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(153, 102, 255));
 		frame.getContentPane().setLayout(null);
@@ -77,7 +82,7 @@ public class CadastroProdutorForm {
 		panel_1_1.setBounds(0, 0, 851, 750);
 		panel.add(panel_1_1);
 		
-		txtCNPJ = new JFormattedTextField((AbstractFormatter) null);
+		txtCNPJ = new JTextField();
 		txtCNPJ.setHorizontalAlignment(SwingConstants.LEFT);
 		txtCNPJ.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtCNPJ.setColumns(10);
@@ -146,7 +151,7 @@ public class CadastroProdutorForm {
 		txtConfirmaSenha.setBounds(10, 460, 286, 42);
 		panel_1_1.add(txtConfirmaSenha);
 		
-		JFormattedTextField txtTelefone = new JFormattedTextField((AbstractFormatter) null);
+		txtTelefone = new JFormattedTextField(new MaskFormatter("(##) #####-####"));
 		txtTelefone.setHorizontalAlignment(SwingConstants.LEFT);
 		txtTelefone.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtTelefone.setColumns(10);
@@ -257,7 +262,7 @@ public class CadastroProdutorForm {
 		lblBairro.setBounds(343, 456, 77, 25);
 		panel_1_1.add(lblBairro);
 		
-		txtCEP = new JFormattedTextField((AbstractFormatter) null);
+		txtCEP = new JFormattedTextField(new MaskFormatter("#####-###"));
 		txtCEP.setHorizontalAlignment(SwingConstants.LEFT);
 		txtCEP.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtCEP.setColumns(10);
