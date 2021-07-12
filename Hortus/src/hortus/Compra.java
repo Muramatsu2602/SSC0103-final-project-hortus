@@ -21,6 +21,7 @@ public class Compra {
 		this.setConsumidor(consumidor);
 		this.setListaProdutos(listaProdutos);
 		this.setEndereco(endereco);
+		calculaValorFinal();
 	}
 
 	public int getIdCompra() {
@@ -71,7 +72,7 @@ public class Compra {
 		this.endereco = endereco;
 	}
 	
-	private void calculaValorFinal() {
-    	listaProdutos.forEach((k, v) -> valorFinal += k.getPrecoProduto()*v)
+	public void calculaValorFinal() {
+    	listaProdutos.forEach((k, v) -> valorFinal += k.getPrecoProduto()*v);
 	}
 }  

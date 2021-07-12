@@ -120,9 +120,6 @@ public class SGBD {
 		{
 			System.out.println("erro"+e.getMessage());
 		}
-		
-		
-		
 	}
 	
 	public void insereProdutor(Produtor produtor) {
@@ -160,7 +157,7 @@ public class SGBD {
 			
 			String sql = "SELECT last_insert_rowid() FROM produto";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuerry(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			int id = rs.getInt("ID");
 			prod.setIdProduto(id);
@@ -173,9 +170,10 @@ public class SGBD {
 			pstmt.setString(3, prod.getDescricao());
 			pstmt.setDouble(4, prod.getQuantidade());
 			pstmt.setDouble(5, prod.getPrecoProduto());
-			pstmt.setChar(6, prod.getUnidade());
+			pstmt.setInt(6, prod.getUnidade());
 			pstmt.setString(7, prod.getIngredientes());
-			pstmt.setString(8, prod.isOrganico());
+			pstmt.setBoolean(8, prod.isOrganico());
+			
 			
 			pstmt.execute();
 			con.close();
@@ -199,13 +197,10 @@ public class SGBD {
 			sql = "INSERT INTO compra(ID_CONSUMIDOR, VALOR_FINAL, ID_ENDERECO, DESCRICAO) VALUES (?, ?, ?, ?);";
 		
 			stmt = con.prepareStatement(sql);
-			stmt.setString(1, produtor.getNome());
-			stmt.setString(2, produtor.getCpf());
-			stmt.setString(3, produtor.getTelefone());
-			stmt.setInt(4, produtor.getEndereco().getIdEndereco());
-			stmt.setString(5, produtor.getCcir());
-			stmt.setInt(6, produtor.getTipoProd());
-			stmt.setString(7, produtor.getDescricao());
+			stmt.setInt(1, compra.getConsumidor().getId());
+			stmt.setDouble(2, compra.getValorFinal());
+			stmt.setInt(3, compra.getEndereco().getIdEndereco());
+			stmt.setString(4, compra.getDescricao());
 			
 			stmt.execute();
 			con.close();
@@ -213,6 +208,223 @@ public class SGBD {
             System.out.println("erro"+e.getMessage());
         }
 	}	
+ 	
+ 	public void insereItensCompra(Compra compra, Produto prod, Double qtd) {
+		try {
+			Connection con = this.connect();
+
+			String sql = "INSERT INTO itens_compra(ID_COMPRA, ID_PRODUTO, QTD) VALUES (?, ?, ?);";
+		
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, compra.getIdCompra());
+			stmt.setInt(2, prod.getIdProduto());
+			stmt.setDouble(3, qtd);
+			
+			stmt.execute();
+			con.close();
+		} catch(SQLException e){
+            System.out.println("erro"+e.getMessage());
+        }
+	}	
+ 	
+ 	public void insereEndereco(Endereco endereco) {
+		try {
+			Connection con = this.connect();
+			
+			String sql = "SELECT last_insert_rowid() FROM compra";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.next();
+			int id = rs.getInt("ID");
+			endereco.setIdEndereco(id);
+			
+			sql = "INSERT INTO endereco(RUA, NUMERO, COMPLEMENTO, BAIRRO, CEP, CIDADE, ESTADO) VALUES (?, ?, ?, ?, ?, ?, ?);";
+		
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, endereco.getEndRua());
+			stmt.setString(2, endereco.getEndNum());
+			stmt.setString(3, endereco.getEndComplemento());
+			stmt.setString(4, endereco.getEndBairro());
+			stmt.setString(5, endereco.getEndCEP());
+			stmt.setString(6, endereco.getEndCidade());
+			stmt.setString(7, endereco.getEndEstado());
+			
+			stmt.execute();
+			con.close();
+		} catch(SQLException e){
+            System.out.println("erro"+e.getMessage());
+        }
+	}	
+ 	
+ 	public void insereProdutoFavorito(Consumidor consumidor, Produto prod) {
+		try {
+			Connection con = this.connect();
+
+			String sql = "INSERT INTO produto_favorito(ID_CONSUMIDOR, ID_PRODUTO) VALUES (?, ?);";
+		
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, consumidor.getId());
+			stmt.setInt(2, prod.getIdProduto());
+			
+			stmt.execute();
+			con.close();
+		} catch(SQLException e){
+            System.out.println("erro"+e.getMessage());
+        }
+	}
+ 	
+ 	public Consumidor loginConsumidor(String email, String senha) throws HortusException
+ 	{
+ 		try {
+			Connection con = this.connect();
+ 			String sql = "SELECT * FROM consumidor WHERE email = '?' AND senha = '?';";
+			PreparedStatement stmt = con.prepareStatement(sql);
+ 			stmt.setString(1, email);
+ 			stmt.setString(2, senha);
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next())
+			{
+				Endereco end = null;
+				String sql2 = "SELECT * FROM endereco WHERE ID = '?';";
+				PreparedStatement stmt2 = con.prepareStatement(sql2);
+				
+				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
+				ResultSet rs2 = stmt2.executeQuery(sql2);
+				if(rs2.next())
+				{
+					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+				}
+				
+				// Inicializar o consumidor e no fim retorná-lo
+				Consumidor cons = new Consumidor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CPF"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"));
+				
+				con.close();
+				return cons;
+			} else {
+				con.close();
+				throw new HortusException("Usuario e/ou Senha incorretos"); 	
+			}
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("erro"+e.getMessage());
+ 		}
+ 		return null;
+ 	}
+ 	
+ 	public Produtor loginProdutor(String email, String senha) throws HortusException
+ 	{
+ 		try {
+			Connection con = this.connect();
+ 			String sql = "SELECT * FROM produtor WHERE email = '?' AND senha = '?';";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setString(1, senha);
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next())
+			{
+				Endereco end = null;
+				String sql2 = "SELECT * FROM endereco WHERE ID = '?';";
+				PreparedStatement stmt2 = con.prepareStatement(sql2);
+				
+				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
+				ResultSet rs2 = stmt2.executeQuery(sql2);
+				if(rs2.next())
+				{
+					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+				}
+				
+				// Inicializar o Produtor e no fim retorná-lo
+				Produtor prodt = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CPF"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
+				
+				con.close();
+				return prodt;
+			} else {
+				con.close();
+				throw new HortusException("Usuario e/ou Senha incorretos"); 	
+			}
+			
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("erro"+e.getMessage());
+ 		}
+ 		return null;
+ 	}
+ 	
+ 	public Consumidor getConsumidorById(int id) throws HortusException
+ 	{
+ 		try {
+			Connection con = this.connect();
+ 			String sql = "SELECT * FROM consumidor WHERE id = '?';";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next())
+			{
+				Endereco end = null;
+				String sql2 = "SELECT * FROM endereco WHERE ID = '?';";
+				PreparedStatement stmt2 = con.prepareStatement(sql2);
+				
+				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
+				ResultSet rs2 = stmt2.executeQuery(sql2);
+				if(rs2.next())
+				{
+					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+				}
+				
+				// Inicializar o consumidor e no fim retorná-lo
+				Consumidor cons = new Consumidor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CPF"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"));
+				
+				con.close();
+				return cons;
+			} else {
+				con.close();
+				throw new HortusException("Usuario e/ou Senha incorretos"); 	
+			}
+			
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("erro"+e.getMessage());
+ 		}
+ 		return null;
+ 	}
+ 	
+ 	public Produtor getProdutorById(int id) throws HortusException
+ 	{
+ 		try {
+			Connection con = this.connect();
+ 			String sql = "SELECT * FROM produtor WHERE ID = '?';";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery(sql);
+			if(rs.next())
+			{
+				Endereco end = null;
+				String sql2 = "SELECT * FROM endereco WHERE ID = '?';";
+				PreparedStatement stmt2 = con.prepareStatement(sql2);
+				
+				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
+				ResultSet rs2 = stmt2.executeQuery(sql2);
+				if(rs2.next())
+				{
+					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+				}
+				
+				// Inicializar o Produtor e no fim retorná-lo
+				Produtor prodt = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CPF"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
+				
+				con.close();
+				return prodt;
+			} else {
+				con.close();
+				throw new HortusException("Usuario e/ou Senha incorretos"); 	
+			}
+			
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("erro"+e.getMessage());
+ 		}
+ 		return null;
+ 	}
 }
 
 /*
