@@ -1,8 +1,6 @@
 package hortus;
-import io.jsondb.annotation.Id;
 
 public class Endereco {
-	@Id
 	private int idEndereco;
 		
 	private String endRua;

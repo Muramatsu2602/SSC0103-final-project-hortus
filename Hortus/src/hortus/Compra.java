@@ -1,15 +1,13 @@
 package hortus;
 import java.util.Map;
-import io.jsondb.annotation.Id;
 
 public class Compra {
-	@Id
 	private int idCompra;
 	private Consumidor consumidor;
 	
 	// Mapa de produtos e quantidade (g, kg, unitário)
 	private Map<Produto, Double> listaProdutos;
-	private Double valorFinal;
+	private Double valorFinal = 0.0;
 
 	// Endereco
 	private Endereco endereco;
@@ -17,12 +15,11 @@ public class Compra {
 	// Se será em uma feira livre, mercadinho, encontro com o produtor
 	private String descricao;
 
-	public Compra(int idCompra, Consumidor consumidor, Map<Produto, Double> listaProdutos, Double valorFinal, Endereco endereco, String descricao) {
+	public Compra(int idCompra, Consumidor consumidor, Map<Produto, Double> listaProdutos, Endereco endereco, String descricao) {
 		
 		this.setIdCompra(idCompra);
 		this.setConsumidor(consumidor);
 		this.setListaProdutos(listaProdutos);
-		this.setValorFinal(valorFinal);
 		this.setEndereco(endereco);
 	}
 
@@ -72,5 +69,9 @@ public class Compra {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+	
+	private void calculaValorFinal() {
+    	listaProdutos.forEach((k, v) -> valorFinal += k.getPrecoProduto()*v)
 	}
 }  

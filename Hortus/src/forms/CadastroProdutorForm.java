@@ -7,6 +7,8 @@ import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.Font;
+import javax.swing.JTextPane;
+import javax.swing.JSeparator;
 
 public class CadastroProdutorForm {
 
@@ -53,7 +55,29 @@ public class CadastroProdutorForm {
 		JPanel panel = new JPanel();
 		panel.setBounds(-1, 0, 906, 46);
 		frame.getContentPane().add(panel);
-		frame.setBounds(100, 100, 905, 653);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		panel_1.setBackground(Color.WHITE);
+		panel_1.setBounds(26, 83, 851, 637);
+		frame.getContentPane().add(panel_1);
+		
+		JTextPane txtpnNovoProdutor = new JTextPane();
+		txtpnNovoProdutor.setText("Novo Produtor");
+		txtpnNovoProdutor.setFont(new Font("Tahoma", Font.PLAIN, 45));
+		txtpnNovoProdutor.setBounds(285, 10, 376, 61);
+		panel_1.add(txtpnNovoProdutor);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 81, 831, 2);
+		panel_1.add(separator);
+		
+		JButton btnCriarConta = new JButton("Criar Conta");
+		btnCriarConta.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnCriarConta.setBackground(new Color(51, 204, 102));
+		btnCriarConta.setBounds(699, 585, 142, 42);
+		panel_1.add(btnCriarConta);
+		frame.setBounds(100, 100, 905, 752);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 

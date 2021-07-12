@@ -1,8 +1,5 @@
 package hortus;
 
-import io.jsondb.annotation.Id;
-import io.jsondb.annotation.Secret;
-
 public abstract class Usuario {
 	// Informacoes basicas
 	private String nome;
@@ -12,11 +9,9 @@ public abstract class Usuario {
 	private Endereco endereco;
 	
 	// Informacoes de login
-	@Id
 	private int id;
 	private String email;
 	
-	@Secret
 	private String senha;
 	
 	public Usuario(int id, String nome, String cpf, String telefone, Endereco endereco, String email, String senha)

@@ -1,12 +1,9 @@
 package hortus;
 
 import java.util.Vector;
-import io.jsondb.JsonDBTemplate;
 
 public class Consumidor extends Usuario {
-	
-	private Vector<Produto> listaProdutosFavoritos;
-	
+
 	public Consumidor(int id, String nome, String cpf, String telefone, Endereco endereco, String email, String senha) {
 		super(id, nome, cpf, telefone, endereco, email, senha);
 	}
@@ -16,32 +13,25 @@ public class Consumidor extends Usuario {
 	}
 
 	// Retorna FALSE se o ID do produto não existe, ou ocorreu algum erro
-	public void adicionarProdutoFavorito(Produto produto) throws HortusException
-	{
-		 if(produto == null)
-			throw new HortusException("Erro ao adicionar produto favorito para o usuário '"+getNome()+"'");
-		
-		listaProdutosFavoritos.addElement(produto);
+	public void adicionarProdutoFavorito(int IDProduto) throws HortusException {
+		// caso o produto já esteja nos favoritos
+			// aviso que o produto já está nos favoritos
+		// caso não esteja
+			// Se o produto não existe
+				// throw Exception("Produto não existe.");
+			// Caso exista
+				// adiciono esse produto na tabela de favoritos				
 	}
 	
-	public void removerProdutoFavorito(Produto produto) throws HortusException
-	{
-		 if(produto == null)
-			throw new HortusException("Erro ao remover produto favorito do usuário '"+getNome()+"'");
-		
-		try{
-			listaProdutosFavoritos.remove(listaProdutosFavoritos.indexOf(produto));	
-		}catch(Exception err){
-			throw new HortusException("Erro ao apagar da lista de favoritos do usuário '"+getNome()+"'Produto não encontrado!");
-		}
+	public void removerProdutoFavorito(int IDProduto) throws HortusException {
+		 // se o produto não estiver nos favoritos
+		 	// aviso que o produto não está nos favoritos
+		 // caso esteja
+		 	// removo dos favoritos
 	}
 
 	public Vector<Produto> getListaProdutosFavoritos() {
-		return listaProdutosFavoritos;
-	}
-
-	public void setListaProdutosFavoritos(Vector<Produto> listaProdutosFavoritos) {
-		this.listaProdutosFavoritos = listaProdutosFavoritos;
+		// faz um SELECT * da tabela de produtos e retorna
 	}
 	
 	/*public void insereConsumidor()
@@ -49,4 +39,5 @@ public class Consumidor extends Usuario {
 		JsonDBTemplate jsonDBTemplate = hortus.SGBD.inicializarDB();
 		jsonDBTemplate.insert(this);
 	}*/
+	
 }
