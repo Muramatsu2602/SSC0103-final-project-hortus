@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 public class SGBD {
  	
  	/*
@@ -25,7 +27,7 @@ public class SGBD {
 			NOME			CHAR(50)	NOT NULL,
 			EMAIL			CHAR(50)	NOT NULL UNIQUE,
 			SENHA			CHAR(50)	NOT NULL,
-			CNPJ			CHAR(14)	NOT NULL,
+			CNPJ			CHAR(14)	NOT NULL UNIQUE,
 			TELEFONE		CHAR(15)	NOT NULL,
 			ID_ENDERECO		INTEGER		NOT NULL,
 			CCIR			CHAR(30)	NOT NULL UNIQUE,
@@ -34,9 +36,9 @@ public class SGBD {
 		 );
 		 
 		 CREATE TABLE produto(
-			ID_PRODUTO		INTEGER			NOT NULL,
+			ID		INTEGER			PRIMARY KEY AUTOINCREMENT,
 			ID_PRODUTOR		INTEGER			NOT NULL,
-			NOME			CHAR(50)		NOT NULL UNIQUE,
+			NOME			CHAR(50)		NOT NULL,
 			DESCRICAO		CHAR(200),
 			QUANTIDADE		NUMERIC(8,2)	NOT NULL,		
 			PRECO			NUMERIC(8,2)	NOT NULL,
@@ -48,6 +50,7 @@ public class SGBD {
 		 CREATE TABLE compra(
 		 	ID				INTEGER			PRIMARY KEY AUTOINCREMENT,
 		 	ID_CONSUMIDOR	INTEGER			NOT NULL,
+		 	ID_PRODUTOR     INTEGER         NOT NULL,
 		 	VALOR_FINAL		NUMERIC(8,2)	NOT NULL,
 		 	ID_ENDERECO		INTEGER			NOT NULL,	
 		 	DESCRICAO		CHAR(200)
@@ -82,14 +85,18 @@ public class SGBD {
         Connection con = null;
         String banco = "Hortus.db";
         try{
-            String url = "jdbc:sqlite:../db/"+banco;
+        	File dbfile = new File("db");
+            String url = "jdbc:sqlite:"+dbfile.getAbsolutePath()+"\\"+banco;
             con = DriverManager.getConnection(url);
+        	return con;
             
         } catch(SQLException e){
-            System.out.println("erro"+e.getMessage());
+            System.out.println("erro1 "+e.getMessage());
             //JOptionPane.showMessageDialog(null, "Erro \n"+e.getMessage());
+        } catch(Exception err)
+        {
+        	System.out.print("erro2 "+err.getMessage());
         }
-        
         return con;
     }
     
@@ -98,14 +105,18 @@ public class SGBD {
 		Connection con = this.connect();
 		
 		try{
-			String sql = "SELECT last_insert_rowid() FROM consumidor";
+			String sql = "SELECT MAX(ID) as ID FROM consumidor";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			rs.next();
-			int id = rs.getInt("ID");
+			ResultSet rs = stmt.executeQuery();
+			int id = 0;
+			if(rs.next()) {
+				id = rs.getInt("ID") + 1;
+			}
 			cons.setId(id);
 			
-			sql = "INSERT INTO consumidor (NOME, EMAIL, SENHA, CPF, TELEFONE , ID_ENDERECO) VALUES (?, ?, ?, ?, ?, ?, ?);";
+			sql = "INSERT INTO consumidor (NOME, EMAIL, SENHA, CPF, TELEFONE , ID_ENDERECO) VALUES (?, ?, ?, ?, ?, ?);";
+			
+			stmt = con.prepareStatement(sql);
 			
 			stmt.setString(1, cons.getNome());
 			stmt.setString(2, cons.getEmail());
@@ -126,23 +137,26 @@ public class SGBD {
 		try {
 			Connection con = this.connect();
 			
-			String sql = "SELECT last_insert_rowid() FROM produtor";
+			String sql = "SELECT MAX(ID) as ID FROM produtor";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			rs.next();
-			int id = rs.getInt("ID");
+			ResultSet rs = stmt.executeQuery();
+			int id = 0;
+			if(rs.next())
+				id = rs.getInt("ID") + 1;
 			produtor.setId(id);
 			
-			sql = "INSERT INTO produtor(nome, cpf, telefone, id_endereco, email, senha, ccir, tipo_prod, descricao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-		
+			sql = "INSERT INTO produtor(nome, cnpj, telefone, id_endereco, email, senha, ccir, tipo_prod, descricao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			
 			stmt = con.prepareStatement(sql);
 			stmt.setString(1, produtor.getNome());
 			stmt.setString(2, produtor.getCpf());
 			stmt.setString(3, produtor.getTelefone());
 			stmt.setInt(4, produtor.getEndereco().getIdEndereco());
-			stmt.setString(5, produtor.getCcir());
-			stmt.setInt(6, produtor.getTipoProd());
-			stmt.setString(7, produtor.getDescricao());
+			stmt.setString(5, produtor.getEmail());
+			stmt.setString(6, produtor.getSenha());
+			stmt.setString(7, produtor.getCcir());
+			stmt.setInt(8, produtor.getTipoProd());
+			stmt.setString(9, produtor.getDescricao());
 			
 			stmt.execute();
 			con.close();
@@ -155,11 +169,12 @@ public class SGBD {
 		try{
 			Connection con = connect();
 			
-			String sql = "SELECT last_insert_rowid() FROM produto";
+			String sql = "SELECT MAX(ID) as ID FROM produto";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			rs.next();
-			int id = rs.getInt("ID");
+			ResultSet rs = stmt.executeQuery();
+			int id = 0;
+			if(rs.next())
+				id = rs.getInt("ID") + 1;
 			prod.setIdProduto(id);
 		
 			sql = "INSERT INTO produto (ID_PRODUTOR, NOME, DESCRICAO, QUANTIDADE, PRECO, UNIDADE, INGREDIENTES, ORGANICO) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";		   
@@ -187,30 +202,42 @@ public class SGBD {
 		try {
 			Connection con = this.connect();
 			
-			String sql = "SELECT last_insert_rowid() FROM compra";
+			String sql = "SELECT MAX(ID) as ID FROM compra";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			rs.next();
-			int id = rs.getInt("ID");
+			ResultSet rs = stmt.executeQuery();
+			int id = 0;
+			if(rs.next())	
+				id = rs.getInt("ID") + 1;
 			compra.setIdCompra(id);
+			System.out.printf("%d\n", compra.getIdCompra());
 			
-			sql = "INSERT INTO compra(ID_CONSUMIDOR, VALOR_FINAL, ID_ENDERECO, DESCRICAO) VALUES (?, ?, ?, ?);";
-		
+			sql = "INSERT INTO compra(ID_CONSUMIDOR, ID_PRODUTOR, VALOR_FINAL, ID_ENDERECO, DESCRICAO) VALUES (?, ?, ?, ?, ?);";
+			
+			stmt = con.prepareStatement(sql);
+			
 			stmt = con.prepareStatement(sql);
 			stmt.setInt(1, compra.getConsumidor().getId());
-			stmt.setDouble(2, compra.getValorFinal());
-			stmt.setInt(3, compra.getEndereco().getIdEndereco());
-			stmt.setString(4, compra.getDescricao());
+			stmt.setInt(2, compra.getProdutor().getId());
+			stmt.setDouble(3, compra.getValorFinal());
+			stmt.setInt(4, compra.getEndereco().getIdEndereco());
+			stmt.setString(5, compra.getDescricao());
 			
 			stmt.execute();
 			con.close();
 		} catch(SQLException e){
             System.out.println("erro"+e.getMessage());
         }
+		
+		// Insere item por item da compra realizada na tabela itens_compra
+		/*for(Map<Produto, Double> c : compra.getListaProdutos()) {
+			
+		}*/
+		compra.getListaProdutos().forEach((k, v) -> insereItensCompra(compra, k, v));
 	}	
  	
  	public void insereItensCompra(Compra compra, Produto prod, Double qtd) {
 		try {
+			System.out.printf("%d\n", compra.getIdCompra());
 			Connection con = this.connect();
 
 			String sql = "INSERT INTO itens_compra(ID_COMPRA, ID_PRODUTO, QTD) VALUES (?, ?, ?);";
@@ -231,13 +258,17 @@ public class SGBD {
 		try {
 			Connection con = this.connect();
 			
-			String sql = "SELECT last_insert_rowid() FROM compra";
+			String sql = "SELECT MAX(ID) as ID from endereco";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery(sql);
-			rs.next();
-			int id = rs.getInt("ID");
-			endereco.setIdEndereco(id);
-			
+			ResultSet rs = stmt.executeQuery();
+			int id = 0;
+			if(rs.next())
+			{
+				id = rs.getInt("ID") + 1;
+				endereco.setIdEndereco(id);
+			} else {
+				endereco.setIdEndereco(id);
+			}
 			sql = "INSERT INTO endereco(RUA, NUMERO, COMPLEMENTO, BAIRRO, CEP, CIDADE, ESTADO) VALUES (?, ?, ?, ?, ?, ?, ?);";
 		
 			stmt = con.prepareStatement(sql);
@@ -252,7 +283,7 @@ public class SGBD {
 			stmt.execute();
 			con.close();
 		} catch(SQLException e){
-            System.out.println("erro"+e.getMessage());
+            System.out.println("Erro Endereço "+e.getMessage());
         }
 	}	
  	
@@ -277,19 +308,19 @@ public class SGBD {
  	{
  		try {
 			Connection con = this.connect();
- 			String sql = "SELECT * FROM consumidor WHERE email = '?' AND senha = '?';";
+ 			String sql = "SELECT * FROM consumidor WHERE email = ? AND senha = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
  			stmt.setString(1, email);
  			stmt.setString(2, senha);
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 			{
 				Endereco end = null;
-				String sql2 = "SELECT * FROM endereco WHERE ID = '?';";
+				String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
 				
-				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
-				ResultSet rs2 = stmt2.executeQuery(sql2);
+				stmt2.setInt(1, rs.getInt("ID_ENDERECO"));
+				ResultSet rs2 = stmt2.executeQuery();
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
@@ -315,26 +346,26 @@ public class SGBD {
  	{
  		try {
 			Connection con = this.connect();
- 			String sql = "SELECT * FROM produtor WHERE email = '?' AND senha = '?';";
+ 			String sql = "SELECT * FROM produtor WHERE email = ? AND senha = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, email);
-			stmt.setString(1, senha);
-			ResultSet rs = stmt.executeQuery(sql);
+			stmt.setString(2, senha);
+			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 			{
 				Endereco end = null;
-				String sql2 = "SELECT * FROM endereco WHERE ID = '?';";
+				String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
 				
 				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
-				ResultSet rs2 = stmt2.executeQuery(sql2);
+				ResultSet rs2 = stmt2.executeQuery();
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
 				}
 				
 				// Inicializar o Produtor e no fim retorná-lo
-				Produtor prodt = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CPF"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
+				Produtor prodt = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CNPJ"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
 				
 				con.close();
 				return prodt;
@@ -354,18 +385,18 @@ public class SGBD {
  	{
  		try {
 			Connection con = this.connect();
- 			String sql = "SELECT * FROM consumidor WHERE id = '?';";
+ 			String sql = "SELECT * FROM consumidor WHERE id = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 			{
 				Endereco end = null;
-				String sql2 = "SELECT * FROM endereco WHERE ID = '?';";
+				String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
 				
 				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
-				ResultSet rs2 = stmt2.executeQuery(sql2);
+				ResultSet rs2 = stmt2.executeQuery();
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
@@ -392,25 +423,25 @@ public class SGBD {
  	{
  		try {
 			Connection con = this.connect();
- 			String sql = "SELECT * FROM produtor WHERE ID = '?';";
+ 			String sql = "SELECT * FROM produtor WHERE ID = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 			{
 				Endereco end = null;
-				String sql2 = "SELECT * FROM endereco WHERE ID = '?';";
+				String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
 				
 				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
-				ResultSet rs2 = stmt2.executeQuery(sql2);
+				ResultSet rs2 = stmt2.executeQuery();
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
 				}
 				
 				// Inicializar o Produtor e no fim retorná-lo
-				Produtor prodt = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CPF"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
+				Produtor prodt = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CNPJ"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
 				
 				con.close();
 				return prodt;
@@ -425,142 +456,132 @@ public class SGBD {
  		}
  		return null;
  	}
+ 	
+ 	public Vector<Produto> getProdutosProdutor(int idProdutor) {
+ 		try {
+ 			Connection con = this.connect();
+ 			String sql = "SELECT * FROM produto WHERE ID_PRODUTOR = ?;";
+ 			PreparedStatement stmt = con.prepareStatement(sql);
+ 			stmt.setInt(1, idProdutor);
+ 			ResultSet rs = stmt.executeQuery();
+ 			
+ 			Vector<Produto> produtos = new Vector<Produto>();
+ 			while(rs.next())
+ 			{
+ 				produtos.add(new Produto(rs.getInt("ID"), rs.getInt("ID_PRODUTOR"), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")));
+ 			}
+ 			
+ 			con.close();
+ 			return produtos;
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("erro"+e.getMessage());
+ 		}
+ 		return null;
+	}
+ 	
+ 	public Vector<Produto> getProdutosFavoritos(int idConsumidor) {
+ 		try {
+ 			Connection con = this.connect();
+ 			String sql = "SELECT (PRODUTO.ID, PRODUTO.ID_PRODUTOR, PRODUTO.NOME, PRODUTO.DESCRICAO, PRODUTO.QUANTIDADE, PRODUTO.PRECO, PRODUTO.UNIDADE, PRODUTO.INGREDIENTES, PRODUTO.ORGANICO) FROM produto_favorito INNER JOIN produto ON produto.ID = produto_favorito.ID_PRODUTO WHERE produto_favorito.ID_CONSUMIDOR = ?;";
+ 			PreparedStatement stmt = con.prepareStatement(sql);
+ 			stmt.setInt(1, idConsumidor);
+ 			ResultSet rs = stmt.executeQuery();
+ 			
+ 			Vector<Produto> produtos = new Vector<Produto>();
+ 			while(rs.next())
+ 			{
+ 				produtos.add(new Produto(rs.getInt("PRODUTO.ID"), rs.getInt("PRODUTO.ID_PRODUTOR"), rs.getString("PRODUTO.NOME"), rs.getString("PRODUTO.DESCRICAO"), rs.getDouble("PRODUTO.QUANTIDADE"), rs.getDouble("PRODUTO.PRECO"), rs.getString("PRODUTO.UNIDADE").charAt(0), rs.getString("PRODUTO.INGREDIENTES"), rs.getBoolean("PRODUTO.ORGANICO")));
+ 			}
+ 			
+ 			con.close();
+ 			return produtos;
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("erro"+e.getMessage());
+ 		}
+ 		return null;
+	}
+ 	
+ 	public static void main(String args[])
+ 	{
+ 		// Cadastro consumidor
+ 		Endereco end = new Endereco("Rua da Roça", "13-40", "Fica no meio do mato", "Jd Rio Claro", "17123-023", "São Carlos", "São Paulo");
+ 		Consumidor consum = new Consumidor(1, "Giovanni", "536.872.752-17", "(14)99709-1009", end, "giovanni_shibaki@usp.br", "123");
+ 		//Produtor prod = new Produtor(1, "Seu zé", "729812782-12", "(16)99672-2712", end, "seuze.fazendeiro@gmail.com", "senhadozé", "1439821742-32", 1, "Só produto de qualidade feito pelo seu zé");
+ 		Produto produto = new Produto(3, 1, "Maça GOSTOSA", "Maça com gosto bom", (double)12.0, 5.99, 'k', "Maça, amor", true);
+ 		/*Produto produto2 = new Produto(4, 1, "Banana MARAVILHOSA", "Macaco gosta banana", (double)50.0, 2.00, 'k', "Banana, macaco e potassio", false);
+ 		Produto produto3 = new Produto(5, 1, "Pera SUPREENDENTE", "Pera ai meu caro", (double)20.0, 8.99, 'k', "Pera, to chegando", true);*/
+ 		
+ 		/*Map<Produto, Double> compras = new HashMap<Produto, Double>();
+ 		compras.put(produto, 2.5);
+ 		compras.put(produto2, 4.2);
+ 		compras.put(produto3, 6.9);*/
+ 		//Compra compra = new Compra(-1, consum, prod, compras, end, "Essa compra me deixou mais pobre");
+ 		
+ 		SGBD banco = new SGBD();
+ 		//banco.insereEndereco(end);
+ 		
+ 		//banco.insereConsumidor(consum);
+ 		//banco.insereProdutor(prod);
+ 		/*banco.insereProduto(produto);
+ 		banco.insereProduto(produto2);
+ 		banco.insereProduto(produto3);
+ 		banco.insereCompra(compra);*/
+ 		//banco.insereProdutoFavorito(consum, produto);
+ 		
+ 		// Login Consumidor
+ 		/*String email = "giovanni.shibaki@usp.br";
+ 		String senha = "123";
+ 			
+ 		try{
+ 			Consumidor consumidorLogado = banco.loginConsumidor(email, senha);
+ 			System.out.println("ID logado: "+consumidorLogado.getId());
+ 		} catch(HortusException err)
+ 		{
+ 			System.out.println(err.getMessage());
+ 		}*/
+ 		
+ 		// Login produtor
+ 		/*String email = "seuze.fazendeiro@gmail.com";
+ 		String senha = "senhadozé";
+ 			
+ 		try{
+ 			Produtor produtorLogado = banco.loginProdutor(email, senha);
+ 			System.out.println("ID logado: "+produtorLogado.getId());
+ 		} catch(HortusException err)
+ 		{
+ 			System.out.println(err.getMessage());
+ 		}*/
+ 		
+ 		/*try{
+ 			Consumidor consumidorAchado = banco.getConsumidorById(1);
+ 			System.out.println("Nome logado: "+consumidorAchado.getNome());
+ 		} catch(HortusException err)
+ 		{
+ 			System.out.println(err.getMessage());
+ 		}*/
+ 			
+ 		/*try{
+			Produtor produtorAchado = banco.getProdutorById(1);
+			System.out.println("Nome logado: "+produtorAchado.getNome());
+		} catch(HortusException err)
+		{
+			System.out.println(err.getMessage());
+		}*/
+ 		
+ 		/*Vector<Produto> produtosEncontrados = banco.getProdutosProduto(1);
+ 		for(Produto prod : produtosEncontrados)
+ 		{
+ 			System.out.println("Nome produto: "+prod.getNomeProduto());
+ 		}*/
+ 		
+ 		Vector<Produto> produtosEncontrados = banco.getProdutosFavoritos(1);
+ 		for(Produto prod : produtosEncontrados)
+ 		{
+ 			System.out.println("Nome produto: "+prod.getNomeProduto());
+ 		}
+ 		
+ 		return;
+ 	}
 }
-
-/*
-	Operações de inserção
-	
-	Consumidor:
-		- Pegar o proximo valor de ID
-		String sql = "SELECT last_insert_rowid() FROM consumidor";
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuerry(sql);
-		rs.next();
-		int id = rs.getInt("ID");		
-		
-	
-		- String sql = "INSERT INTO consumidor (ID, NOME, EMAIL, SENHA, CPF, TELEFONE , ID_ENDERECO) VALUES
-					   (?, ?, ?, ?, ?, ?, ?);"			   
-		try{
-			Connection conn = connect("consumidor.db");
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, id);
-			pstmt.setString(2, nome);
-			pstmt.setString(3, email);
-			pstmt.setString(4, senha);
-			pstmt.setString(5, cpf);
-			pstmt.setString(6, telefone);
-			pstmt.setInt(7, endereco);
-			
-			pstmt.executeUpdate();
-		}catch(SQLException e)
-		{
-			System.out.println(e.getMessage());
-		}
-		
-		- String sql = "SELECT * WHERE email = '?' AND senha = '?'"
-		ResultSet rs;
-		
-		try{
-			Connection conn = connect("consumidor.db");
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, email);
-			pstmt.setString(2, senha);
-			
-			rs = pstmt.executeQuerry();
-		}catch(SQLException e)
-		{
-			System.out.println(e.getMessage());
-		}
-		
-		// Agora, pegar os dados que retornaram da querry e colocar no objeto de consumidor atual	
-	
-	Produtor:
-	- Pegar o proximo valor de ID
-	
-		Connection con = this.connect();
-		
-		String sql = "SELECT last_insert_rowid() FROM produtor";
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuerry(sql);
-		rs.next();
-		int id = rs.getInt("ID");
-		
-		String sql = "INSERT INTO produtor(nome, cpf, telefone, id_endereco, email, senha, ccir, tipo_prod, descricao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		
-		try {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, produtor.getNome());
-			stmt.setString(2, produtor.getCpf());
-			stmt.setString(3, produtor.getTelefone());
-			stmt.setInt(4, produtor.getEndereco().getId());
-			stmt.setString(5, produtor.getCcir());
-			stmt.setInt(6, produtor.getTipoProd());
-			stmt.setString(7, produtor.getDescricao());
-			
-			stmt.execute();
-			con.close();
-		} catch(SQLException e){
-            System.out.println("erro"+e.getMessage());
-        }
-		
-		
-	
-	Produto:
-	- Pegar o proximo valor de ID
-		String sql = "SELECT last_insert_rowid() FROM produto";
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuerry(sql);
-		rs.next();
-		int id = rs.getInt("ID");
-	
-		- String sql = "INSERT INTO produto (ID_PRODUTOR, NOME, DESCRICAO, QUANTIDADE, PRECO, UNIDADE, INGREDIENTES, ORGANICO) VALUES
-					   (?, ?, ?, ?, ?, ?, ?);"			   
-		try{
-			Connection conn = connect("consumidor.db");
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, prod.getIdProdutor);
-			pstmt.setString(2, nome);
-			pstmt.setString(3, descricao);
-			pstmt.setString(4, prod.getQuantidade);
-			pstmt.setString(5, prod.getPrecoProduto);
-			pstmt.setString(6, prod.getUnidade);
-			pstmt.setString(6, prod.getIngredientes);
-			pstmt.setString(6, prod.getUnidade);
-			pstmt.setInt(7, prod);
-			
-			pstmt.executeUpdate();
-		}catch(SQLException e)
-		{
-			System.out.println(e.getMessage());
-		}
-		
-	
-	Compra:
-	- Pegar o proximo valor de ID
-		String sql = "SELECT last_insert_rowid() FROM compra";
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuerry(sql);
-		rs.next();
-		int id = rs.getInt("ID");
-	
-	
-	
-	Itens Compra:
-	- Pegar o proximo valor de ID
-		String sql = "SELECT last_insert_rowid() FROM itens_compra";
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuerry(sql);
-		rs.next();
-		int id = rs.getInt("ID");
-	
-	
-	
-	Endereço:
-	- Pegar o proximo valor de ID
-		String sql = "SELECT last_insert_rowid() FROM endereco";
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuerry(sql);
-		rs.next();
-		int id = rs.getInt("ID");
-*/

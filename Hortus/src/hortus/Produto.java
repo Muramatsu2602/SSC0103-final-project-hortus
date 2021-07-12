@@ -5,13 +5,13 @@ public class Produto {
 	private int idProdutor;
 	private String nomeProduto;
 	private String descricao;
-	private int quantidade;
+	private double quantidade;
 	private double precoProduto;
 	private char unidade;
 	private String ingredientes;
 	private boolean organico;
 	
-	public Produto(int idProduto, int idProdutor, String nomeProduto, String descricao, int quantidade, double precoProduto, char unidade, String ingredientes, boolean organico) {	
+	public Produto(int idProduto, int idProdutor, String nomeProduto, String descricao, double quantidade, double precoProduto, char unidade, String ingredientes, boolean organico) {	
 		
 		this.setIdProduto(idProduto);
 		this.setIdProdutor(idProdutor);
@@ -21,7 +21,7 @@ public class Produto {
 		this.setPrecoProduto(precoProduto);
 		this.setUnidade(unidade);
 		this.setIngredientes(ingredientes);
-		
+		this.setOrganico(organico);
 	}
 
 	public int getIdProduto() {
@@ -56,11 +56,11 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
-	public int getQuantidade() {
+	public double getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(int quantidade) {
+	public void setQuantidade(double quantidade) {
 		this.quantidade = quantidade;
 	}
 

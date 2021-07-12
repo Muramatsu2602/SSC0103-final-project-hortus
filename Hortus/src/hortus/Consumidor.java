@@ -7,10 +7,6 @@ public class Consumidor extends Usuario {
 	public Consumidor(int id, String nome, String cpf, String telefone, Endereco endereco, String email, String senha) {
 		super(id, nome, cpf, telefone, endereco, email, senha);
 	}
-	
-	public Consumidor() {
-		
-	}
 
 	// Retorna FALSE se o ID do produto não existe, ou ocorreu algum erro
 	public void adicionarProdutoFavorito(Produto p) throws HortusException {
