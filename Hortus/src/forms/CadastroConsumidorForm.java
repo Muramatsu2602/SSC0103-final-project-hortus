@@ -298,7 +298,8 @@ public class CadastroConsumidorForm {
 		panel_1.add(separator_2);
 
 		JButton btnCriarConta = new JButton("Criar Conta");
-		btnCriarConta.setBounds(699, 698, 142, 42);
+		btnCriarConta.setForeground(new Color(255, 255, 255));
+		btnCriarConta.setBounds(662, 698, 179, 42);
 		panel_1.add(btnCriarConta);
 		btnCriarConta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -325,7 +326,7 @@ public class CadastroConsumidorForm {
 				}
 			}
 		});
-		btnCriarConta.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnCriarConta.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnCriarConta.setBackground(new Color(51, 204, 102));
 
 		txtRua = new JTextField();

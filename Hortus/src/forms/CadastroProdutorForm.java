@@ -303,6 +303,7 @@ public class CadastroProdutorForm {
 		panel_1_1.add(lblNome_1_6);
 
 		JButton btnCriarConta = new JButton("Criar Conta");
+		btnCriarConta.setForeground(new Color(255, 255, 255));
 		btnCriarConta.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
@@ -330,9 +331,9 @@ public class CadastroProdutorForm {
 				}
 			}
 		});
-		btnCriarConta.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnCriarConta.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnCriarConta.setBackground(new Color(51, 204, 102));
-		btnCriarConta.setBounds(900, 698, 142, 42);
+		btnCriarConta.setBounds(875, 698, 167, 42);
 		panel_1_1.add(btnCriarConta);
 
 		txtRua = new JTextField();
