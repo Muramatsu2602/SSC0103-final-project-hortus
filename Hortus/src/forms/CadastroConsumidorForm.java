@@ -28,8 +28,13 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField$AbstractFormatter;
+import javax.swing.JFormattedTextField.AbstractFormatter;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import javax.swing.JMenuItem;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class CadastroConsumidorForm {
 
@@ -39,7 +44,26 @@ public class CadastroConsumidorForm {
 	private JTextField txtCPF;
 	private JPasswordField txtSenha;
 	private JPasswordField txtConfirmaSenha;
-	JFormattedTextField txtTelefone;
+	private JFormattedTextField txtTelefone;
+	private JFormattedTextField txtNum;
+
+	// Endereco
+	private JComboBox cbEstado;
+	private JTextField txtCidade;
+	private JFormattedTextField txtCEP;
+	private JTextField txtBairro;
+	private JTextField txtRua;
+	private JTextField txtComplemento;
+
+	/**
+	 * Métodos
+	 */
+	public void submitForm() {
+
+		showMessageDialog(null, cbEstado.getSelectedItem().toString());
+
+		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
+	}
 
 	/**
 	 * Launch the application.
@@ -96,7 +120,7 @@ public class CadastroConsumidorForm {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
-		panel_1.setBounds(26, 81, 851, 592);
+		panel_1.setBounds(26, 56, 851, 750);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -192,11 +216,6 @@ public class CadastroConsumidorForm {
 		lblNome_1.setBounds(73, 113, 77, 25);
 		panel_1.add(lblNome_1);
 
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setOrientation(SwingConstants.VERTICAL);
-		separator_1.setBounds(323, 81, 354, 501);
-		panel_1.add(separator_1);
-
 		JLabel lblNome_1_1 = new JLabel("*");
 		lblNome_1_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNome_1_1.setForeground(Color.RED);
@@ -229,7 +248,7 @@ public class CadastroConsumidorForm {
 		lblNome_1_5.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNome_1_5.setForeground(Color.RED);
 		lblNome_1_5.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_5.setBounds(343, 497, 217, 25);
+		lblNome_1_5.setBounds(24, 707, 217, 25);
 		panel_1.add(lblNome_1_5);
 
 		JLabel lblTelefone = new JLabel("Telefone:");
@@ -244,69 +263,188 @@ public class CadastroConsumidorForm {
 		lblNome_1_6.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNome_1_6.setBounds(430, 219, 77, 25);
 		panel_1.add(lblNome_1_6);
-		
+
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBounds(323, 327, 528, 2);
 		panel_1.add(separator_2);
-		
-		JLabel lblEndereo = new JLabel("Endere\u00E7o:");
-		lblEndereo.setHorizontalAlignment(SwingConstants.LEFT);
-		lblEndereo.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblEndereo.setBounds(333, 337, 174, 25);
-		panel_1.add(lblEndereo);
-		
-		JLabel lblNome_1_2_1 = new JLabel("*");
-		lblNome_1_2_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_2_1.setForeground(Color.RED);
-		lblNome_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_2_1.setBounds(430, 337, 77, 25);
-		panel_1.add(lblNome_1_2_1);
-		
-				JButton btnCriarConta = new JButton("Criar Conta");
-				btnCriarConta.setBounds(699, 540, 142, 42);
-				panel_1.add(btnCriarConta);
-				btnCriarConta.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
 
-						String senha = txtSenha.getText();
-						String confirmaSenha = txtConfirmaSenha.getText();
+		JButton btnCriarConta = new JButton("Criar Conta");
+		btnCriarConta.setBounds(699, 698, 142, 42);
+		panel_1.add(btnCriarConta);
+		btnCriarConta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-						// verificando se pelo menos um dos campos está vazio e/ou incompleto
-						if (txtNome.getText().isBlank() || txtEmail.getText().isBlank() || txtSenha.getText().isBlank()
-								|| txtConfirmaSenha.getText().isBlank() || txtCPF.getText().isBlank()
-								|| txtTelefone.getText().isBlank()) {
+				String senha = txtSenha.getText();
+				String confirmaSenha = txtConfirmaSenha.getText();
 
-							showMessageDialog(null, "Há campo(s) vazio(s)");
+				// verificando se pelo menos um dos campos está vazio e/ou incompleto
+				if (txtNome.getText().isBlank() || txtEmail.getText().isBlank() || txtSenha.getText().isBlank()
+						|| txtConfirmaSenha.getText().isBlank() || txtCPF.getText().isBlank()
+						|| txtTelefone.getText().isBlank() || txtRua.getText().isBlank() || txtNum.getText().isBlank()
+						|| txtComplemento.getText().isBlank() || txtBairro.getText().isBlank()
+						|| txtCEP.getText().isBlank() || txtCidade.getText().isBlank()) {
+					showMessageDialog(null, "Há campo(s) vazio(s)");
+					return;
+				}
 
-							return;
-						}
+				// testando se senha bate com confirmaSenha
+				if (senha.equals(confirmaSenha)) {
+					// BACKEND GOES HERE
+					submitForm();
+				} else {
+					showMessageDialog(null, "Suas senhas não são iguais.");
+				}
+			}
+		});
+		btnCriarConta.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnCriarConta.setBackground(new Color(51, 204, 102));
 
-						// testando se senha bate com confirmaSenha
-						if (senha.equals(confirmaSenha)) {
-							// BACKEND GOES HERE
-							showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
-							
-						} else {
-							showMessageDialog(null, "Suas senhas não são iguais.");
-						}
-					}
-				});
-				btnCriarConta.setFont(new Font("Tahoma", Font.PLAIN, 20));
-				btnCriarConta.setBackground(new Color(51, 204, 102));
-				
-				JFormattedTextField txtCPF_1 = new JFormattedTextField((AbstractFormatter) null);
-				txtCPF_1.setHorizontalAlignment(SwingConstants.LEFT);
-				txtCPF_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-				txtCPF_1.setColumns(10);
-				txtCPF_1.setBounds(343, 408, 286, 42);
-				panel_1.add(txtCPF_1);
-				
-				JLabel lblCPF_1 = new JLabel("CPF:");
-				lblCPF_1.setHorizontalAlignment(SwingConstants.LEFT);
-				lblCPF_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-				lblCPF_1.setBounds(343, 372, 77, 25);
-				panel_1.add(lblCPF_1);
-		frame.setBounds(100, 100, 907, 750);
+		txtRua = new JTextField();
+		txtRua.setHorizontalAlignment(SwingConstants.LEFT);
+		txtRua.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtRua.setColumns(10);
+		txtRua.setBounds(343, 383, 286, 42);
+		panel_1.add(txtRua);
+
+		JLabel lblRua = new JLabel("RUA:");
+		lblRua.setHorizontalAlignment(SwingConstants.LEFT);
+		lblRua.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblRua.setBounds(343, 347, 77, 25);
+		panel_1.add(lblRua);
+
+		JLabel lblNumero = new JLabel("NUM:");
+		lblNumero.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNumero.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNumero.setBounds(652, 347, 77, 25);
+		panel_1.add(lblNumero);
+
+		txtNum = new JFormattedTextField((Object) null);
+		txtNum.setHorizontalAlignment(SwingConstants.LEFT);
+		txtNum.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtNum.setColumns(10);
+		txtNum.setBounds(652, 383, 60, 42);
+		panel_1.add(txtNum);
+
+		txtBairro = new JTextField();
+		txtBairro.setHorizontalAlignment(SwingConstants.LEFT);
+		txtBairro.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtBairro.setColumns(10);
+		txtBairro.setBounds(343, 492, 286, 42);
+		panel_1.add(txtBairro);
+
+		JLabel lblBairro = new JLabel("Bairro:");
+		lblBairro.setHorizontalAlignment(SwingConstants.LEFT);
+		lblBairro.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblBairro.setBounds(343, 456, 77, 25);
+		panel_1.add(lblBairro);
+
+		txtCEP = new JFormattedTextField(new MaskFormatter("#####-###"));
+		txtCEP.setHorizontalAlignment(SwingConstants.LEFT);
+		txtCEP.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtCEP.setColumns(10);
+		txtCEP.setBounds(652, 492, 142, 42);
+		panel_1.add(txtCEP);
+
+		JLabel lblCEP = new JLabel("CEP:");
+		lblCEP.setHorizontalAlignment(SwingConstants.LEFT);
+		lblCEP.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblCEP.setBounds(652, 456, 77, 25);
+		panel_1.add(lblCEP);
+
+		JLabel lblNome_1_3_1 = new JLabel("*");
+		lblNome_1_3_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNome_1_3_1.setForeground(Color.RED);
+		lblNome_1_3_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNome_1_3_1.setBounds(390, 348, 77, 25);
+		panel_1.add(lblNome_1_3_1);
+
+		JLabel lblNome_1_3_2 = new JLabel("*");
+		lblNome_1_3_2.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNome_1_3_2.setForeground(Color.RED);
+		lblNome_1_3_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNome_1_3_2.setBounds(412, 456, 77, 25);
+		panel_1.add(lblNome_1_3_2);
+
+		JLabel lblNome_1_3_3 = new JLabel("*");
+		lblNome_1_3_3.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNome_1_3_3.setForeground(Color.RED);
+		lblNome_1_3_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNome_1_3_3.setBounds(699, 337, 77, 25);
+		panel_1.add(lblNome_1_3_3);
+
+		JLabel lblNome_1_3_4 = new JLabel("*");
+		lblNome_1_3_4.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNome_1_3_4.setForeground(Color.RED);
+		lblNome_1_3_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNome_1_3_4.setBounds(699, 456, 77, 25);
+		panel_1.add(lblNome_1_3_4);
+
+		JLabel lblCidade = new JLabel("Cidade:");
+		lblCidade.setHorizontalAlignment(SwingConstants.LEFT);
+		lblCidade.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblCidade.setBounds(343, 640, 77, 25);
+		panel_1.add(lblCidade);
+
+		txtCidade = new JTextField();
+		txtCidade.setHorizontalAlignment(SwingConstants.LEFT);
+		txtCidade.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtCidade.setColumns(10);
+		txtCidade.setBounds(343, 676, 217, 42);
+		panel_1.add(txtCidade);
+
+		JLabel lblEstado = new JLabel("Estado:");
+		lblEstado.setHorizontalAlignment(SwingConstants.LEFT);
+		lblEstado.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblEstado.setBounds(584, 640, 77, 25);
+		panel_1.add(lblEstado);
+
+		cbEstado = new JComboBox();
+		cbEstado.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cbEstado.setModel(new DefaultComboBoxModel(
+				new String[] { "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE",
+						"PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF" }));
+		cbEstado.setBounds(584, 679, 55, 34);
+		panel_1.add(cbEstado);
+
+		JLabel lblNome_1_3_2_1 = new JLabel("*");
+		lblNome_1_3_2_1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNome_1_3_2_1.setForeground(Color.RED);
+		lblNome_1_3_2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNome_1_3_2_1.setBounds(412, 640, 77, 25);
+		panel_1.add(lblNome_1_3_2_1);
+
+		JLabel lblNome_1_3_2_2 = new JLabel("*");
+		lblNome_1_3_2_2.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNome_1_3_2_2.setForeground(Color.RED);
+		lblNome_1_3_2_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNome_1_3_2_2.setBounds(652, 640, 77, 25);
+		panel_1.add(lblNome_1_3_2_2);
+
+		txtComplemento = new JTextField();
+		txtComplemento.setHorizontalAlignment(SwingConstants.LEFT);
+		txtComplemento.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtComplemento.setColumns(10);
+		txtComplemento.setBounds(343, 588, 451, 42);
+		panel_1.add(txtComplemento);
+
+		JLabel lblComplemento = new JLabel("Complemento:");
+		lblComplemento.setHorizontalAlignment(SwingConstants.LEFT);
+		lblComplemento.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblComplemento.setBounds(343, 553, 146, 25);
+		panel_1.add(lblComplemento);
+
+		JLabel lblNome_1_3_2_3 = new JLabel("*");
+		lblNome_1_3_2_3.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNome_1_3_2_3.setForeground(Color.RED);
+		lblNome_1_3_2_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNome_1_3_2_3.setBounds(483, 553, 77, 25);
+		panel_1.add(lblNome_1_3_2_3);
+
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		separator_1.setBounds(323, 81, 528, 669);
+		panel_1.add(separator_1);
+		frame.setBounds(100, 100, 907, 817);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		frame.setUndecorated(true);
