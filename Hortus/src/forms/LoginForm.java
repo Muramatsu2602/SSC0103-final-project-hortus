@@ -28,12 +28,23 @@ import java.awt.event.KeyEvent;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class LoginForm {
 
 	private JFrame frmLogin;
-	private JTextField textField;
-	private JPasswordField passwordField;
+	private JTextField txtEmail;
+	private JPasswordField txtSenha;
+
+	/**
+	 * Métodos
+	 */
+	public void submitForm() {
+
+		showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
+	}
 
 	/**
 	 * Launch the application.
@@ -99,17 +110,26 @@ public class LoginForm {
 		txtpnLogin.setText("Login");
 		panel.add(txtpnLogin);
 
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		textField.setBounds(45, 209, 286, 42);
-		textField.setHorizontalAlignment(SwingConstants.LEFT);
-		panel.add(textField);
-		textField.setColumns(10);
+		txtEmail = new JTextField();
+		txtEmail.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String email = txtEmail.getText();
+				if (!email.contains("@")) {
+					showMessageDialog(null, "E-mail inserido está incorreto!");
+				}
+			}
+		});
+		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtEmail.setBounds(45, 209, 286, 42);
+		txtEmail.setHorizontalAlignment(SwingConstants.LEFT);
+		panel.add(txtEmail);
+		txtEmail.setColumns(10);
 
-		passwordField = new JPasswordField();
-		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		passwordField.setBounds(45, 310, 286, 42);
-		panel.add(passwordField);
+		txtSenha = new JPasswordField();
+		txtSenha.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtSenha.setBounds(45, 310, 286, 42);
+		panel.add(txtSenha);
 
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setBounds(45, 173, 55, 25);
@@ -124,37 +144,56 @@ public class LoginForm {
 		lblSenha.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		JButton btnLogin = new JButton("Entrar");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				// verificando se pelo menos um dos campos está vazio e/ou incompleto
+				if (txtSenha.getText().isBlank() || txtEmail.getText().isBlank()) {
+					showMessageDialog(null, "Há campo(s) vazio(s)");
+					return;
+				}
+
+				submitForm();
+			}
+		});
 		btnLogin.setBackground(new Color(51, 204, 102));
 		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnLogin.setBounds(117, 394, 142, 42);
+		btnLogin.setBounds(117, 416, 142, 42);
 		panel.add(btnLogin);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 124, 358, 2);
 		panel.add(separator);
-		
+
 		JButton btnNovoConsumidor = new JButton("Novo Consumidor");
 		btnNovoConsumidor.setForeground(new Color(255, 255, 255));
 		btnNovoConsumidor.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNovoConsumidor.setBackground(new Color(153, 102, 255));
 		btnNovoConsumidor.setBounds(93, 514, 199, 33);
 		panel.add(btnNovoConsumidor);
-		
+
 		JButton btnNovoProdutor = new JButton("Novo Produtor");
 		btnNovoProdutor.setForeground(new Color(255, 255, 255));
 		btnNovoProdutor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// abrir form
 			}
 		});
 		btnNovoProdutor.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNovoProdutor.setBackground(new Color(153, 102, 255));
 		btnNovoProdutor.setBounds(103, 557, 176, 33);
 		panel.add(btnNovoProdutor);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(0, 491, 378, 2);
 		panel.add(separator_1);
-		
+
+		JCheckBox ckSouProdutor = new JCheckBox("Sou Produtor Rural");
+		ckSouProdutor.setBackground(Color.WHITE);
+		ckSouProdutor.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		ckSouProdutor.setBounds(45, 368, 176, 21);
+		panel.add(ckSouProdutor);
+
 		JTextPane txtpnDesignedAnd = new JTextPane();
 		txtpnDesignedAnd.setForeground(new Color(255, 255, 255));
 		txtpnDesignedAnd.setBackground(new Color(153, 102, 255));
@@ -162,12 +201,12 @@ public class LoginForm {
 		txtpnDesignedAnd.setText("Designed and programmed with love by USP students ;(");
 		txtpnDesignedAnd.setBounds(10, 571, 372, 19);
 		frmLogin.getContentPane().add(txtpnDesignedAnd);
-		
+
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(LoginForm.class.getResource("/assets/logo-login.png")));
 		lblNewLabel.setBounds(125, 119, 357, 292);
 		frmLogin.getContentPane().add(lblNewLabel);
-		
+
 		JTextArea txtrHortus = new JTextArea();
 		txtrHortus.setForeground(new Color(255, 255, 255));
 		txtrHortus.setBackground(new Color(153, 102, 255));
@@ -175,7 +214,7 @@ public class LoginForm {
 		txtrHortus.setText("Hortus");
 		txtrHortus.setBounds(222, 408, 210, 78);
 		frmLogin.getContentPane().add(txtrHortus);
-		
+
 		JTextArea txtrDaHorta = new JTextArea();
 		txtrDaHorta.setForeground(new Color(255, 255, 255));
 		txtrDaHorta.setBackground(new Color(153, 102, 255));
