@@ -1,7 +1,5 @@
 package hortus;
 
-import java.util.Vector;
-
 public class Produtor extends Usuario {
 	private String ccir;
 	private int tipoProd;

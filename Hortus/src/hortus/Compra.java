@@ -4,6 +4,7 @@ import java.util.Map;
 public class Compra {
 	private int idCompra;
 	private Consumidor consumidor;
+	private Produtor produtor;
 	
 	// Mapa de produtos e quantidade (g, kg, unitário)
 	private Map<Produto, Double> listaProdutos;
@@ -15,12 +16,14 @@ public class Compra {
 	// Se será em uma feira livre, mercadinho, encontro com o produtor
 	private String descricao;
 
-	public Compra(int idCompra, Consumidor consumidor, Map<Produto, Double> listaProdutos, Endereco endereco, String descricao) {
+	public Compra(int idCompra, Consumidor consumidor, Produtor produtor, Map<Produto, Double> listaProdutos, Endereco endereco, String descricao) {
 		
 		this.setIdCompra(idCompra);
 		this.setConsumidor(consumidor);
+		this.setProdutor(produtor);
 		this.setListaProdutos(listaProdutos);
 		this.setEndereco(endereco);
+		this.setDescricao(descricao);
 		calculaValorFinal();
 	}
 
@@ -75,4 +78,13 @@ public class Compra {
 	public void calculaValorFinal() {
     	listaProdutos.forEach((k, v) -> valorFinal += k.getPrecoProduto()*v);
 	}
+
+	public Produtor getProdutor() {
+		return produtor;
+	}
+
+	public void setProdutor(Produtor produtor) {
+		this.produtor = produtor;
+	}
+
 }  

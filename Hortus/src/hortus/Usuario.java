@@ -16,6 +16,7 @@ public abstract class Usuario {
 	
 	public Usuario(int id, String nome, String cpf, String telefone, Endereco endereco, String email, String senha)
 	{
+		this.setId(id);
 		this.setNome(nome);
 		this.setCpf(cpf);
 		this.setTelefone(telefone);
