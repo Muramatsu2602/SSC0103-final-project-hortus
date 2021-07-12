@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.SystemColor;
 
 public class LoginForm {
 
@@ -88,6 +89,7 @@ public class LoginForm {
 		frmLogin.getContentPane().setLayout(null);
 
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(SystemColor.controlShadow);
 		panel_1.setBounds(0, 0, 1000, 39);
 		frmLogin.getContentPane().add(panel_1);
 

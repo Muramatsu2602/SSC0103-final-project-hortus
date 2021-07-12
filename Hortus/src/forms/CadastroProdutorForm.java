@@ -563,6 +563,7 @@ public class CadastroProdutorForm {
 		panel.add(separator_1);
 
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(SystemColor.controlShadow);
 		panel_1.setBounds(-1, 0, 1148, 46);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);

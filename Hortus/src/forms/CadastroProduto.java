@@ -127,6 +127,7 @@ public class CadastroProduto {
 		frame.getContentPane().add(btnSair);
 
 		JPanel panel = new JPanel();
+		panel.setBackground(SystemColor.controlShadow);
 		panel.setBounds(0, 0, 950, 46);
 		frame.getContentPane().add(panel);
 		panel_1.setBounds(49, 75, 854, 570);

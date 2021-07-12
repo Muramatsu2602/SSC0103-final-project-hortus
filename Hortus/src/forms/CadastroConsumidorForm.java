@@ -35,6 +35,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.SystemColor;
 
 public class CadastroConsumidorForm {
 
@@ -144,6 +145,7 @@ public class CadastroConsumidorForm {
 		btnSair.setBackground(Color.RED);
 
 		JPanel panel = new JPanel();
+		panel.setBackground(SystemColor.controlShadow);
 		panel.setBounds(0, 0, 906, 46);
 		frame.getContentPane().add(panel);
 
