@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import java.awt.Font;
 import com.jgoodies.forms.layout.FormLayout;
@@ -23,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JSeparator;
@@ -44,6 +46,10 @@ public class LoginForm {
 	public void submitForm() {
 
 		showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
+
+		// Clearing fields
+		txtEmail.setText("");
+		txtSenha.setText("");
 	}
 
 	/**
@@ -94,8 +100,11 @@ public class LoginForm {
 		btnSair.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showMessageDialog(null, "Até mais!");
-				System.exit(0);
+				int option = JOptionPane.showConfirmDialog(frmLogin, "Deseja sair do sistema Hortus?",
+						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (option == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
 			}
 		});
 		btnSair.setBounds(336, 0, 42, 40);
@@ -132,9 +141,9 @@ public class LoginForm {
 		panel.add(txtSenha);
 
 		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setBounds(45, 173, 55, 25);
+		lblEmail.setBounds(45, 173, 85, 25);
 		panel.add(lblEmail);
-		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmail.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		JLabel lblSenha = new JLabel("Senha:");
@@ -166,6 +175,19 @@ public class LoginForm {
 		panel.add(separator);
 
 		JButton btnNovoConsumidor = new JButton("Novo Consumidor");
+		btnNovoConsumidor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// this.dispose();//to close the current jframe
+
+				try {
+					CadastroConsumidorForm consumidor = new CadastroConsumidorForm();
+					consumidor.setVisible(true);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnNovoConsumidor.setForeground(new Color(255, 255, 255));
 		btnNovoConsumidor.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNovoConsumidor.setBackground(new Color(153, 102, 255));
@@ -176,7 +198,16 @@ public class LoginForm {
 		btnNovoProdutor.setForeground(new Color(255, 255, 255));
 		btnNovoProdutor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// abrir form
+				// this.dispose();//to close the current jframe
+
+				try {
+					CadastroProdutorForm produtor = new CadastroProdutorForm();
+					produtor.setVisible(true);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
 		btnNovoProdutor.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -212,7 +243,7 @@ public class LoginForm {
 		txtrHortus.setBackground(new Color(153, 102, 255));
 		txtrHortus.setFont(new Font("Tahoma", Font.BOLD, 53));
 		txtrHortus.setText("Hortus");
-		txtrHortus.setBounds(222, 408, 210, 78);
+		txtrHortus.setBounds(222, 408, 210, 60);
 		frmLogin.getContentPane().add(txtrHortus);
 
 		JTextArea txtrDaHorta = new JTextArea();

@@ -32,6 +32,7 @@ import javax.swing.JFormattedTextField.AbstractFormatter;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
@@ -62,6 +63,9 @@ public class CadastroConsumidorForm {
 		showMessageDialog(null, cbEstado.getSelectedItem().toString());
 
 		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
+
+		// limpando os campos
+		txtNome.setText("");
 	}
 
 	/**
@@ -78,6 +82,11 @@ public class CadastroConsumidorForm {
 				}
 			}
 		});
+	}
+
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		frame.setVisible(true);
 	}
 
 	/**
@@ -100,11 +109,18 @@ public class CadastroConsumidorForm {
 		frame.getContentPane().setLayout(null);
 
 		JButton btnSair = new JButton("x");
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnSair.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showMessageDialog(null, "Até mais!");
-				System.exit(0);
+				int option = JOptionPane.showConfirmDialog(frame, "Deseja sair do Cadastro de Consumidor?",
+						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (option == JOptionPane.YES_OPTION) {
+					frame.dispose();
+				}
 			}
 		});
 		btnSair.setBounds(858, 0, 48, 46);
@@ -449,4 +465,5 @@ public class CadastroConsumidorForm {
 		frame.setUndecorated(true);
 		frame.setLocationRelativeTo(null);
 	}
+
 }
