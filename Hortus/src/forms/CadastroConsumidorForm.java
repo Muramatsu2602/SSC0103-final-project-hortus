@@ -32,6 +32,7 @@ import javax.swing.JFormattedTextField.AbstractFormatter;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
@@ -61,7 +62,24 @@ public class CadastroConsumidorForm {
 
 		showMessageDialog(null, cbEstado.getSelectedItem().toString());
 
+//		Consumidor consumidor = new Consumidor();
+
 		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
+
+		// limpando os campos
+		txtNome.setText("");
+		txtEmail.setText("");
+		txtCPF.setText("");
+		txtSenha.setText("");
+		txtConfirmaSenha.setText("");
+		txtTelefone.setText("");
+		txtNum.setText("");
+		cbEstado.setSelectedIndex(0);
+		txtCidade.setText("");
+		txtCEP.setText("");
+		txtBairro.setText("");
+		txtRua.setText("");
+		txtComplemento.setText("");
 	}
 
 	/**
@@ -78,6 +96,11 @@ public class CadastroConsumidorForm {
 				}
 			}
 		});
+	}
+
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		frame.setVisible(true);
 	}
 
 	/**
@@ -100,11 +123,18 @@ public class CadastroConsumidorForm {
 		frame.getContentPane().setLayout(null);
 
 		JButton btnSair = new JButton("x");
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnSair.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showMessageDialog(null, "Até mais!");
-				System.exit(0);
+				int option = JOptionPane.showConfirmDialog(frame, "Deseja sair do Cadastro de Consumidor?",
+						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (option == JOptionPane.YES_OPTION) {
+					frame.dispose();
+				}
 			}
 		});
 		btnSair.setBounds(858, 0, 48, 46);
@@ -305,13 +335,13 @@ public class CadastroConsumidorForm {
 		txtRua.setBounds(343, 383, 286, 42);
 		panel_1.add(txtRua);
 
-		JLabel lblRua = new JLabel("RUA:");
+		JLabel lblRua = new JLabel("Rua:");
 		lblRua.setHorizontalAlignment(SwingConstants.LEFT);
 		lblRua.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblRua.setBounds(343, 347, 77, 25);
 		panel_1.add(lblRua);
 
-		JLabel lblNumero = new JLabel("NUM:");
+		JLabel lblNumero = new JLabel("Num:");
 		lblNumero.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNumero.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNumero.setBounds(652, 347, 77, 25);
@@ -449,4 +479,5 @@ public class CadastroConsumidorForm {
 		frame.setUndecorated(true);
 		frame.setLocationRelativeTo(null);
 	}
+
 }
