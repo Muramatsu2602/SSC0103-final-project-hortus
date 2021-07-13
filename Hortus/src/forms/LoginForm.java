@@ -15,6 +15,12 @@ import java.awt.Font;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import hortus.Produtor;
+import hortus.SGBD;
+import hortus.Consumidor;
+import hortus.HortusException;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -45,10 +51,38 @@ public class LoginForm {
 	/**
 	 * Métodos
 	 */
+	@SuppressWarnings("deprecation")
 	public void submitForm() {
-
-		//
-
+		
+		SGBD banco = new SGBD();
+		
+		if(ckSouProdutor.isSelected())
+		{
+			// Login como produtor
+			try{
+				Produtor produtorLogado = banco.loginProdutor(txtEmail.getText(), txtSenha.getText());
+	 			System.out.println("ID logado: "+produtorLogado.getId());
+	 		} catch(HortusException err)
+	 		{
+	 			System.out.println(err.getMessage());
+	 		}
+			
+			// Depois de fazer login, ir para o Form de ProdutorMenu
+		}
+		else
+		{
+			// Login como Consumidor
+			try{
+				Consumidor consumidorLogado = banco.loginConsumidor(txtEmail.getText(), txtSenha.getText());
+	 			System.out.println("ID logado: "+consumidorLogado.getId());
+	 		} catch(HortusException err)
+	 		{
+	 			System.out.println(err.getMessage());
+	 		}
+			
+			// Depois de fazer login, ir para o Form de Pro
+		}
+		
 		showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
 
 		// Clearing fields

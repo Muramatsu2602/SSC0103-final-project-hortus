@@ -6,8 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 public class SGBD {
  	
@@ -65,6 +63,7 @@ public class SGBD {
 		 
 		 CREATE TABLE endereco(
 			ID				INTEGER		PRIMARY KEY AUTOINCREMENT,
+			ID_USUARIO		INTEGER		NOT NULL,
 			RUA				CHAR(50)	NOT NULL,
 			NUMERO			CHAR(10)	NOT NULL,
 			COMPLEMENTO		CHAR(30),
@@ -285,7 +284,22 @@ public class SGBD {
 		} catch(SQLException e){
             System.out.println("Erro Endereço "+e.getMessage());
         }
-	}	
+	}
+ 	
+ 	public void atualizaUsuarioEndereco(Endereco endereco, int idUsuario) {
+		try {
+			Connection con = this.connect();
+			
+			String sql = "UPDATE endereco set ID_USUARIO = ? WHERE ID = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, idUsuario);
+			stmt.setInt(1, endereco.getIdEndereco());
+			stmt.executeQuery();
+			con.close();
+		} catch(SQLException e){
+            System.out.println("Erro Endereço "+e.getMessage());
+        }
+	}
  	
  	public void insereProdutoFavorito(Consumidor consumidor, Produto prod) {
 		try {
@@ -483,7 +497,7 @@ public class SGBD {
  	public Vector<Produto> getProdutosFavoritos(int idConsumidor) {
  		try {
  			Connection con = this.connect();
- 			String sql = "SELECT (PRODUTO.ID, PRODUTO.ID_PRODUTOR, PRODUTO.NOME, PRODUTO.DESCRICAO, PRODUTO.QUANTIDADE, PRODUTO.PRECO, PRODUTO.UNIDADE, PRODUTO.INGREDIENTES, PRODUTO.ORGANICO) FROM produto_favorito INNER JOIN produto ON produto.ID = produto_favorito.ID_PRODUTO WHERE produto_favorito.ID_CONSUMIDOR = ?;";
+ 			String sql = "SELECT * FROM produto_favorito INNER JOIN produto ON produto.ID = produto_favorito.ID_PRODUTO WHERE produto_favorito.ID_CONSUMIDOR = ?;";
  			PreparedStatement stmt = con.prepareStatement(sql);
  			stmt.setInt(1, idConsumidor);
  			ResultSet rs = stmt.executeQuery();
@@ -491,14 +505,14 @@ public class SGBD {
  			Vector<Produto> produtos = new Vector<Produto>();
  			while(rs.next())
  			{
- 				produtos.add(new Produto(rs.getInt("PRODUTO.ID"), rs.getInt("PRODUTO.ID_PRODUTOR"), rs.getString("PRODUTO.NOME"), rs.getString("PRODUTO.DESCRICAO"), rs.getDouble("PRODUTO.QUANTIDADE"), rs.getDouble("PRODUTO.PRECO"), rs.getString("PRODUTO.UNIDADE").charAt(0), rs.getString("PRODUTO.INGREDIENTES"), rs.getBoolean("PRODUTO.ORGANICO")));
+ 				produtos.add(new Produto(rs.getInt("ID"), rs.getInt("ID_PRODUTOR"), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")));
  			}
  			
  			con.close();
  			return produtos;
  		} catch(SQLException e)
  		{
- 			System.out.println("erro"+e.getMessage());
+ 			System.out.println("Erro get Produtos Favoritos: "+e.getMessage());
  		}
  		return null;
 	}
@@ -509,7 +523,7 @@ public class SGBD {
  		Endereco end = new Endereco("Rua da Roça", "13-40", "Fica no meio do mato", "Jd Rio Claro", "17123-023", "São Carlos", "São Paulo");
  		Consumidor consum = new Consumidor(1, "Giovanni", "536.872.752-17", "(14)99709-1009", end, "giovanni_shibaki@usp.br", "123");
  		//Produtor prod = new Produtor(1, "Seu zé", "729812782-12", "(16)99672-2712", end, "seuze.fazendeiro@gmail.com", "senhadozé", "1439821742-32", 1, "Só produto de qualidade feito pelo seu zé");
- 		Produto produto = new Produto(3, 1, "Maça GOSTOSA", "Maça com gosto bom", (double)12.0, 5.99, 'k', "Maça, amor", true);
+ 		Produto produto = new Produto(3, 1, "Maça GOSTOSA", "Maça com gosto bom", 12.0, 5.99, 'k', "Maça, amor", true);
  		/*Produto produto2 = new Produto(4, 1, "Banana MARAVILHOSA", "Macaco gosta banana", (double)50.0, 2.00, 'k', "Banana, macaco e potassio", false);
  		Produto produto3 = new Produto(5, 1, "Pera SUPREENDENTE", "Pera ai meu caro", (double)20.0, 8.99, 'k', "Pera, to chegando", true);*/
  		
@@ -576,11 +590,11 @@ public class SGBD {
  			System.out.println("Nome produto: "+prod.getNomeProduto());
  		}*/
  		
- 		Vector<Produto> produtosEncontrados = banco.getProdutosFavoritos(1);
+ 		/*Vector<Produto> produtosEncontrados = banco.getProdutosFavoritos(1);
  		for(Produto prod : produtosEncontrados)
  		{
  			System.out.println("Nome produto: "+prod.getNomeProduto());
- 		}
+ 		}*/
  		
  		return;
  	}
