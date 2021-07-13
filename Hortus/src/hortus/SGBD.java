@@ -518,6 +518,28 @@ public class SGBD {
  		return null;
 	}
  	
+ 	public void atualizaProduto(Produto prod)
+ 	{
+ 		try {
+			Connection con = this.connect();
+			
+			String sql = "UPDATE produto set NOME = ?, DESCRICAO = ?, QUANTIDADE = ?, PRECO = ?, UNIDADE = ?, INGREDIENTES = ?, ORGANICO = ? WHERE ID = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, prod.getNomeProduto());
+			stmt.setString(2, prod.getDescricao());
+			stmt.setDouble(3, prod.getQuantidade());
+			stmt.setDouble(4, prod.getPrecoProduto());
+			stmt.setInt(5, prod.getUnidade());
+			stmt.setString(6, prod.getIngredientes());
+			stmt.setBoolean(7, prod.isOrganico());
+			stmt.setInt(8, prod.getIdProduto());
+			stmt.executeQuery();
+			con.close();
+		} catch(SQLException e){
+            System.out.println("Erro Endereço "+e.getMessage());
+        }
+ 	}
+ 	 
  	public static void main(String args[])
  	{
  		// Cadastro consumidor
