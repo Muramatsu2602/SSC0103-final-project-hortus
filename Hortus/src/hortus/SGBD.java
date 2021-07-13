@@ -268,16 +268,17 @@ public class SGBD {
 			} else {
 				endereco.setIdEndereco(id);
 			}
-			sql = "INSERT INTO endereco(RUA, NUMERO, COMPLEMENTO, BAIRRO, CEP, CIDADE, ESTADO) VALUES (?, ?, ?, ?, ?, ?, ?);";
+			sql = "INSERT INTO endereco(ID_USUARIO, RUA, NUMERO, COMPLEMENTO, BAIRRO, CEP, CIDADE, ESTADO) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 		
 			stmt = con.prepareStatement(sql);
-			stmt.setString(1, endereco.getEndRua());
-			stmt.setString(2, endereco.getEndNum());
-			stmt.setString(3, endereco.getEndComplemento());
-			stmt.setString(4, endereco.getEndBairro());
-			stmt.setString(5, endereco.getEndCEP());
-			stmt.setString(6, endereco.getEndCidade());
-			stmt.setString(7, endereco.getEndEstado());
+			stmt.setInt(1, endereco.getIdUsuario());
+			stmt.setString(2, endereco.getEndRua());
+			stmt.setString(3, endereco.getEndNum());
+			stmt.setString(4, endereco.getEndComplemento());
+			stmt.setString(5, endereco.getEndBairro());
+			stmt.setString(6, endereco.getEndCEP());
+			stmt.setString(7, endereco.getEndCidade());
+			stmt.setString(8, endereco.getEndEstado());
 			
 			stmt.execute();
 			con.close();
@@ -294,7 +295,7 @@ public class SGBD {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, idUsuario);
 			stmt.setInt(1, endereco.getIdEndereco());
-			stmt.executeQuery();
+			stmt.execute();
 			con.close();
 		} catch(SQLException e){
             System.out.println("Erro Endereço "+e.getMessage());

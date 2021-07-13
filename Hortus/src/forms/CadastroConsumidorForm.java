@@ -82,6 +82,8 @@ public class CadastroConsumidorForm {
 				txtTelefone.getText(), end, txtEmail.getText(), txtSenha.getText());
 		
 		banco.insereConsumidor(consum);
+		
+		banco.atualizaUsuarioEndereco(end, consum.getId());
 
 		// limpando os campos
 		txtNome.setText("");
