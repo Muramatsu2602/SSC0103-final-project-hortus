@@ -93,9 +93,6 @@ public class LoginForm {
 		panel_1.setBounds(0, 0, 1000, 39);
 		frmLogin.getContentPane().add(panel_1);
 
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2);
-
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(622, 0, 378, 600);
@@ -129,10 +126,10 @@ public class LoginForm {
 		txtEmail.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				String email = txtEmail.getText();
-				if (!email.contains("@")) {
-					showMessageDialog(null, "E-mail inserido está incorreto!");
-				}
+//				String email = txtEmail.getText();
+//				if (!email.contains("@")) {
+//					showMessageDialog(null, "E-mail inserido está incorreto!");
+//				}
 			}
 		});
 		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -159,6 +156,7 @@ public class LoginForm {
 		lblSenha.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
 		JButton btnLogin = new JButton("Entrar");
+		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -172,7 +170,7 @@ public class LoginForm {
 			}
 		});
 		btnLogin.setBackground(new Color(51, 204, 102));
-		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnLogin.setBounds(117, 416, 142, 42);
 		panel.add(btnLogin);
 
