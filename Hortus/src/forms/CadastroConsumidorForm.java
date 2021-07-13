@@ -23,6 +23,11 @@ import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
+
+import hortus.Consumidor;
+import hortus.Endereco;
+import hortus.SGBD;
+
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
@@ -59,21 +64,34 @@ public class CadastroConsumidorForm {
 	/**
 	 * Métodos
 	 */
+	@SuppressWarnings("deprecation")
 	public void submitForm() {
-
-		showMessageDialog(null, cbEstado.getSelectedItem().toString());
 
 //		Consumidor consumidor = new Consumidor();
 
 		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
+		
+		SGBD banco = new SGBD();
+		
+		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(),
+				txtBairro.getText(), txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
+		
+		banco.insereEndereco(end);
+
+		Consumidor consum = new Consumidor(1, txtNome.getText(), txtCPF.getText(),
+				txtTelefone.getText(), end, txtEmail.getText(), txtSenha.getText());
+		
+		banco.insereConsumidor(consum);
+		
+		banco.atualizaUsuarioEndereco(end, consum.getId());
 
 		// limpando os campos
 		txtNome.setText("");
-		txtEmail.setText("");
 		txtCPF.setText("");
+		txtTelefone.setText("");
+		txtEmail.setText("");
 		txtSenha.setText("");
 		txtConfirmaSenha.setText("");
-		txtTelefone.setText("");
 		txtNum.setText("");
 		cbEstado.setSelectedIndex(0);
 		txtCidade.setText("");
@@ -81,6 +99,8 @@ public class CadastroConsumidorForm {
 		txtBairro.setText("");
 		txtRua.setText("");
 		txtComplemento.setText("");
+		
+		frame.dispose();
 	}
 
 	/**

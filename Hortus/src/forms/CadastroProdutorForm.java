@@ -16,6 +16,11 @@ import javax.swing.JTextPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
+
+import hortus.Endereco;
+import hortus.Produtor;
+import hortus.SGBD;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -42,6 +47,7 @@ public class CadastroProdutorForm {
 	private JFormattedTextField txtCCIR;
 	private JComboBox cbTipoProducao;
 	private JComboBox cbEstado;
+	private JTextArea txtDescricao;
 
 	// Endereco
 	private JFormattedTextField txtNum;
@@ -54,11 +60,25 @@ public class CadastroProdutorForm {
 	/**
 	 * Métodos
 	 */
+	@SuppressWarnings("deprecation")
 	public void submitForm() {
 
 		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
+		
+		SGBD banco = new SGBD();
+		
+		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(), 
+				txtBairro.getText(), txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
 
-		// Produtor produtor = new Produtor();
+		Produtor produtor = new Produtor(0, txtNome.getText(), txtCNPJ.getText(), txtTelefone.getText(),
+				end, txtEmail.getText(), txtSenha.getText(), txtCCIR.getText(),
+				cbTipoProducao.getSelectedIndex(), txtDescricao.getText());
+		
+		banco.insereEndereco(end);
+		
+		banco.insereProdutor(produtor);
+		
+		banco.atualizaUsuarioEndereco(end, produtor.getId());
 
 		// limpando os campos
 		txtNome.setText("");
@@ -74,6 +94,11 @@ public class CadastroProdutorForm {
 		txtBairro.setText("");
 		txtRua.setText("");
 		txtComplemento.setText("");
+		txtTelefone.setText("");
+		txtCCIR.setText("");
+		txtDescricao.setText("");
+		
+		frame.dispose();
 	}
 
 	/**
@@ -128,7 +153,7 @@ public class CadastroProdutorForm {
 		panel_1_1.setBounds(0, 0, 1091, 750);
 		panel.add(panel_1_1);
 
-		JTextArea txtDescricao = new JTextArea();
+		txtDescricao = new JTextArea();
 		txtDescricao.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -158,7 +183,7 @@ public class CadastroProdutorForm {
 			@Override
 			public void focusLost(FocusEvent e) {
 				String CNPJ = txtEmail.getText();
-				if (CNPJ.length() != 18) {
+				if (CNPJ.length() < 19) {
 					showMessageDialog(null, "O CNPJ inserido está incompleto!");
 				}
 			}

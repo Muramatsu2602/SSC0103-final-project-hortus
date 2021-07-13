@@ -2,7 +2,8 @@ package hortus;
 
 public class Endereco {
 	private int idEndereco;
-		
+	private int idUsuario;	
+	
 	private String endRua;
 	private String endNum;
 	private String endComplemento;
@@ -12,6 +13,7 @@ public class Endereco {
 	private String endEstado;	
 	
 	public Endereco(String endRua, String endNum, String endComplemento, String endBairro, String endCEP, String endCidade, String endEstado) {
+		this.setIdUsuario(-1);
 		this.setEndRua(endRua);
 		this.setEndNum(endNum);
 		this.setEndBairro(endBairro);
@@ -84,4 +86,13 @@ public class Endereco {
 	public void setEndComplemento(String endComplemento){
 		this.endComplemento = endComplemento;
 	}
+
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
 }
