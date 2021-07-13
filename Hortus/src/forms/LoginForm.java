@@ -68,6 +68,7 @@ public class LoginForm {
 	 		}
 			
 			// Depois de fazer login, ir para o Form de ProdutorMenu
+			
 		}
 		else
 		{
@@ -81,6 +82,7 @@ public class LoginForm {
 	 		}
 			
 			// Depois de fazer login, ir para o Form de Pro
+			//ConsumidorMenu
 		}
 		
 		showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
