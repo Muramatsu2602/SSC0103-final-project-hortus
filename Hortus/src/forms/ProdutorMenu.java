@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import javax.swing.JTextPane;
@@ -20,9 +21,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import hortus.Compra;
 // Classes do Hortus
 import hortus.HortusException;
 import hortus.Produtor;
+import hortus.SGBD;
 
 import javax.swing.ListSelectionModel;
 import java.awt.Component;
@@ -35,9 +38,10 @@ public class ProdutorMenu {
 	private JLabel lblBemVindo;
 	private JTable table;
 
-	// produtor local
+	// DATA
 	private static Produtor produtor;
 	private static String[][] tableData;
+	private Vector<Compra> vendas;
 
 // ========================== MAIN ============================
 	/**
@@ -91,18 +95,25 @@ public class ProdutorMenu {
 	 * 
 	 * @param produtor
 	 */
-	public void loadProdutorToForm(Produtor produtor) {
-		this.lblBemVindo.setText(this.lblBemVindo.getText() + " " + produtor.getNome());
+	public void loadProdutorToForm() {
+		lblBemVindo.setText("Bem-vindo(a) " + produtor.getNome());
 	}
 
 	public String[][] fetchData() {
+		SGBD banco = new SGBD();
+		// Querry para pegar todas compras
+		vendas = banco.getVendasByProdutor(produtor.getId());
 
-		// DATA, NOME DO CONSUMIDOR, NOME DO PRODUTO, PRE�O DA COMPRA
-		String[][] mockData = { { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" } };
+		tableData = new String[vendas.size()][];
 
-		return mockData;
+		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
+		for (int i = 0; i < vendas.size(); i++) {
+			tableData[i] = new String[] { vendas.get(i).getDataCompra().toString(),
+					vendas.get(i).getConsumidor().getNome(), vendas.get(i).getValorFinal().toString(),
+					vendas.get(i).getDescricao() };
+		}
+
+		return tableData;
 	}
 
 	/**
@@ -215,7 +226,7 @@ public class ProdutorMenu {
 		JButton btnAdicionarProduto = new JButton("Adicionar Produto");
 		btnAdicionarProduto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 		btnAdicionarProduto.setForeground(Color.WHITE);
@@ -225,6 +236,10 @@ public class ProdutorMenu {
 		panel.add(btnAdicionarProduto);
 
 		JButton btnGerenciarEstoque = new JButton("Gerenciar Estoque");
+		btnGerenciarEstoque.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnGerenciarEstoque.setForeground(Color.WHITE);
 		btnGerenciarEstoque.setFont(new Font("Tahoma", Font.BOLD, 30));
 		btnGerenciarEstoque.setBackground(new Color(51, 204, 102));

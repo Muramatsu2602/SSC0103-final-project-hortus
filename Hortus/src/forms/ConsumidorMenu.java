@@ -40,11 +40,11 @@ public class ConsumidorMenu {
 	private JScrollPane scrollPane;
 	private JTable table;
 	private JLabel lblBemVindo;
-	private Vector<Compra> compras;
 
 	// DATA
 	private static Consumidor consumidor;
 	private static String[][] tableData;
+	private Vector<Compra> compras;
 
 	/**
 	 * 
@@ -57,45 +57,14 @@ public class ConsumidorMenu {
 
 		tableData = new String[compras.size()][];
 
+		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
 		for (int i = 0; i < compras.size(); i++) {
 			tableData[i] = new String[] { compras.get(i).getDataCompra().toString(),
 					compras.get(i).getProdutor().getNome(), compras.get(i).getValorFinal().toString(),
 					compras.get(i).getDescricao() };
 		}
-
-		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
-		/*
-		 * String[][] mockData = { { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-		 * { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
-		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
-		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
-		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
-		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
-		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
-		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
-		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
-		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
-		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
-		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
-		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
-		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
-		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
-		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
-		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
-		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
-		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
-		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
-		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
-		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
-		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
-		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
-		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
-		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
-		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
-		 * "Rucula", "R$200" }, { "25/08/9998", "Joao Da Silva", "Rucula", "R$200" } };
-		 */
-
-		return tableData;
+	
+		return tableData;   
 	}
 
 	/**
