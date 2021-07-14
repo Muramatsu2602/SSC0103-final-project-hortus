@@ -71,10 +71,10 @@ public class ProdutorMenu {
 			throw new HortusException("Erro ao carregar as informações do Produtor! Objeto vazio");
 
 		// Carregar informacoes do usuario nos componentes desta tela
-		loadProdutorToForm(produtor);
 
 		// Exibir formulario
 		initialize();
+		loadProdutorToForm(produtor);
 		frame.setVisible(true);
 	}
 
