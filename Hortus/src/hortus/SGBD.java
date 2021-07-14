@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Vector;
+import java.util.HashMap;
 public class SGBD {
  	
  	/*
@@ -51,7 +53,8 @@ public class SGBD {
 		 	ID_PRODUTOR     INTEGER         NOT NULL,
 		 	VALOR_FINAL		NUMERIC(8,2)	NOT NULL,
 		 	ID_ENDERECO		INTEGER			NOT NULL,	
-		 	DESCRICAO		CHAR(200)
+		 	DESCRICAO		CHAR(200),
+		 	DATA_COMPRA     CHAR(10)        NOT NULL
 		 );
 		 
 		 CREATE TABLE itens_compra (
@@ -210,7 +213,7 @@ public class SGBD {
 			compra.setIdCompra(id);
 			System.out.printf("%d\n", compra.getIdCompra());
 			
-			sql = "INSERT INTO compra(ID_CONSUMIDOR, ID_PRODUTOR, VALOR_FINAL, ID_ENDERECO, DESCRICAO) VALUES (?, ?, ?, ?, ?);";
+			sql = "INSERT INTO compra(ID_CONSUMIDOR, ID_PRODUTOR, VALOR_FINAL, ID_ENDERECO, DESCRICAO, DATA_COMPRA) VALUES (?, ?, ?, ?, ?, DATE('now'));";
 			
 			stmt = con.prepareStatement(sql);
 			
@@ -294,7 +297,7 @@ public class SGBD {
 			String sql = "UPDATE endereco set ID_USUARIO = ? WHERE ID = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setInt(1, idUsuario);
-			stmt.setInt(1, endereco.getIdEndereco());
+			stmt.setInt(2, endereco.getIdEndereco());
 			stmt.execute();
 			con.close();
 		} catch(SQLException e){
@@ -348,7 +351,7 @@ public class SGBD {
 				return cons;
 			} else {
 				con.close();
-				throw new HortusException("Usuario e/ou Senha incorretos"); 	
+				throw new HortusException("Usuario e/ou Senha incorretos");
 			}
  		} catch(SQLException e)
  		{
@@ -406,16 +409,7 @@ public class SGBD {
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 			{
-				Endereco end = null;
-				String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
-				PreparedStatement stmt2 = con.prepareStatement(sql2);
-				
-				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
-				ResultSet rs2 = stmt2.executeQuery();
-				if(rs2.next())
-				{
-					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
-				}
+				Endereco end = getEnderecoById(rs.getInt("ID_ENDERECO"));
 				
 				// Inicializar o consumidor e no fim retorná-lo
 				Consumidor cons = new Consumidor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CPF"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"));
@@ -472,6 +466,61 @@ public class SGBD {
  		return null;
  	}
  	
+ 	public Endereco getEnderecoById(int id) throws HortusException
+ 	{
+ 		try {
+			Connection con = this.connect();
+			Endereco end = null;
+			String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
+			PreparedStatement stmt2 = con.prepareStatement(sql2);
+			stmt2.setInt(1, id);
+			ResultSet rs2 = stmt2.executeQuery();
+			if(rs2.next())
+			{
+				end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+				end.setIdEndereco(rs2.getInt("ID"));
+			}
+			else {
+				con.close();
+				throw new HortusException("Endereço não encontrado!"); 	
+			}
+			
+			con.close();
+			return end;
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("erro"+e.getMessage());
+ 		}
+ 		return null;
+ 	}
+ 	
+ 	public Produto getProdutoById(int id) throws HortusException
+ 	{
+ 		try {
+			Connection con = this.connect();
+			Produto prod = null;
+			String sql = "SELECT * FROM produto WHERE ID = ?;";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+			{
+				prod = new Produto(rs.getInt("ID"), rs.getInt("ID_PRODUTOR"), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"));
+			}
+			else {
+				con.close();
+				throw new HortusException("Endereço não encontrado!"); 	
+			}
+			
+			con.close();
+			return prod;
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("erro"+e.getMessage());
+ 		}
+ 		return null;
+ 	}
+ 	
  	public Vector<Produto> getProdutosProdutor(int idProdutor) {
  		try {
  			Connection con = this.connect();
@@ -518,6 +567,55 @@ public class SGBD {
  		return null;
 	}
  	
+ 	public Vector<Compra> getComprasByConsumidor(int idConsumidor)
+ 	{
+ 		try {
+ 			Connection con = this.connect();
+ 			String sql = "SELECT * FROM compra WHERE ID_CONSUMIDOR = ?;";
+ 			PreparedStatement stmt = con.prepareStatement(sql);
+ 			stmt.setInt(1, idConsumidor);
+ 			ResultSet rs = stmt.executeQuery();
+ 			
+ 			Vector<Compra> compras = new Vector<Compra>();
+ 			while(rs.next())
+ 			{
+ 				// Pegar todos os itens_compra da compra atual
+ 				Map<Produto, Double> listaProdutos = getItensCompra(rs.getInt("ID"));
+ 				
+ 				compras.add(new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA")));
+ 			}
+ 			con.close();
+ 			return compras;
+ 		} catch(Exception e)
+ 		{
+ 			System.out.println("Erro get compras by consumidor: "+e.getMessage());
+ 		}
+ 		return null;
+ 	}
+ 	
+	public Map<Produto, Double> getItensCompra(int idCompra) {
+		try {
+ 			Connection con = this.connect();
+ 			String sql = "SELECT * FROM itens_compra INNER JOIN produto ON produto.ID = itens_compra.ID_PRODUTO WHERE itens_compra.ID_COMPRA = ?;";
+ 			PreparedStatement stmt = con.prepareStatement(sql);
+ 			stmt.setInt(1, idCompra);
+ 			ResultSet rs = stmt.executeQuery();
+ 			
+ 			Map<Produto, Double> itensCompra = new HashMap<Produto, Double>();
+ 			while(rs.next())
+ 			{
+ 				itensCompra.put(new Produto(rs.getInt("ID"), rs.getInt("ID_PRODUTOR"), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")), rs.getDouble("QTD"));
+ 			}
+ 			
+ 			con.close();
+ 			return itensCompra;
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("Erro get Itens Compra: "+e.getMessage());
+ 		}
+ 		return null;
+	} 
+ 	
  	public void atualizaProduto(Produto prod)
  	{
  		try {
@@ -542,21 +640,32 @@ public class SGBD {
  	 
  	public static void main(String args[])
  	{
- 		// Cadastro consumidor
- 		Endereco end = new Endereco("Rua da Roça", "13-40", "Fica no meio do mato", "Jd Rio Claro", "17123-023", "São Carlos", "São Paulo");
- 		Consumidor consum = new Consumidor(1, "Giovanni", "536.872.752-17", "(14)99709-1009", end, "giovanni_shibaki@usp.br", "123");
- 		//Produtor prod = new Produtor(1, "Seu zé", "729812782-12", "(16)99672-2712", end, "seuze.fazendeiro@gmail.com", "senhadozé", "1439821742-32", 1, "Só produto de qualidade feito pelo seu zé");
- 		Produto produto = new Produto(3, 1, "Maça GOSTOSA", "Maça com gosto bom", 12.0, 5.99, 'k', "Maça, amor", true);
- 		/*Produto produto2 = new Produto(4, 1, "Banana MARAVILHOSA", "Macaco gosta banana", (double)50.0, 2.00, 'k', "Banana, macaco e potassio", false);
- 		Produto produto3 = new Produto(5, 1, "Pera SUPREENDENTE", "Pera ai meu caro", (double)20.0, 8.99, 'k', "Pera, to chegando", true);*/
- 		
- 		/*Map<Produto, Double> compras = new HashMap<Produto, Double>();
- 		compras.put(produto, 2.5);
- 		compras.put(produto2, 4.2);
- 		compras.put(produto3, 6.9);*/
- 		//Compra compra = new Compra(-1, consum, prod, compras, end, "Essa compra me deixou mais pobre");
- 		
  		SGBD banco = new SGBD();
+ 		// Cadastro consumidor
+ 		try{
+ 			Consumidor consum = banco.getConsumidorById(5);
+ 			System.out.print("USUARIO: "+consum.getNome()+"\nENDERECO:"+consum.getEndereco().getIdEndereco()+"\n");
+ 		 	
+ 	 		Produto produto = banco.getProdutoById(1);
+ 	 		Produto produto2 = banco.getProdutoById(2);
+ 	 		Produto produto3 = banco.getProdutoById(3);
+ 	 		//Produto produto2 = new Produto(4, 1, "Banana MARAVILHOSA", "Macaco gosta banana", (double)50.0, 2.00, 'k', "Banana, macaco e potassio", false);
+ 	 		//Produto produto3 = new Produto(5, 1, "Pera SUPREENDENTE", "Pera ai meu caro", (double)20.0, 8.99, 'k', "Pera, to chegando", true);
+ 	 		
+ 	 		Map<Produto, Double> compras = new HashMap<Produto, Double>();
+ 	 		compras.put(produto, 2.5);
+ 	 		compras.put(produto2, 4.2);
+ 	 		compras.put(produto3, 6.9);
+ 	 		Compra compra = new Compra(-1, consum, banco.getProdutorById(produto.getIdProdutor()), compras, consum.getEndereco(), "Essa compra me deixou mais pobre", "2021-01-01");
+ 	 		banco.insereCompra(compra);
+ 		} catch(Exception err)
+ 		{
+ 			System.out.println("Erro Main "+err.getMessage());
+ 		}
+ 		
+ 		
+ 
+ 
  		//banco.insereEndereco(end);
  		
  		//banco.insereConsumidor(consum);

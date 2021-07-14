@@ -19,24 +19,24 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+// Classes do Hortus
+import hortus.HortusException;
+import hortus.Produtor;
+
 import javax.swing.ListSelectionModel;
 
 public class ProdutorMenu {
 
+// ========================== PROPRIEDADES ============================
 	private JFrame frame;
+	private JLabel lblBemVindo;
 	private JTable tblListaPedidos;
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public String[][] fetchData() {
-		String[][] mockData = { { "101", "Amit", "670000" }, { "102", "Jai", "780000" },
-				{ "101", "Sachin", "700000" } };
 
-		return mockData;
-	}
+	// produtor local
+	private static Produtor produtor;
 
+// ========================== MAIN ============================
 	/**
 	 * Launch the application.
 	 */
@@ -53,12 +53,56 @@ public class ProdutorMenu {
 		});
 	}
 
+// ========================== CONSTRUTORES ============================
+
 	/**
-	 * Create the application.
+	 * Construtor 1: serve para debugar e executar o main()
 	 */
 	public ProdutorMenu() {
-
 		initialize();
+	}
+
+	/**
+	 * Construtor 2: recebe as inforamcoes do produtor que acaba de logar
+	 * 
+	 * @param produtor
+	 * @throws HortusException
+	 */
+	public ProdutorMenu(Produtor produtorAtual) throws HortusException {
+		if (produtor == null)
+			throw new HortusException("Erro ao carregar as informa��es do Produtor! Objeto vazio");
+
+		this.produtor = produtorAtual;
+
+		// Carregar informacoes do usuario nos componentes desta tela
+		loadProdutorToForm();
+
+		// Exibir formulario
+		initialize();
+		loadProdutorToForm(produtor);
+		frame.setVisible(true);
+	}
+
+// ========================== METODOS ============================
+
+	/**
+	 * loads produtor content into screen
+	 * 
+	 * @param produtor
+	 */
+	public void loadProdutorToForm() {
+		this.lblBemVindo.setText(this.lblBemVindo.getText() + " " + produtor.getNome());
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String[][] fetchData() {
+		String[][] mockData = { { "101", "Amit", "670000" }, { "102", "Jai", "780000" },
+				{ "101", "Sachin", "700000" } };
+
+		return mockData;
 	}
 
 	/**
@@ -100,13 +144,6 @@ public class ProdutorMenu {
 		// TABLE
 		String[] columnNames = { "ID", "NAME", "QUANTIDADE" };
 
-//		tblListaPedidos = new JTable(fetchData(), columnNames);
-//		tblListaPedidos.setBounds(10, 731, 406, -654);
-//		tblListaPedidos.setBorder(null);
-//		tblListaPedidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		tblListaPedidos.setBackground(new Color(204, 204, 204));
-//		panelHistoricoDeCompras.add(tblListaPedidos);
-
 		JSeparator separator_2_1 = new JSeparator();
 		separator_2_1.setBounds(0, 64, 426, 2);
 		panelHistoricoDeCompras.add(separator_2_1);
@@ -134,7 +171,7 @@ public class ProdutorMenu {
 		lblNewLabel.setBounds(1135, 56, 55, 55);
 		frame.getContentPane().add(lblNewLabel);
 
-		JLabel lblBemVindo = new JLabel("Bem-vindo(a), ");
+		lblBemVindo = new JLabel("Bem-vindo(a), ");
 		lblBemVindo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblBemVindo.setForeground(new Color(255, 255, 255));
 		lblBemVindo.setBounds(804, 77, 321, 25);
