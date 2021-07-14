@@ -30,13 +30,19 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ConsumidorMenu {
 
+	// COMPONENTS
 	private JFrame frame;
 	JScrollPane scrollPane;
 	private JTable table;
+
+	// DATA
 	private static Consumidor consumidor;
+	private static String[][] tableData;
 
 	/**
 	 * 
@@ -190,8 +196,17 @@ public class ConsumidorMenu {
 		txtpnHistricoDeCompras.setText("Hist\u00F3rico de Compras");
 		txtpnHistricoDeCompras.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		panelHistoricoDeCompras.add(txtpnHistricoDeCompras);
-
+		
+	
 		table = new JTable();
+		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
+			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
+				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
+//				DetalhesCompraForm detalhesForm = new DetalhesCompraForm(compra);
+				
+			}
+				
+		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		table.setModel(new DefaultTableModel(fetchData(), new String[] { "Data", "Produtor", "Nome", "Pre\u00E7o" }) {
@@ -205,6 +220,7 @@ public class ConsumidorMenu {
 		table.setBackground(Color.WHITE);
 
 		scrollPane = new JScrollPane(table);
+
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(10, 81, 624, 585);
