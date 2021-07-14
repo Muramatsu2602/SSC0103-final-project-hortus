@@ -8,7 +8,9 @@ import javax.swing.JTable;
 import java.awt.BorderLayout;
 import javax.swing.table.DefaultTableModel;
 
+import hortus.Endereco;
 import hortus.Produto;
+import hortus.Produtor;
 
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
@@ -23,8 +25,6 @@ import java.awt.Font;
 public class CompraForm {
 
 	private JFrame frame;
-	private JTable table;
-	private JTable table_1;
 	private JButton btnNewButton;
 	private JTable table_2;
 
@@ -60,8 +60,11 @@ public class CompraForm {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		Produto produto1 = new Produto(3, 1, "Maça GOSTOSA", "Maça com gosto bom", 12.0, 5.99, 'k', "Maça, amor", true);
- 		Produto produto2 = new Produto(4, 1, "Banana MARAVILHOSA", "Macaco gosta banana", (double)50.0, 2.00, 'k', "Banana, macaco e potassio", false);
+		Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos", "SP");
+		Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456", "1231231", 1, "De São Carlos, sô");
+		
+		Produto produto1 = new Produto(3, produtor, "Maça GOSTOSA", "Maça com gosto bom", 12.0, 5.99, 'k', "Maça, amor", true);
+ 		Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k', "Banana, macaco e potassio", false);
 		
 		table_2 = new JTable();
 		table_2.setModel(new DefaultTableModel(
