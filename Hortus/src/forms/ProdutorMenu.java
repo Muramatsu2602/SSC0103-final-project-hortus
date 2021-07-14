@@ -33,6 +33,9 @@ public class ProdutorMenu {
 	private JLabel lblBemVindo;
 	private JTable tblListaPedidos;
 
+	// produtor local
+	private static Produtor produtor;
+
 // ========================== MAIN ============================
 	/**
 	 * Launch the application.
@@ -56,7 +59,6 @@ public class ProdutorMenu {
 	 * Construtor 1: serve para debugar e executar o main()
 	 */
 	public ProdutorMenu() {
-
 		initialize();
 	}
 
@@ -66,12 +68,14 @@ public class ProdutorMenu {
 	 * @param produtor
 	 * @throws HortusException
 	 */
-	public ProdutorMenu(Produtor produtor) throws HortusException {
+	public ProdutorMenu(Produtor produtorAtual) throws HortusException {
 		if (produtor == null)
 			throw new HortusException("Erro ao carregar as informações do Produtor! Objeto vazio");
 
+		this.produtor = produtorAtual;
+
 		// Carregar informacoes do usuario nos componentes desta tela
-		loadProdutorToForm(produtor);
+		loadProdutorToForm();
 
 		// Exibir formulario
 		initialize();
@@ -85,7 +89,7 @@ public class ProdutorMenu {
 	 * 
 	 * @param produtor
 	 */
-	public void loadProdutorToForm(Produtor produtor) {
+	public void loadProdutorToForm() {
 		this.lblBemVindo.setText(this.lblBemVindo.getText() + " " + produtor.getNome());
 	}
 
@@ -138,13 +142,6 @@ public class ProdutorMenu {
 
 		// TABLE
 		String[] columnNames = { "ID", "NAME", "QUANTIDADE" };
-
-//		tblListaPedidos = new JTable(fetchData(), columnNames);
-//		tblListaPedidos.setBounds(10, 731, 406, -654);
-//		tblListaPedidos.setBorder(null);
-//		tblListaPedidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		tblListaPedidos.setBackground(new Color(204, 204, 204));
-//		panelHistoricoDeCompras.add(tblListaPedidos);
 
 		JSeparator separator_2_1 = new JSeparator();
 		separator_2_1.setBounds(0, 64, 426, 2);
