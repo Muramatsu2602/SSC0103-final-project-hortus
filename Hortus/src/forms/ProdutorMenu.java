@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
@@ -41,7 +42,7 @@ public class ProdutorMenu {
 	// DATA
 	private static Produtor produtor;
 	private static String[][] tableData;
-	private Vector<Compra> vendas;
+	private static Vector<Compra> vendas;
 
 // ========================== MAIN ============================
 	/**
@@ -76,7 +77,7 @@ public class ProdutorMenu {
 	 * @param produtor
 	 * @throws HortusException
 	 */
-	public ProdutorMenu(Produtor produtor) throws HortusException {
+	public ProdutorMenu(Produtor produtorAtual) throws HortusException {
 		if (produtor == null)
 			throw new HortusException("Erro ao carregar as informa��es do Produtor! Objeto vazio");
 
@@ -101,8 +102,8 @@ public class ProdutorMenu {
 
 	public String[][] fetchData() {
 		SGBD banco = new SGBD();
-		// Querry para pegar todas compras
-		vendas = banco.getVendasByProdutor(produtor.getId());
+		// Query para pegar todas compras
+		vendas = banco.getComprasByProdutor(produtor.getId());
 
 		tableData = new String[vendas.size()][];
 
@@ -225,8 +226,11 @@ public class ProdutorMenu {
 
 		JButton btnAdicionarProduto = new JButton("Adicionar Produto");
 		btnAdicionarProduto.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
 
+			public void actionPerformed(ActionEvent e) {
+				CadastroProdutoForm cadastroProdutoForm;
+				cadastroProdutoForm = new CadastroProdutoForm();
+				cadastroProdutoForm.setVisible(true);
 			}
 		});
 		btnAdicionarProduto.setForeground(Color.WHITE);

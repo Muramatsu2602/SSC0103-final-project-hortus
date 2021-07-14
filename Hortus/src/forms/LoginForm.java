@@ -58,7 +58,7 @@ public class LoginForm {
 	@SuppressWarnings("deprecation")
 	public void submitForm() {
 		
-		SGBD banco = new SGBD();
+		SGBD banco = new SGBD();  
 		
 		if(ckSouProdutor.isSelected())
 		{
@@ -161,7 +161,7 @@ public class LoginForm {
 					System.exit(0);
 				}
 			}
-		});
+		});  
 		btnSair.setBounds(336, 0, 42, 40);
 		panel.add(btnSair);
 		btnSair.setBackground(new Color(255, 0, 0));

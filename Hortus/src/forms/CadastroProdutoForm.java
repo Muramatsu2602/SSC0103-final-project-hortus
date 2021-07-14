@@ -34,7 +34,7 @@ import java.awt.SystemColor;
 import javax.swing.JCheckBox;
 import javax.swing.DefaultComboBoxModel;
 
-public class CadastroProduto {
+public class CadastroProdutoForm {
 
 	private JFrame frame;
 	private final JPanel panel_1 = new JPanel();
@@ -61,15 +61,17 @@ public class CadastroProduto {
 		// Produto produto = new Produto();
 
 		showMessageDialog(null, "Cadastro do produto '" + txtNome.getText() + "' efetuado com sucesso!");
-		
+
 		SGBD banco = new SGBD();
-		
+
 		/*
-		Produto produto = new Produto(1, produtor.getID(), txtNome.getText(), txtDescricao.getText(), Double.parseDouble(txtQuantidade.getText()),
-				Double.parseDouble(txtPreco.getText()), (char) cbUnidade.getSelectedIndex(), txtIngredientes.getText(), ckOrganico.isSelected());
-		
-		banco.insereProduto(produto);
-		*/
+		 * Produto produto = new Produto(1, produtor.getID(), txtNome.getText(),
+		 * txtDescricao.getText(), Double.parseDouble(txtQuantidade.getText()),
+		 * Double.parseDouble(txtPreco.getText()), (char) cbUnidade.getSelectedIndex(),
+		 * txtIngredientes.getText(), ckOrganico.isSelected());
+		 * 
+		 * banco.insereProduto(produto);
+		 */
 
 		// limpando os campos
 		txtNome.setText("");
@@ -81,6 +83,15 @@ public class CadastroProduto {
 		txtIngredientes.setText("");
 	}
 
+	/*
+	 * 
+	 * @param b
+	 */
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		frame.setVisible(b);
+	}
+
 	/**
 	 * Launch the application.
 	 */
@@ -88,7 +99,7 @@ public class CadastroProduto {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CadastroProduto window = new CadastroProduto();
+					CadastroProdutoForm window = new CadastroProdutoForm();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -100,7 +111,7 @@ public class CadastroProduto {
 	/**
 	 * Create the application.
 	 */
-	public CadastroProduto() {
+	public CadastroProdutoForm() {
 		initialize();
 	}
 
