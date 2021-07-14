@@ -1,4 +1,6 @@
 package hortus;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class Compra {
@@ -15,16 +17,31 @@ public class Compra {
 
 	// Se será em uma feira livre, mercadinho, encontro com o produtor
 	private String descricao;
+	
+	private Date dataCompra;
 
-	public Compra(int idCompra, Consumidor consumidor, Produtor produtor, Map<Produto, Double> listaProdutos, Endereco endereco, String descricao) {
-		
+	public Compra(int idCompra, Consumidor consumidor, Produtor produtor, Map<Produto, Double> listaProdutos, Endereco endereco, String descricao, String dataCompra) {
 		this.setIdCompra(idCompra);
 		this.setConsumidor(consumidor);
 		this.setProdutor(produtor);
 		this.setListaProdutos(listaProdutos);
 		this.setEndereco(endereco);
 		this.setDescricao(descricao);
+		this.setDataCompra(dataCompra);
 		calculaValorFinal();
+	}
+
+	public Date getDataCompra() {
+		return dataCompra;
+	}
+
+	public void setDataCompra(String dataCompra)
+	{   
+		try{  
+    		this.dataCompra = new SimpleDateFormat("yyyy-MM-dd").parse(dataCompra);
+    	} catch(Exception err) {
+			System.out.println(err.getMessage());
+		}
 	}
 
 	public int getIdCompra() {

@@ -12,9 +12,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import javax.swing.JTextPane;
+
+import hortus.Compra;
+import hortus.Consumidor;
+import hortus.HortusException;
+import hortus.Produtor;
+import hortus.SGBD;
+
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -28,6 +36,7 @@ public class ConsumidorMenu {
 	private JFrame frame;
 	JScrollPane scrollPane;
 	private JTable table;
+	private static Consumidor consumidor;
 
 	/**
 	 * 
@@ -35,7 +44,7 @@ public class ConsumidorMenu {
 	 */
 	public String[][] fetchData() {
 
-		// NOME DO PRODUTOR, NOME DO PRODUTO, PREÇO DA COMPRA
+		// NOME DO PRODUTOR, NOME DO PRODUTO, PREï¿½O DA COMPRA
 		String[][] mockData = { { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
 				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
 				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
@@ -98,6 +107,41 @@ public class ConsumidorMenu {
 	 */
 	public ConsumidorMenu() {
 		initialize();
+	}
+	
+	public ConsumidorMenu(Consumidor consumidorAtual) throws HortusException {
+		
+		if (consumidorAtual == null)
+			throw new HortusException("Erro ao carregar as informaï¿½ï¿½es do Produtor! Objeto vazio");
+		
+		consumidor = consumidorAtual;
+
+		// Carregar informacoes do usuario nos componentes desta tela
+
+		// Exibir formulario
+		initialize();
+		loadConsumidorToForm();
+		
+		frame.setVisible(true);
+	}
+
+	/**
+	 * loads consumidor content into screen
+	 * 
+	 * @param produtor
+	 */
+	public void loadConsumidorToForm() 
+	{
+		SGBD banco = new SGBD();
+		// Agora, buscar todas as informaï¿½ï¿½es necessï¿½rias para a tela de consumidor
+		
+		// 1. Histï¿½rico de compras
+		Vector<Compra> compras = banco.getComprasByConsumidor(consumidor.getId());
+				
+		for(int i=0; i<compras.size(); i++)
+		{
+			System.out.println("COMPRA: "+compras.get(i).getIdCompra()+" na data: "+compras.get(i).getDataCompra());
+		} 
 	}
 
 	/**

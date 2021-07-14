@@ -70,11 +70,11 @@ public class CadastroProdutorForm {
 		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(), txtBairro.getText(),
 				txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
 
+		banco.insereEndereco(end);
+		
 		Produtor produtor = new Produtor(0, txtNome.getText(), txtCNPJ.getText(), txtTelefone.getText(), end,
 				txtEmail.getText(), txtSenha.getText(), txtCCIR.getText(), cbTipoProducao.getSelectedIndex(),
 				txtDescricao.getText());
-
-		banco.insereEndereco(end);
 
 		banco.insereProdutor(produtor);
 
