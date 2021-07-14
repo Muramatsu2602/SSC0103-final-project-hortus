@@ -44,7 +44,7 @@ public class ConsumidorMenu {
 	 */
 	public String[][] fetchData() {
 
-		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PREÇO DA COMPRA
+		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PREï¿½O DA COMPRA
 		String[][] mockData = { { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
 				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
 				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
