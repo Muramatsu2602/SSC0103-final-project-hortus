@@ -34,6 +34,12 @@ public class Compra {
 	public Date getDataCompra() {
 		return dataCompra;
 	}
+	
+	/*
+	public String getDataCompraFormatado() {
+		
+	}
+	*/
 
 	public void setDataCompra(String dataCompra)
 	{   

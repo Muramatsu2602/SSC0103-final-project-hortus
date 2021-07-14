@@ -596,6 +596,32 @@ public class SGBD {
  		return null;
  	}
  	
+ 	public Vector<Compra> getComprasByProdutor(int idProdutor)
+ 	{
+ 		try {
+ 			Connection con = this.connect();
+ 			String sql = "SELECT * FROM compra WHERE ID_PRODUTOR = ?;";
+ 			PreparedStatement stmt = con.prepareStatement(sql);
+ 			stmt.setInt(1, idProdutor);
+ 			ResultSet rs = stmt.executeQuery();
+ 			
+ 			Vector<Compra> compras = new Vector<Compra>();
+ 			while(rs.next())
+ 			{
+ 				// Pegar todos os itens_compra da compra atual
+ 				Map<Produto, Double> listaProdutos = getItensCompra(rs.getInt("ID"));
+ 				
+ 				compras.add(new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA")));
+ 			}
+ 			con.close();
+ 			return compras;
+ 		} catch(Exception e)
+ 		{
+ 			System.out.println("Erro get compras by consumidor: "+e.getMessage());
+ 		}
+ 		return null;
+ 	}
+ 	
 	public Map<Produto, Double> getItensCompra(int idCompra) {
 		try {
  			Connection con = this.connect();
@@ -667,7 +693,6 @@ public class SGBD {
  		}
  		
  		
- 
  
  		//banco.insereEndereco(end);
  		
