@@ -182,7 +182,7 @@ public class SGBD {
 			sql = "INSERT INTO produto (ID_PRODUTOR, NOME, DESCRICAO, QUANTIDADE, PRECO, UNIDADE, INGREDIENTES, ORGANICO) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";		   
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			
-			pstmt.setInt(1, prod.getIdProdutor());
+			pstmt.setInt(1, prod.getProdutor().getId());
 			pstmt.setString(2, prod.getNomeProduto());
 			pstmt.setString(3, prod.getDescricao());
 			pstmt.setDouble(4, prod.getQuantidade());
@@ -505,7 +505,7 @@ public class SGBD {
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 			{
-				prod = new Produto(rs.getInt("ID"), rs.getInt("ID_PRODUTOR"), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"));
+				prod = new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"));
 			}
 			else {
 				con.close();
@@ -532,12 +532,12 @@ public class SGBD {
  			Vector<Produto> produtos = new Vector<Produto>();
  			while(rs.next())
  			{
- 				produtos.add(new Produto(rs.getInt("ID"), rs.getInt("ID_PRODUTOR"), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")));
+ 				produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")));
  			}
  			
  			con.close();
  			return produtos;
- 		} catch(SQLException e)
+ 		} catch(Exception e)
  		{
  			System.out.println("erro"+e.getMessage());
  		}
@@ -555,12 +555,12 @@ public class SGBD {
  			Vector<Produto> produtos = new Vector<Produto>();
  			while(rs.next())
  			{
- 				produtos.add(new Produto(rs.getInt("ID"), rs.getInt("ID_PRODUTOR"), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")));
+ 				produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")));
  			}
  			
  			con.close();
  			return produtos;
- 		} catch(SQLException e)
+ 		} catch(Exception e)
  		{
  			System.out.println("Erro get Produtos Favoritos: "+e.getMessage());
  		}
@@ -593,6 +593,55 @@ public class SGBD {
  		return null;
  	}
  	
+ 	public Vector<Compra> getComprasByProdutor(int idProdutor)
+ 	{
+ 		try {
+ 			Connection con = this.connect();
+ 			String sql = "SELECT * FROM compra WHERE ID_PRODUTOR = ?;";
+ 			PreparedStatement stmt = con.prepareStatement(sql);
+ 			stmt.setInt(1, idProdutor);
+ 			ResultSet rs = stmt.executeQuery();
+ 			
+ 			Vector<Compra> compras = new Vector<Compra>();
+ 			while(rs.next())
+ 			{
+ 				// Pegar todos os itens_compra da compra atual
+ 				Map<Produto, Double> listaProdutos = getItensCompra(rs.getInt("ID"));
+ 				
+ 				compras.add(new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA")));
+ 			}
+ 			con.close();
+ 			return compras;
+ 		} catch(Exception e)
+ 		{
+ 			System.out.println("Erro get compras by produtor: "+e.getMessage());
+ 		}
+ 		return null;
+ 	}
+ 	
+ 	public Vector<Produto> getProdutosByProdutor(int idProdutor)
+ 	{
+ 		try {
+ 			Connection con = this.connect();
+ 			String sql = "SELECT * FROM produto WHERE ID_PRODUTOR = ?;";
+ 			PreparedStatement stmt = con.prepareStatement(sql);
+ 			stmt.setInt(1, idProdutor);
+ 			ResultSet rs = stmt.executeQuery();
+ 			
+ 			Vector<Produto> produtos = new Vector<Produto>();
+ 			while(rs.next())
+ 			{	
+ 				produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")));
+ 			}
+ 			con.close();
+ 			return produtos;
+ 		} catch(Exception e)
+ 		{
+ 			System.out.println("Erro get produtos by produtor: "+e.getMessage());
+ 		}
+ 		return null;
+ 	}
+ 	
 	public Map<Produto, Double> getItensCompra(int idCompra) {
 		try {
  			Connection con = this.connect();
@@ -604,12 +653,12 @@ public class SGBD {
  			Map<Produto, Double> itensCompra = new HashMap<Produto, Double>();
  			while(rs.next())
  			{
- 				itensCompra.put(new Produto(rs.getInt("ID"), rs.getInt("ID_PRODUTOR"), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")), rs.getDouble("QTD"));
+ 				itensCompra.put(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")), rs.getDouble("QTD"));
  			}
  			
  			con.close();
  			return itensCompra;
- 		} catch(SQLException e)
+ 		} catch(Exception e)
  		{
  			System.out.println("Erro get Itens Compra: "+e.getMessage());
  		}
@@ -656,7 +705,7 @@ public class SGBD {
  	 		compras.put(produto, 2.5);
  	 		compras.put(produto2, 4.2);
  	 		compras.put(produto3, 6.9);
- 	 		Compra compra = new Compra(-1, consum, banco.getProdutorById(produto.getIdProdutor()), compras, consum.getEndereco(), "Essa compra me deixou mais pobre", "2021-01-01");
+ 	 		Compra compra = new Compra(-1, consum, produto.getProdutor(), compras, consum.getEndereco(), "Essa compra me deixou mais pobre", "2021-01-01");
  	 		banco.insereCompra(compra);
  		} catch(Exception err)
  		{

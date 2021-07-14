@@ -2,7 +2,7 @@ package hortus;
 
 public class Produto {
 	private int idProduto;
-	private int idProdutor;
+	private Produtor produtor;
 	private String nomeProduto;
 	private String descricao;
 	private double quantidade;
@@ -11,10 +11,10 @@ public class Produto {
 	private String ingredientes;
 	private boolean organico;
 	
-	public Produto(int idProduto, int idProdutor, String nomeProduto, String descricao, double quantidade, double precoProduto, char unidade, String ingredientes, boolean organico) {	
+	public Produto(int idProduto, Produtor produtor, String nomeProduto, String descricao, double quantidade, double precoProduto, char unidade, String ingredientes, boolean organico) {	
 		
 		this.setIdProduto(idProduto);
-		this.setIdProdutor(idProdutor);
+		this.setProdutor(produtor);
 		this.setNomeProduto(nomeProduto);
 		this.setDescricao(descricao);
 		this.setQuantidade(quantidade);
@@ -32,12 +32,12 @@ public class Produto {
 		this.idProduto = idProduto;
 	}
 
-	public int getIdProdutor() {
-		return idProdutor;
+	public Produtor getProdutor() {
+		return produtor;
 	}
 
-	public void setIdProdutor(int idProdutor) {
-		this.idProdutor = idProdutor;
+	public void setProdutor(Produtor produtor) {
+		this.produtor = produtor;
 	}
 
 	public String getNomeProduto() {
