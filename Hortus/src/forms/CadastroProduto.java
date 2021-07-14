@@ -19,6 +19,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.NumberFormatter;
+
+import hortus.Produto;
+import hortus.SGBD;
+
 import javax.swing.JTextPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -57,6 +61,15 @@ public class CadastroProduto {
 		// Produto produto = new Produto();
 
 		showMessageDialog(null, "Cadastro do produto '" + txtNome.getText() + "' efetuado com sucesso!");
+		
+		SGBD banco = new SGBD();
+		
+		/*
+		Produto produto = new Produto(1, produtor.getID(), txtNome.getText(), txtDescricao.getText(), Double.parseDouble(txtQuantidade.getText()),
+				Double.parseDouble(txtPreco.getText()), (char) cbUnidade.getSelectedIndex(), txtIngredientes.getText(), ckOrganico.isSelected());
+		
+		banco.insereProduto(produto);
+		*/
 
 		// limpando os campos
 		txtNome.setText("");
