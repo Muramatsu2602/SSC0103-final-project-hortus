@@ -37,7 +37,7 @@ public class ConsumidorMenu {
 
 	// COMPONENTS
 	private JFrame frame;
-	JScrollPane scrollPane;
+	private JScrollPane scrollPane;
 	private JTable table;
 
 	// DATA

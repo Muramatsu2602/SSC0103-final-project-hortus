@@ -25,16 +25,19 @@ import hortus.HortusException;
 import hortus.Produtor;
 
 import javax.swing.ListSelectionModel;
+import java.awt.Component;
+import javax.swing.ScrollPaneConstants;
 
 public class ProdutorMenu {
 
 // ========================== PROPRIEDADES ============================
 	private JFrame frame;
 	private JLabel lblBemVindo;
-	private JTable tblListaPedidos;
+	private JTable table;
 
 	// produtor local
 	private static Produtor produtor;
+	private static String[][] tableData;
 
 // ========================== MAIN ============================
 	/**
@@ -74,12 +77,9 @@ public class ProdutorMenu {
 
 		this.produtor = produtorAtual;
 
-		// Carregar informacoes do usuario nos componentes desta tela
-		loadProdutorToForm();
-
 		// Exibir formulario
 		initialize();
-		loadProdutorToForm(produtor);
+		loadProdutorToForm();
 		frame.setVisible(true);
 	}
 
@@ -94,13 +94,12 @@ public class ProdutorMenu {
 		this.lblBemVindo.setText(this.lblBemVindo.getText() + " " + produtor.getNome());
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public String[][] fetchData() {
-		String[][] mockData = { { "101", "Amit", "670000" }, { "102", "Jai", "780000" },
-				{ "101", "Sachin", "700000" } };
+
+		// DATA, NOME DO CONSUMIDOR, NOME DO PRODUTO, PRE�O DA COMPRA
+		String[][] mockData = { { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
+				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
+				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" } };
 
 		return mockData;
 	}
@@ -135,32 +134,8 @@ public class ProdutorMenu {
 		panel_1.setBounds(0, 0, 1200, 46);
 		frame.getContentPane().add(panel_1);
 
-		JPanel panelHistoricoDeCompras = new JPanel();
-		panelHistoricoDeCompras.setBackground(new Color(255, 255, 255));
-		panelHistoricoDeCompras.setBounds(0, 45, 426, 755);
-		frame.getContentPane().add(panelHistoricoDeCompras);
-		panelHistoricoDeCompras.setLayout(null);
-
 		// TABLE
 		String[] columnNames = { "ID", "NAME", "QUANTIDADE" };
-
-		JSeparator separator_2_1 = new JSeparator();
-		separator_2_1.setBounds(0, 64, 426, 2);
-		panelHistoricoDeCompras.add(separator_2_1);
-
-		JTextPane txtpnHistricoDeCompras = new JTextPane();
-		txtpnHistricoDeCompras.setBounds(81, 10, 308, 61);
-		txtpnHistricoDeCompras.setText("Lista de Pedidos");
-		txtpnHistricoDeCompras.setFont(new Font("Tahoma", Font.PLAIN, 35));
-		panelHistoricoDeCompras.add(txtpnHistricoDeCompras);
-
-		JTextPane txtpnDashboardDoConsumidor = new JTextPane();
-		txtpnDashboardDoConsumidor.setForeground(new Color(255, 255, 255));
-		txtpnDashboardDoConsumidor.setBackground(new Color(153, 102, 255));
-		txtpnDashboardDoConsumidor.setBounds(446, 56, 314, 73);
-		frame.getContentPane().add(txtpnDashboardDoConsumidor);
-		txtpnDashboardDoConsumidor.setText("Dashboard");
-		txtpnDashboardDoConsumidor.setFont(new Font("Tahoma", Font.BOLD, 55));
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(804, 112, 396, 2);
@@ -177,26 +152,84 @@ public class ProdutorMenu {
 		lblBemVindo.setBounds(804, 77, 321, 25);
 		frame.getContentPane().add(lblBemVindo);
 
+		JPanel panelHistoricoDeCompras = new JPanel();
+		panelHistoricoDeCompras.setLayout(null);
+		panelHistoricoDeCompras.setBackground(Color.WHITE);
+		panelHistoricoDeCompras.setBounds(0, 46, 644, 676);
+		frame.getContentPane().add(panelHistoricoDeCompras);
+
+		JSeparator separator_2_1 = new JSeparator();
+		separator_2_1.setBounds(0, 64, 644, 7);
+		panelHistoricoDeCompras.add(separator_2_1);
+
+		JTextPane lbltHistoricoDeVendas = new JTextPane();
+		lbltHistoricoDeVendas.setText("Hist\u00F3rico de Vendas");
+		lbltHistoricoDeVendas.setFont(new Font("Tahoma", Font.PLAIN, 35));
+		lbltHistoricoDeVendas.setEditable(false);
+		lbltHistoricoDeVendas.setBounds(153, 0, 347, 61);
+		panelHistoricoDeCompras.add(lbltHistoricoDeVendas);
+
+		table = new JTable();
+		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
+			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
+				// AQUI INVOCA A TELA DE DETALHES DA VENDA
+				DetalhesCompraForm detalhesForm = new DetalhesCompraForm(null);
+
+			}
+
+		});
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		table.setModel(new DefaultTableModel(fetchData(), new String[] { "Data", "Consumidor", "Nome", "Pre\u00E7o" }) {
+			Class[] columnTypes = new Class[] { String.class, String.class, String.class, Object.class };
+
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.setBackground(Color.WHITE);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(10, 81, 624, 585);
+		panelHistoricoDeCompras.add(scrollPane);
+
+		JTextPane txtpnDashboardDoProdutor = new JTextPane();
+		txtpnDashboardDoProdutor.setText("Dashboard do Produtor");
+		txtpnDashboardDoProdutor.setForeground(Color.WHITE);
+		txtpnDashboardDoProdutor.setFont(new Font("Tahoma", Font.BOLD, 40));
+		txtpnDashboardDoProdutor.setBackground(new Color(153, 102, 255));
+		txtpnDashboardDoProdutor.setBounds(675, 122, 501, 73);
+		frame.getContentPane().add(txtpnDashboardDoProdutor);
+
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(456, 146, 711, 558);
-		frame.getContentPane().add(panel);
 		panel.setLayout(null);
+		panel.setBackground(Color.WHITE);
+		panel.setBounds(685, 205, 475, 376);
+		frame.getContentPane().add(panel);
 
 		JButton btnAdicionarProduto = new JButton("Adicionar Produto");
-		btnAdicionarProduto.setBounds(166, 135, 381, 86);
+		btnAdicionarProduto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnAdicionarProduto.setForeground(Color.WHITE);
 		btnAdicionarProduto.setFont(new Font("Tahoma", Font.BOLD, 30));
 		btnAdicionarProduto.setBackground(new Color(51, 204, 102));
+		btnAdicionarProduto.setBounds(46, 56, 381, 86);
 		panel.add(btnAdicionarProduto);
 
 		JButton btnGerenciarEstoque = new JButton("Gerenciar Estoque");
 		btnGerenciarEstoque.setForeground(Color.WHITE);
 		btnGerenciarEstoque.setFont(new Font("Tahoma", Font.BOLD, 30));
 		btnGerenciarEstoque.setBackground(new Color(51, 204, 102));
-		btnGerenciarEstoque.setBounds(166, 276, 381, 86);
+		btnGerenciarEstoque.setBounds(46, 195, 381, 86);
 		panel.add(btnGerenciarEstoque);
-		frame.setBounds(100, 100, 1200, 800);
+		frame.setBounds(100, 100, 1200, 725);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
 		frame.setLocationRelativeTo(null);
