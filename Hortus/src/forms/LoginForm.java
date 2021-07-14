@@ -17,7 +17,6 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import forms.ConsumidorMenu;
-import forms.ProdutorMenu;
 import hortus.Produtor;
 import hortus.SGBD;
 import hortus.Consumidor;
@@ -73,7 +72,7 @@ public class LoginForm {
 				{
 					System.out.println("ID logado: "+produtorLogado.getId());
 	 				new ProdutorMenu(produtorLogado);
-					showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
+					// showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
 	 				frmLogin.dispose();
 				}
 	 		} catch(HortusException err)
@@ -96,7 +95,7 @@ public class LoginForm {
 				{
 					System.out.println("ID logado: "+consumidorLogado.getId());
 	 				new ConsumidorMenu(consumidorLogado);
-					showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
+					//showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
 	 				frmLogin.dispose();
 				}
 	 		} catch(HortusException err)

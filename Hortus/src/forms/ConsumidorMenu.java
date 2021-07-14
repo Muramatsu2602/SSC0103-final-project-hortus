@@ -39,6 +39,8 @@ public class ConsumidorMenu {
 	private JFrame frame;
 	private JScrollPane scrollPane;
 	private JTable table;
+	private JLabel lblBemVindo;
+	private Vector<Compra> compras;
 
 	// DATA
 	private static Consumidor consumidor;
@@ -49,47 +51,51 @@ public class ConsumidorMenu {
 	 * @return
 	 */
 	public String[][] fetchData() {
+		SGBD banco = new SGBD();
+		// Querry para pegar todas compras
+		compras = banco.getComprasByConsumidor(consumidor.getId());
+
+		tableData = new String[compras.size()][];
+
+		for (int i = 0; i < compras.size(); i++) {
+			tableData[i] = new String[] { compras.get(i).getDataCompra().toString(),
+					compras.get(i).getProdutor().getNome(), compras.get(i).getValorFinal().toString(),
+					compras.get(i).getDescricao() };
+		}
 
 		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
-		String[][] mockData = { { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
-				{ "25/08/9998", "Joao Da Silva", "Rucula", "R$200" } };
+		/*
+		 * String[][] mockData = { { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" },
+		 * { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
+		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
+		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
+		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
+		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
+		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
+		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
+		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
+		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
+		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
+		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
+		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
+		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
+		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
+		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
+		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
+		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
+		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
+		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
+		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
+		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
+		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
+		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
+		 * "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, {
+		 * "25/08/2019", "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019",
+		 * "Joao Da Silva", "Rucula", "R$200" }, { "25/08/2019", "Joao Da Silva",
+		 * "Rucula", "R$200" }, { "25/08/9998", "Joao Da Silva", "Rucula", "R$200" } };
+		 */
 
-		return mockData;
+		return tableData;
 	}
 
 	/**
@@ -141,13 +147,7 @@ public class ConsumidorMenu {
 		// Agora, buscar todas as informa��es necess�rias para a tela de
 		// consumidor
 
-		// 1. Hist�rico de compras
-		Vector<Compra> compras = banco.getComprasByConsumidor(consumidor.getId());
-
-		for (int i = 0; i < compras.size(); i++) {
-			System.out
-					.println("COMPRA: " + compras.get(i).getIdCompra() + " na data: " + compras.get(i).getDataCompra());
-		}
+		lblBemVindo.setText("Bem-vindo(a) " + consumidor.getNome());
 	}
 
 	/**
@@ -201,14 +201,15 @@ public class ConsumidorMenu {
 		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
-				DetalhesCompraForm detalhesForm = new DetalhesCompraForm(null);
+				DetalhesCompraForm detalhesForm = new DetalhesCompraForm(compras.get(table.getSelectedRow()));
 
 			}
 
 		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		table.setModel(new DefaultTableModel(fetchData(), new String[] { "Data", "Produtor", "Nome", "Pre\u00E7o" }) {
+		table.setModel(new DefaultTableModel(fetchData(),
+				new String[] { "Data", "Produtor", "Pre\u00E7o", "Descri\u00E7\u00E3o" }) {
 			boolean[] columnEditables = new boolean[] { true, false, false, false };
 
 			public boolean isCellEditable(int row, int column) {
@@ -242,7 +243,7 @@ public class ConsumidorMenu {
 		lblNewLabel.setBounds(1135, 56, 55, 55);
 		frame.getContentPane().add(lblNewLabel);
 
-		JLabel lblBemVindo = new JLabel("Bem-vindo(a), ");
+		lblBemVindo = new JLabel("Bem-vindo(a), ");
 		lblBemVindo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblBemVindo.setForeground(new Color(255, 255, 255));
 		lblBemVindo.setBounds(804, 77, 321, 25);

@@ -62,6 +62,7 @@ public class ProdutorMenu {
 	 * Construtor 1: serve para debugar e executar o main()
 	 */
 	public ProdutorMenu() {
+
 		initialize();
 	}
 
@@ -71,7 +72,7 @@ public class ProdutorMenu {
 	 * @param produtor
 	 * @throws HortusException
 	 */
-	public ProdutorMenu(Produtor produtorAtual) throws HortusException {
+	public ProdutorMenu(Produtor produtor) throws HortusException {
 		if (produtor == null)
 			throw new HortusException("Erro ao carregar as informa��es do Produtor! Objeto vazio");
 
@@ -90,7 +91,7 @@ public class ProdutorMenu {
 	 * 
 	 * @param produtor
 	 */
-	public void loadProdutorToForm() {
+	public void loadProdutorToForm(Produtor produtor) {
 		this.lblBemVindo.setText(this.lblBemVindo.getText() + " " + produtor.getNome());
 	}
 

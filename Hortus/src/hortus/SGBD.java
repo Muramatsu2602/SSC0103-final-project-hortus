@@ -251,6 +251,9 @@ public class SGBD {
 			
 			stmt.execute();
 			con.close();
+			
+			prod.setQuantidade(prod.getQuantidade() - qtd);
+			atualizaProduto(prod);
 		} catch(SQLException e){
             System.out.println("erro"+e.getMessage());
         }
@@ -514,7 +517,7 @@ public class SGBD {
 			
 			con.close();
 			return prod;
- 		} catch(SQLException e)
+ 		} catch(Exception e)
  		{
  			System.out.println("erro"+e.getMessage());
  		}
@@ -589,55 +592,6 @@ public class SGBD {
  		} catch(Exception e)
  		{
  			System.out.println("Erro get compras by consumidor: "+e.getMessage());
- 		}
- 		return null;
- 	}
- 	
- 	public Vector<Compra> getComprasByProdutor(int idProdutor)
- 	{
- 		try {
- 			Connection con = this.connect();
- 			String sql = "SELECT * FROM compra WHERE ID_PRODUTOR = ?;";
- 			PreparedStatement stmt = con.prepareStatement(sql);
- 			stmt.setInt(1, idProdutor);
- 			ResultSet rs = stmt.executeQuery();
- 			
- 			Vector<Compra> compras = new Vector<Compra>();
- 			while(rs.next())
- 			{
- 				// Pegar todos os itens_compra da compra atual
- 				Map<Produto, Double> listaProdutos = getItensCompra(rs.getInt("ID"));
- 				
- 				compras.add(new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA")));
- 			}
- 			con.close();
- 			return compras;
- 		} catch(Exception e)
- 		{
- 			System.out.println("Erro get compras by produtor: "+e.getMessage());
- 		}
- 		return null;
- 	}
- 	
- 	public Vector<Produto> getProdutosByProdutor(int idProdutor)
- 	{
- 		try {
- 			Connection con = this.connect();
- 			String sql = "SELECT * FROM produto WHERE ID_PRODUTOR = ?;";
- 			PreparedStatement stmt = con.prepareStatement(sql);
- 			stmt.setInt(1, idProdutor);
- 			ResultSet rs = stmt.executeQuery();
- 			
- 			Vector<Produto> produtos = new Vector<Produto>();
- 			while(rs.next())
- 			{	
- 				produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO")));
- 			}
- 			con.close();
- 			return produtos;
- 		} catch(Exception e)
- 		{
- 			System.out.println("Erro get produtos by produtor: "+e.getMessage());
  		}
  		return null;
  	}
