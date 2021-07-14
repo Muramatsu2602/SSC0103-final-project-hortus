@@ -17,6 +17,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import forms.ConsumidorMenu;
+import forms.ProdutorMenu;
 import hortus.Produtor;
 import hortus.SGBD;
 import hortus.Consumidor;
@@ -62,10 +63,19 @@ public class LoginForm {
 		
 		if(ckSouProdutor.isSelected())
 		{
+			Produtor produtorLogado;
 			// Login como produtor
 			try{
-				Produtor produtorLogado = banco.loginProdutor(txtEmail.getText(), txtSenha.getText());
-	 			System.out.println("ID logado: "+produtorLogado.getId());
+				produtorLogado = banco.loginProdutor(txtEmail.getText(), txtSenha.getText());
+				
+				// Ver se o produtorLogado não é nulo
+				if(produtorLogado != null)
+				{
+					System.out.println("ID logado: "+produtorLogado.getId());
+	 				new ProdutorMenu(produtorLogado);
+					showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
+	 				frmLogin.dispose();
+				}
 	 		} catch(HortusException err)
 	 		{
 	 			System.out.println(err.getMessage());
@@ -80,23 +90,24 @@ public class LoginForm {
 			Consumidor consumidorLogado = null;
 			try{
 				consumidorLogado = banco.loginConsumidor(txtEmail.getText(), txtSenha.getText());
-	 			System.out.println("ID logado: "+consumidorLogado.getId());
-	 			new ConsumidorMenu(consumidorLogado);
+				
+				// Ver se o consumidorLogado não é nulo
+				if(consumidorLogado != null)
+				{
+					System.out.println("ID logado: "+consumidorLogado.getId());
+	 				new ConsumidorMenu(consumidorLogado);
+					showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
+	 				frmLogin.dispose();
+				}
 	 		} catch(HortusException err)
 	 		{
-	 			System.out.println(err.getMessage());
+	 			showMessageDialog(null, err.getMessage());
 	 		}
 			
 			// Depois de fazer login, ir para o Form de Pro
 			//ConsumidorMenu
 		}
 		
-		showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
-
-		// Clearing fields
-		txtEmail.setText("");
-		txtSenha.setText("");
-		ckSouProdutor.setSelected(false);
 	}
 
 	/**
