@@ -665,7 +665,6 @@ public class SGBD {
  		
  		
  
- 
  		//banco.insereEndereco(end);
  		
  		//banco.insereConsumidor(consum);
