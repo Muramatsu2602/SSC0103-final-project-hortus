@@ -16,6 +16,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
+import forms.ConsumidorMenu;
 import hortus.Produtor;
 import hortus.SGBD;
 import hortus.Consumidor;
@@ -73,9 +74,11 @@ public class LoginForm {
 		else
 		{
 			// Login como Consumidor
+			Consumidor consumidorLogado = null;
 			try{
-				Consumidor consumidorLogado = banco.loginConsumidor(txtEmail.getText(), txtSenha.getText());
+				consumidorLogado = banco.loginConsumidor(txtEmail.getText(), txtSenha.getText());
 	 			System.out.println("ID logado: "+consumidorLogado.getId());
+	 			new ConsumidorMenu(consumidorLogado);
 	 		} catch(HortusException err)
 	 		{
 	 			System.out.println(err.getMessage());
