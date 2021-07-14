@@ -17,7 +17,6 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import forms.ConsumidorMenu;
-import forms.ProdutorMenu;
 import hortus.Produtor;
 import hortus.SGBD;
 import hortus.Consumidor;

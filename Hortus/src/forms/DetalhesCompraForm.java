@@ -16,8 +16,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 
 import hortus.Compra;
+import hortus.Produto;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Map;
 
 public class DetalhesCompraForm {
 
@@ -50,7 +53,17 @@ public class DetalhesCompraForm {
 	public DetalhesCompraForm(Compra compra) {
 
 		initialize();
-		this.txtDetalhes.setText("YO WADDUP");
+		String strProdutos = new String();
+		Map<Produto, Double> produtos = compra.getListaProdutos();		
+		for (Produto prod : produtos.keySet()) 
+		{
+			strProdutos += prod.getNomeProduto() + "\n\n";
+			strProdutos += "Quantidade: " + prod.getQuantidade() + "\n";
+			strProdutos += "Preço: " + prod.getPrecoProduto() + "\n";
+			strProdutos += prod.getDescricao() + "\n";
+			strProdutos += "===================================================================\n\n";
+		}
+		this.txtDetalhes.setText(strProdutos);
 		this.frame.setVisible(true);
 	}
 
