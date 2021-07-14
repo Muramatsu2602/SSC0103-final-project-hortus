@@ -72,7 +72,7 @@ public class LoginForm {
 				{
 					System.out.println("ID logado: "+produtorLogado.getId());
 	 				new ProdutorMenu(produtorLogado);
-					showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
+					// showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
 	 				frmLogin.dispose();
 				}
 	 		} catch(HortusException err)
@@ -95,7 +95,7 @@ public class LoginForm {
 				{
 					System.out.println("ID logado: "+consumidorLogado.getId());
 	 				new ConsumidorMenu(consumidorLogado);
-					showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
+					//showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
 	 				frmLogin.dispose();
 				}
 	 		} catch(HortusException err)

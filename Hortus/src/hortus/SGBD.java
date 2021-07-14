@@ -251,6 +251,9 @@ public class SGBD {
 			
 			stmt.execute();
 			con.close();
+			
+			prod.setQuantidade(prod.getQuantidade() - qtd);
+			atualizaProduto(prod);
 		} catch(SQLException e){
             System.out.println("erro"+e.getMessage());
         }
