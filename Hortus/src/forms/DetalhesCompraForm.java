@@ -58,8 +58,8 @@ public class DetalhesCompraForm {
 		for (Produto prod : produtos.keySet()) 
 		{
 			strProdutos += prod.getNomeProduto() + "\n\n";
-			strProdutos += "Quantidade: " + prod.getQuantidade() + "\n";
-			strProdutos += "Preço: " + prod.getPrecoProduto() + "\n";
+			strProdutos += String.format("Quantidade: %.3f %c\n", prod.getQuantidade(), prod.getUnidade());
+			strProdutos += String.format("Preço: %.2f X %.3f = %.2f\n", prod.getPrecoProduto(), produtos.get(prod), prod.getPrecoProduto() * produtos.get(prod));
 			strProdutos += prod.getDescricao() + "\n";
 			strProdutos += "===================================================================\n\n";
 		}
