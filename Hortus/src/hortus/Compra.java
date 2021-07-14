@@ -18,6 +18,7 @@ public class Compra {
 	// Se será em uma feira livre, mercadinho, encontro com o produtor
 	private String descricao;
 	
+	// Data da realização da compra
 	private Date dataCompra;
 
 	public Compra(int idCompra, Consumidor consumidor, Produtor produtor, Map<Produto, Double> listaProdutos, Endereco endereco, String descricao, String dataCompra) {
@@ -37,7 +38,11 @@ public class Compra {
 	
 	/*
 	public String getDataCompraFormatado() {
+		SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");    
+		Date data = fmt.parse(dataCompra); 
+		String str = fmt.format(data);
 		
+		return str;
 	}
 	*/
 
