@@ -9,13 +9,20 @@ import java.awt.SystemColor;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 
+import hortus.Compra;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class DetalhesCompraForm {
 
 	private JFrame frame;
+	private JTextArea txtDetalhes;
 
 	/**
 	 * Launch the application.
@@ -40,14 +47,23 @@ public class DetalhesCompraForm {
 		initialize();
 	}
 
+	public DetalhesCompraForm(Compra compra) {
+
+		initialize();
+		this.txtDetalhes.setText("YO WADDUP");
+		this.frame.setVisible(true);
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(153, 102, 255));
 		frame.setBounds(100, 100, 636, 565);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setAlwaysOnTop(true);
 
 		frame.setUndecorated(true);
 		frame.setLocationRelativeTo(null);
@@ -62,11 +78,7 @@ public class DetalhesCompraForm {
 		JButton btnSair = new JButton("x");
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int option = JOptionPane.showConfirmDialog(frame, "Deseja sair do Cadastro de Consumidor?",
-						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (option == JOptionPane.YES_OPTION) {
-					frame.dispose();
-				}
+				frame.dispose();
 			}
 		});
 		btnSair.setBounds(581, 0, 55, 46);
@@ -74,17 +86,17 @@ public class DetalhesCompraForm {
 		btnSair.setForeground(Color.WHITE);
 		btnSair.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnSair.setBackground(Color.RED);
-		
+
 		JPanel panelPrincipal = new JPanel();
 		panelPrincipal.setBackground(Color.WHITE);
 		panelPrincipal.setBounds(39, 69, 551, 465);
 		frame.getContentPane().add(panelPrincipal);
 		panelPrincipal.setLayout(null);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setFont(new Font("Tahoma", Font.BOLD, 14));
-		textArea.setBounds(10, 10, 531, 445);
-		panelPrincipal.add(textArea);
+
+		txtDetalhes = new JTextArea();
+		txtDetalhes.setEditable(false);
+		txtDetalhes.setFont(new Font("Tahoma", Font.BOLD, 14));
+		txtDetalhes.setBounds(10, 10, 531, 445);
+		panelPrincipal.add(txtDetalhes);
 	}
 }

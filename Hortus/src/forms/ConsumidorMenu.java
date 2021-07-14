@@ -196,16 +196,15 @@ public class ConsumidorMenu {
 		txtpnHistricoDeCompras.setText("Hist\u00F3rico de Compras");
 		txtpnHistricoDeCompras.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		panelHistoricoDeCompras.add(txtpnHistricoDeCompras);
-		
-	
+
 		table = new JTable();
 		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
-//				DetalhesCompraForm detalhesForm = new DetalhesCompraForm(compra);
-				
+				DetalhesCompraForm detalhesForm = new DetalhesCompraForm(null);
+
 			}
-				
+
 		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));

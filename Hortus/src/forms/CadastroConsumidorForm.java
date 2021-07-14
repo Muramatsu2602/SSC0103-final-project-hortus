@@ -155,7 +155,7 @@ public class CadastroConsumidorForm {
 						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (option == JOptionPane.YES_OPTION) {
 					frame.dispose();
-				}
+				} 
 			}
 		});
 		btnSair.setBounds(858, 0, 48, 46);
