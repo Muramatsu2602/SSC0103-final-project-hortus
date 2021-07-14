@@ -40,6 +40,9 @@ import javax.swing.JCheckBox;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.SystemColor;
+import java.awt.Canvas;
+import java.awt.Button;
+import java.awt.Scrollbar;
 
 public class LoginForm {
 

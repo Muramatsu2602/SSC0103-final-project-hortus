@@ -25,7 +25,7 @@ public class ProdutorMenu {
 
 	private JFrame frame;
 	private JTable tblListaPedidos;
-
+	
 	/**
 	 * 
 	 * @return
@@ -57,6 +57,7 @@ public class ProdutorMenu {
 	 * Create the application.
 	 */
 	public ProdutorMenu() {
+
 		initialize();
 	}
 
@@ -99,12 +100,12 @@ public class ProdutorMenu {
 		// TABLE
 		String[] columnNames = { "ID", "NAME", "QUANTIDADE" };
 
-		tblListaPedidos = new JTable(fetchData(), columnNames);
-		tblListaPedidos.setBounds(10, 731, 406, -654);
-		tblListaPedidos.setBorder(null);
-		tblListaPedidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tblListaPedidos.setBackground(new Color(204, 204, 204));
-		panelHistoricoDeCompras.add(tblListaPedidos);
+//		tblListaPedidos = new JTable(fetchData(), columnNames);
+//		tblListaPedidos.setBounds(10, 731, 406, -654);
+//		tblListaPedidos.setBorder(null);
+//		tblListaPedidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		tblListaPedidos.setBackground(new Color(204, 204, 204));
+//		panelHistoricoDeCompras.add(tblListaPedidos);
 
 		JSeparator separator_2_1 = new JSeparator();
 		separator_2_1.setBounds(0, 64, 426, 2);
@@ -115,9 +116,6 @@ public class ProdutorMenu {
 		txtpnHistricoDeCompras.setText("Lista de Pedidos");
 		txtpnHistricoDeCompras.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		panelHistoricoDeCompras.add(txtpnHistricoDeCompras);
-
-		// TABELA DE PEDIDOS
-		String columns[] = { "ID", "NOME", "QUANTIDADE" };
 
 		JTextPane txtpnDashboardDoConsumidor = new JTextPane();
 		txtpnDashboardDoConsumidor.setForeground(new Color(255, 255, 255));

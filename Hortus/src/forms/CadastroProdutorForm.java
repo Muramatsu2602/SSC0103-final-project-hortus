@@ -64,20 +64,20 @@ public class CadastroProdutorForm {
 	public void submitForm() {
 
 		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
-		
-		SGBD banco = new SGBD();
-		
-		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(), 
-				txtBairro.getText(), txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
 
-		Produtor produtor = new Produtor(0, txtNome.getText(), txtCNPJ.getText(), txtTelefone.getText(),
-				end, txtEmail.getText(), txtSenha.getText(), txtCCIR.getText(),
-				cbTipoProducao.getSelectedIndex(), txtDescricao.getText());
-		
+		SGBD banco = new SGBD();
+
+		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(), txtBairro.getText(),
+				txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
+
+		Produtor produtor = new Produtor(0, txtNome.getText(), txtCNPJ.getText(), txtTelefone.getText(), end,
+				txtEmail.getText(), txtSenha.getText(), txtCCIR.getText(), cbTipoProducao.getSelectedIndex(),
+				txtDescricao.getText());
+
 		banco.insereEndereco(end);
-		
+
 		banco.insereProdutor(produtor);
-		
+
 		banco.atualizaUsuarioEndereco(end, produtor.getId());
 
 		// limpando os campos
@@ -97,7 +97,7 @@ public class CadastroProdutorForm {
 		txtTelefone.setText("");
 		txtCCIR.setText("");
 		txtDescricao.setText("");
-		
+
 		frame.dispose();
 	}
 
@@ -119,7 +119,7 @@ public class CadastroProdutorForm {
 
 	public void setVisible(boolean b) {
 		// TODO Auto-generated method stub
-		frame.setVisible(true);
+		frame.setVisible(b);
 	}
 
 	/**
