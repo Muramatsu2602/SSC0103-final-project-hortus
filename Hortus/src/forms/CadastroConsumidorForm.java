@@ -338,7 +338,7 @@ public class CadastroConsumidorForm {
 				if (txtNome.getText().isBlank() || txtEmail.getText().isBlank() || txtSenha.getText().isBlank()
 						|| txtConfirmaSenha.getText().isBlank() || txtCPF.getText().isBlank()
 						|| txtTelefone.getText().isBlank() || txtRua.getText().isBlank() || txtNum.getText().isBlank()
-						|| txtComplemento.getText().isBlank() || txtBairro.getText().isBlank()
+						|| txtBairro.getText().isBlank()
 						|| txtCEP.getText().isBlank() || txtCidade.getText().isBlank()) {
 					showMessageDialog(null, "Há campo(s) vazio(s)");
 					return;
@@ -492,13 +492,6 @@ public class CadastroConsumidorForm {
 		lblComplemento.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblComplemento.setBounds(343, 553, 146, 25);
 		panel_1.add(lblComplemento);
-
-		JLabel lblNome_1_3_2_3 = new JLabel("*");
-		lblNome_1_3_2_3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_2_3.setForeground(Color.RED);
-		lblNome_1_3_2_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_2_3.setBounds(483, 553, 77, 25);
-		panel_1.add(lblNome_1_3_2_3);
 
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOrientation(SwingConstants.VERTICAL);
