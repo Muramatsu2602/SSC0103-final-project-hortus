@@ -77,7 +77,7 @@ public class LoginForm {
 				}
 	 		} catch(HortusException err)
 	 		{
-	 			System.out.println(err.getMessage());
+	 			showMessageDialog(null, err.getMessage());
 	 		}
 			
 			// Depois de fazer login, ir para o Form de ProdutorMenu

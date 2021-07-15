@@ -226,7 +226,7 @@ public class CadastroProdutorForm {
 					showMessageDialog(null, "E-mail inserido está incorreto!");
 				}
 			}
-		});
+		}); 
 		txtEmail.setHorizontalAlignment(SwingConstants.LEFT);
 		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtEmail.setColumns(10);
