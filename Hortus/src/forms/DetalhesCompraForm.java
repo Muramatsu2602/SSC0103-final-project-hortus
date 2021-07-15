@@ -14,6 +14,7 @@ import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 import hortus.Compra;
 import hortus.Produto;
@@ -22,6 +23,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 import javax.swing.JScrollPane;
+import javax.swing.JLabel;
 
 public class DetalhesCompraForm {
 
@@ -100,6 +102,11 @@ public class DetalhesCompraForm {
 		btnSair.setForeground(Color.WHITE);
 		btnSair.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnSair.setBackground(Color.RED);
+		
+		JLabel lblNewLabel = new JLabel("Detalhes Da Compra");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel.setBounds(38, 9, 197, 26);
+		panel_1.add(lblNewLabel);
 
 		JPanel panelPrincipal = new JPanel();
 		panelPrincipal.setBackground(Color.WHITE);
@@ -111,10 +118,11 @@ public class DetalhesCompraForm {
 		txtDetalhes.setEditable(false);
 		txtDetalhes.setFont(new Font("Tahoma", Font.BOLD, 14));
 		txtDetalhes.setBounds(10, 10, 531, 445);
-		panelPrincipal.add(txtDetalhes);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 2, 2);
+		JScrollPane scrollPane = new JScrollPane(txtDetalhes);
+		scrollPane.setBounds(10, 10, 531, 445);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panelPrincipal.add(scrollPane);
 
 	}
