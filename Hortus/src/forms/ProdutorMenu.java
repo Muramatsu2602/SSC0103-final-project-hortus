@@ -128,7 +128,7 @@ public class ProdutorMenu {
 		JButton btnSair = new JButton("x");
 		btnSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int option = JOptionPane.showConfirmDialog(frame, "Deseja sair do Cadastro de Produtor?",
+				int option = JOptionPane.showConfirmDialog(frame, "Deseja sair do Menu de Produtor?",
 						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (option == JOptionPane.YES_OPTION) {
 					frame.dispose();
