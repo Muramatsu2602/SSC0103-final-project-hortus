@@ -26,7 +26,9 @@ import javax.swing.JPanel;
 import java.awt.SystemColor;
 import java.awt.Color;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 
 public class CompraForm {
 
@@ -48,6 +50,8 @@ public class CompraForm {
 	private JButton btnFinalizarCompra;
 	private JPanel panel_3;
 	private JLabel lblNewLabel;
+	private JScrollPane scrollLoja;
+	private JScrollPane scrollCarrinho;
 
 	/**
 	 * carrega os dados dos produtos vendidos pelo Produtor em uma tabela
@@ -106,13 +110,14 @@ public class CompraForm {
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(153, 102, 255));
-		frame.setBounds(100, 100, 905, 749);
+		frame.setBounds(100, 100, 1101, 749);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		tblProdutosLoja = new JTable();
-		tblProdutosLoja.setModel(new DefaultTableModel(fetchData(), new String[] { "ProdutoObject", "Descri\u00E7\u00E3o",
-				"Nome", "Org\u00E2nico", "Quantidade Total", "Quantidade Desejada" }) {
+		tblProdutosLoja.setModel(new DefaultTableModel(fetchData(), new String[] { "ProdutoObject",
+				"Descri\u00E7\u00E3o", "Nome", "Org\u00E2nico", "Quantidade Total", "Quantidade Desejada" }) {
+
 			Class[] columnTypes = new Class[] { Object.class, String.class, Object.class, Object.class, Double.class,
 					Double.class };
 
@@ -122,12 +127,19 @@ public class CompraForm {
 		});
 		tblProdutosLoja.setBounds(482, 125, 397, 525);
 		tblProdutosLoja.setRowSelectionAllowed(true);
-		tblProdutosLoja.removeColumn(tblProdutosLoja.getColumnModel().getColumn(0));
-		tblProdutosLoja.removeColumn(tblProdutosLoja.getColumnModel().getColumn(0));
+//		tblProdutosLoja.removeColumn(tblProdutosLoja.getColumnModel().getColumn(0));
+//		tblProdutosLoja.removeColumn(tblProdutosLoja.getColumnModel().getColumn(0));
+
+		JScrollPane scrollLoja = new JScrollPane(tblProdutosLoja);
+
+		scrollLoja.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollLoja.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollLoja.setBounds(451, 125, 624, 523);
+		frame.getContentPane().add(scrollLoja);
 
 		panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(482, 674, 397, 52);
+		panel_1.setBounds(451, 674, 624, 52);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -149,7 +161,7 @@ public class CompraForm {
 		btnAdicionarNoCarrinho.setForeground(Color.WHITE);
 		btnAdicionarNoCarrinho.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		btnAdicionarNoCarrinho.setBackground(new Color(51, 204, 255));
-		btnAdicionarNoCarrinho.setBounds(168, 10, 219, 35);
+		btnAdicionarNoCarrinho.setBounds(395, 11, 219, 35);
 		panel_1.add(btnAdicionarNoCarrinho);
 		btnLess.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -179,12 +191,11 @@ public class CompraForm {
 				}
 			}
 		});
-		frame.getContentPane().add(tblProdutosLoja);
 
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBackground(SystemColor.controlShadow);
-		panel.setBounds(0, 0, 905, 46);
+		panel.setBounds(0, 0, 1101, 46);
 		frame.getContentPane().add(panel);
 
 		btnSair = new JButton("x");
@@ -197,18 +208,27 @@ public class CompraForm {
 				}
 			}
 		});
-		btnSair.setBounds(850, 0, 55, 46);
+		btnSair.setBounds(1050, 0, 51, 46);
 		panel.add(btnSair);
 		btnSair.setForeground(Color.WHITE);
 		btnSair.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnSair.setBackground(Color.RED);
 
 		tblCarrinho = new JTable();
+		tblCarrinho.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "Nome", "Quantidade", "Pre\u00E7o Unit\u00E1rio", "Total" }));
 		tblCarrinho.setRowSelectionAllowed(true);
 		tblCarrinho.setBounds(23, 125, 397, 466);
-		frame.getContentPane().add(tblCarrinho);
+
+		scrollCarrinho = new JScrollPane(tblCarrinho);
+		scrollCarrinho.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollCarrinho.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollCarrinho.setBounds(23, 125, 397, 466);
+
+		frame.getContentPane().add(scrollCarrinho);
 
 		lblCarrinho = new JLabel("Carrinho");
+		lblCarrinho.setIcon(new ImageIcon(CompraForm.class.getResource("/assets/carrinho.png")));
 		lblCarrinho.setForeground(new Color(255, 255, 255));
 		lblCarrinho.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCarrinho.setFont(new Font("Tahoma", Font.BOLD, 35));
@@ -216,10 +236,11 @@ public class CompraForm {
 		frame.getContentPane().add(lblCarrinho);
 
 		lblProdutosDisponveis = new JLabel("Loja");
+		lblProdutosDisponveis.setIcon(new ImageIcon(CompraForm.class.getResource("/assets/loja.png")));
 		lblProdutosDisponveis.setForeground(new Color(255, 255, 255));
 		lblProdutosDisponveis.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProdutosDisponveis.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblProdutosDisponveis.setBounds(482, 69, 397, 46);
+		lblProdutosDisponveis.setBounds(451, 73, 624, 46);
 		frame.getContentPane().add(lblProdutosDisponveis);
 
 		panel_2 = new JPanel();
