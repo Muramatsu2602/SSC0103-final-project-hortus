@@ -48,6 +48,8 @@ public class CompraForm {
 	private JButton btnFinalizarCompra;
 	private JPanel panel_3;
 	private JLabel lblNewLabel;
+	
+	
 
 	/**
 	 * carrega os dados dos produtos vendidos pelo Produtor em uma tabela
@@ -56,26 +58,26 @@ public class CompraForm {
 	 */
 	public Object[][] fetchData() {
 
-		// Backend
+        // Backend
 
-		// MOCK DATA
-		Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos",
-				"SP");
-		Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456",
-				"1231231", 1, "De São Carlos, sô");
-		Produto produto1 = new Produto(3, produtor, "Maça GOSTOSA", "Maça com gosto bom", 12.0, 5.99, 'k', "Maça, amor",
-				true);
-		Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k',
-				"Banana, macaco e potassio", false);
+        // MOCK DATA
+        Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos",
+                "SP");
+        Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456",
+                "1231231", 1, "De São Carlos, sô");
+        Produto produto1 = new Produto(3, produtor, "Maça GOSTOSA", "Maça com gosto bom", 12.0, 5.99, 'k', "Maça, amor",
+                true);
+        Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k',
+                "Banana, macaco e potassio", false);
 
-		Object[][] MockData = new Object[][] {
-				{ produto1, produto1.getDescricao(), produto1.getNomeProduto(), produto1.isOrganico(),
-						produto1.getQuantidade(), 0.0 },
-				{ produto2, produto2.getDescricao(), produto2.getNomeProduto(), produto2.isOrganico(),
-						produto2.getQuantidade(), 0.0 }, };
+        Object[][] MockData = new Object[][] {
+                { produto1, produto1.getDescricao(), produto1.getNomeProduto(), produto1.isOrganico(),
+                        produto1.getQuantidade(), 0.0 },
+                { produto2, produto2.getDescricao(), produto2.getNomeProduto(), produto2.isOrganico(),
+                        produto2.getQuantidade(), 0.0 }, };
 
-		return MockData;
-	}
+        return MockData;
+    }
 
 	/**
 	 * Launch the application.

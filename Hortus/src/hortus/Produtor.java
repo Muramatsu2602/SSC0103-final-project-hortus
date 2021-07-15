@@ -23,6 +23,14 @@ public class Produtor extends Usuario {
 	public int getTipoProd() {
 		return tipoProd;
 	}
+	
+	public String getTipoProdString() {
+		String[] tiposProdString = new String[] { "Apicultura", "Avicultura", "Bovinos", "Caprinos", "Cogumelos", "Condimentos",
+				"Conservas", "Gr\u00E3os", "HortiFruiti", "Importados", "Latic\u00EDnios", "Ovinos", "A granel",
+				"Apicultura", "Avicultura", "Bovinos", "Caprinos", "Cogumelos", "Condimentos", "Conservas",
+				"Gr\u00E3os", "HortiFruiti", "Importados", "Latic\u00EDnios", "Outro", "Ovinos" };
+		return tiposProdString[tipoProd];
+	}
 
 	public void setTipoProd(int tipoProd) {
 		this.tipoProd = tipoProd;
