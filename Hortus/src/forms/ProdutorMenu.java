@@ -78,7 +78,7 @@ public class ProdutorMenu {
 	 * @throws HortusException
 	 */
 	public ProdutorMenu(Produtor produtorAtual) throws HortusException {
-		if (produtor == null)
+		if (produtorAtual == null)
 			throw new HortusException("Erro ao carregar as informa��es do Produtor! Objeto vazio");
 
 		this.produtor = produtorAtual;
@@ -186,7 +186,7 @@ public class ProdutorMenu {
 		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA VENDA
-				DetalhesCompraForm detalhesForm = new DetalhesCompraForm(null);
+				DetalhesCompraForm detalhesForm = new DetalhesCompraForm(vendas.get(table.getSelectedRow()));
 
 			}
 
