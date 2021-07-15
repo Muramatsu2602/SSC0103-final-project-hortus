@@ -164,6 +164,8 @@ public class CadastroProdutorForm {
 		txtDescricao.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtDescricao.setText("Escreva aqui os detalhes de sua produ\u00E7\u00E3o...");
 		txtDescricao.setBounds(652, 224, 412, 103);
+		txtDescricao.setDocument(new JTextFieldLimit(198));
+		txtDescricao.setLineWrap(true);
 		panel_1_1.add(txtDescricao);
 
 		JSeparator separator_4 = new JSeparator();
@@ -195,6 +197,7 @@ public class CadastroProdutorForm {
 		panel_1_1.add(txtCNPJ);
 
 		JTextPane lblCadastro = new JTextPane();
+		lblCadastro.setEditable(false);
 		lblCadastro.setText("Novo Produtor");
 		lblCadastro.setFont(new Font("Tahoma", Font.PLAIN, 45));
 		lblCadastro.setBounds(412, 10, 332, 61);
@@ -209,6 +212,7 @@ public class CadastroProdutorForm {
 		txtNome.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtNome.setColumns(10);
 		txtNome.setBounds(10, 148, 286, 42);
+		txtNome.setDocument(new JTextFieldLimit(48));
 		panel_1_1.add(txtNome);
 
 		JLabel lblNome = new JLabel("Nome:");
@@ -231,12 +235,13 @@ public class CadastroProdutorForm {
 		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(10, 255, 286, 42);
+		txtEmail.setDocument(new JTextFieldLimit(48));
 		panel_1_1.add(txtEmail);
 
 		JLabel lblEmail_1 = new JLabel("Email:");
 		lblEmail_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEmail_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblEmail_1.setBounds(10, 219, 55, 25);
+		lblEmail_1.setBounds(0, 224, 84, 25);
 		panel_1_1.add(lblEmail_1);
 
 		JLabel lblSenha = new JLabel("Senha:");
@@ -259,10 +264,12 @@ public class CadastroProdutorForm {
 
 		txtSenha = new JPasswordField();
 		txtSenha.setBounds(10, 504, 286, 42);
+		txtSenha.setDocument(new JTextFieldLimit(48));
 		panel_1_1.add(txtSenha);
 
 		txtConfirmaSenha = new JPasswordField();
 		txtConfirmaSenha.setBounds(10, 602, 286, 42);
+		txtConfirmaSenha.setDocument(new JTextFieldLimit(48));
 		panel_1_1.add(txtConfirmaSenha);
 
 		txtTelefone = new JFormattedTextField(new MaskFormatter("(##) #####-####"));
@@ -283,7 +290,7 @@ public class CadastroProdutorForm {
 		lblNome_1_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNome_1_1.setForeground(Color.RED);
 		lblNome_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_1.setBounds(73, 220, 77, 25);
+		lblNome_1_1.setBounds(73, 219, 77, 25);
 		panel_1_1.add(lblNome_1_1);
 
 		JLabel lblNome_1_2 = new JLabel("*");
@@ -366,6 +373,7 @@ public class CadastroProdutorForm {
 		txtRua.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtRua.setColumns(10);
 		txtRua.setBounds(343, 397, 587, 42);
+		txtRua.setDocument(new JTextFieldLimit(48));
 		panel_1_1.add(txtRua);
 
 		JLabel lblRua = new JLabel("Rua:");
@@ -385,6 +393,7 @@ public class CadastroProdutorForm {
 		txtNum.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtNum.setColumns(10);
 		txtNum.setBounds(957, 397, 60, 42);
+		txtNum.setDocument(new JTextFieldLimit(8));
 		panel_1_1.add(txtNum);
 
 		txtBairro = new JTextField();
@@ -392,6 +401,7 @@ public class CadastroProdutorForm {
 		txtBairro.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtBairro.setColumns(10);
 		txtBairro.setBounds(343, 506, 515, 42);
+		txtBairro.setDocument(new JTextFieldLimit(18));
 		panel_1_1.add(txtBairro);
 
 		JLabel lblBairro = new JLabel("Bairro:");
@@ -452,6 +462,7 @@ public class CadastroProdutorForm {
 		txtCidade.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtCidade.setColumns(10);
 		txtCidade.setBounds(343, 690, 217, 42);
+		txtCidade.setDocument(new JTextFieldLimit(28));
 		panel_1_1.add(txtCidade);
 
 		JLabel lblEstado = new JLabel("Estado:");
@@ -487,6 +498,7 @@ public class CadastroProdutorForm {
 		txtComplemento.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtComplemento.setColumns(10);
 		txtComplemento.setBounds(343, 602, 515, 42);
+		txtComplemento.setDocument(new JTextFieldLimit(28));
 		panel_1_1.add(txtComplemento);
 
 		JLabel lblComplemento = new JLabel("Complemento:");

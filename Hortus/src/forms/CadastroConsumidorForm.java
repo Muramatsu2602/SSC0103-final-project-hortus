@@ -183,6 +183,7 @@ public class CadastroConsumidorForm {
 		panel_1.add(txtCPF);
 
 		JTextPane lblCadastro = new JTextPane();
+		lblCadastro.setEditable(false);
 		lblCadastro.setText("Novo Consumidor");
 		lblCadastro.setFont(new Font("Tahoma", Font.PLAIN, 45));
 		lblCadastro.setBounds(253, 10, 376, 61);
@@ -197,6 +198,7 @@ public class CadastroConsumidorForm {
 		txtNome.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtNome.setColumns(10);
 		txtNome.setBounds(10, 148, 286, 42);
+		txtNome.setDocument(new JTextFieldLimit(48));
 		panel_1.add(txtNome);
 
 		JLabel lblNome = new JLabel("Nome:");
@@ -219,12 +221,13 @@ public class CadastroConsumidorForm {
 		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(10, 255, 286, 42);
+		txtEmail.setDocument(new JTextFieldLimit(48));
 		panel_1.add(txtEmail);
 
 		JLabel lblEmail_1 = new JLabel("Email:");
 		lblEmail_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEmail_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblEmail_1.setBounds(10, 219, 55, 25);
+		lblEmail_1.setBounds(-5, 228, 95, 25);
 		panel_1.add(lblEmail_1);
 
 		JLabel lblSenha = new JLabel("Senha:");
@@ -247,10 +250,12 @@ public class CadastroConsumidorForm {
 
 		txtSenha = new JPasswordField();
 		txtSenha.setBounds(10, 362, 286, 42);
+		txtSenha.setDocument(new JTextFieldLimit(48));
 		panel_1.add(txtSenha);
 
 		txtConfirmaSenha = new JPasswordField();
 		txtConfirmaSenha.setBounds(10, 460, 286, 42);
+		txtConfirmaSenha.setDocument(new JTextFieldLimit(48));
 		panel_1.add(txtConfirmaSenha);
 
 		txtTelefone = new JFormattedTextField(new MaskFormatter("(##) #####-####"));
@@ -271,7 +276,7 @@ public class CadastroConsumidorForm {
 		lblNome_1_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNome_1_1.setForeground(Color.RED);
 		lblNome_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_1.setBounds(73, 220, 77, 25);
+		lblNome_1_1.setBounds(73, 224, 77, 25);
 		panel_1.add(lblNome_1_1);
 
 		JLabel lblNome_1_2 = new JLabel("*");
@@ -356,6 +361,7 @@ public class CadastroConsumidorForm {
 		txtRua.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtRua.setColumns(10);
 		txtRua.setBounds(343, 383, 286, 42);
+		txtRua.setDocument(new JTextFieldLimit(48));
 		panel_1.add(txtRua);
 
 		JLabel lblRua = new JLabel("Rua:");
@@ -375,6 +381,7 @@ public class CadastroConsumidorForm {
 		txtNum.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtNum.setColumns(10);
 		txtNum.setBounds(652, 383, 60, 42);
+		txtNum.setDocument(new JTextFieldLimit(10));
 		panel_1.add(txtNum);
 
 		txtBairro = new JTextField();
@@ -382,6 +389,7 @@ public class CadastroConsumidorForm {
 		txtBairro.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtBairro.setColumns(10);
 		txtBairro.setBounds(343, 492, 286, 42);
+		txtBairro.setDocument(new JTextFieldLimit(18));
 		panel_1.add(txtBairro);
 
 		JLabel lblBairro = new JLabel("Bairro:");
@@ -442,6 +450,7 @@ public class CadastroConsumidorForm {
 		txtCidade.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtCidade.setColumns(10);
 		txtCidade.setBounds(343, 676, 217, 42);
+		txtCidade.setDocument(new JTextFieldLimit(28));
 		panel_1.add(txtCidade);
 
 		JLabel lblEstado = new JLabel("Estado:");
@@ -452,9 +461,7 @@ public class CadastroConsumidorForm {
 
 		cbEstado = new JComboBox();
 		cbEstado.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cbEstado.setModel(new DefaultComboBoxModel(
-				new String[] { "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE",
-						"PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF" }));
+		cbEstado.setModel(new DefaultComboBoxModel(new String[] {"AC", "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF"}));
 		cbEstado.setBounds(584, 679, 55, 34);
 		panel_1.add(cbEstado);
 
@@ -477,6 +484,7 @@ public class CadastroConsumidorForm {
 		txtComplemento.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtComplemento.setColumns(10);
 		txtComplemento.setBounds(343, 588, 451, 42);
+		txtComplemento.setDocument(new JTextFieldLimit(28));
 		panel_1.add(txtComplemento);
 
 		JLabel lblComplemento = new JLabel("Complemento:");
