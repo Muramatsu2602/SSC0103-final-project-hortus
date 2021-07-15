@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.text.NumberFormatter;
 
 import hortus.Produto;
+import hortus.Produtor;
 import hortus.SGBD;
 
 import javax.swing.JTextPane;
@@ -46,6 +47,8 @@ public class CadastroProdutoForm {
 	private JCheckBox ckOrganico;
 	private JTextArea txtIngredientes;
 
+	private Produtor produtor;
+	
 	/**
 	 * Métodos
 	 */
@@ -60,19 +63,19 @@ public class CadastroProdutoForm {
 
 		// Produto produto = new Produto();
 
-		showMessageDialog(null, "Cadastro do produto '" + txtNome.getText() + "' efetuado com sucesso!");
-
 		SGBD banco = new SGBD();
 
-		/*
-		 * Produto produto = new Produto(1, produtor.getID(), txtNome.getText(),
-		 * txtDescricao.getText(), Double.parseDouble(txtQuantidade.getText()),
-		 * Double.parseDouble(txtPreco.getText()), (char) cbUnidade.getSelectedIndex(),
-		 * txtIngredientes.getText(), ckOrganico.isSelected());
-		 * 
-		 * banco.insereProduto(produto);
-		 */
+		
+		Produto produto = new Produto(1, produtor, txtNome.getText(),
+		txtDescricao.getText(), Double.parseDouble(txtQuantidade.getText().replace(',', '.')),
+		Double.parseDouble(txtPreco.getText().replace(',', '.')), (char) cbUnidade.getSelectedIndex(),
+		txtIngredientes.getText(), ckOrganico.isSelected());
+		 
+		banco.insereProduto(produto);
 
+		// Produto inserido com sucess
+		showMessageDialog(null, "Cadastro do produto '" + txtNome.getText() + "' efetuado com sucesso!");
+		
 		// limpando os campos
 		txtNome.setText("");
 		txtPreco.setText("");
@@ -99,7 +102,7 @@ public class CadastroProdutoForm {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CadastroProdutoForm window = new CadastroProdutoForm();
+					CadastroProdutoForm window = new CadastroProdutoForm(null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -111,8 +114,11 @@ public class CadastroProdutoForm {
 	/**
 	 * Create the application.
 	 */
-	public CadastroProdutoForm() {
+	public CadastroProdutoForm(Produtor produtorAtual) {
 		initialize();
+		produtor = produtorAtual;
+		
+		frame.setVisible(true);
 	}
 
 	/**
@@ -139,8 +145,9 @@ public class CadastroProdutoForm {
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog(frame, "Deseja sair do cadastro de Produto?",
 						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (option == JOptionPane.YES_OPTION) {
-					System.exit(0);
+				if (option == JOptionPane.YES_OPTION) 
+				{
+					frame.dispose();
 				}
 			}
 		});
@@ -223,6 +230,7 @@ public class CadastroProdutoForm {
 		panel_1.add(ckOrganico);
 
 		txtPreco = new JFormattedTextField(formatter1);
+		txtPreco.setToolTipText("Pre\u00E7o na unidade selecionada");
 		txtPreco.setHorizontalAlignment(SwingConstants.LEFT);
 		txtPreco.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtPreco.setColumns(10);
@@ -230,6 +238,7 @@ public class CadastroProdutoForm {
 		panel_1.add(txtPreco);
 
 		JTextPane lblCadastro = new JTextPane();
+		lblCadastro.setEditable(false);
 		lblCadastro.setText("Novo Produto");
 		lblCadastro.setFont(new Font("Tahoma", Font.PLAIN, 45));
 		lblCadastro.setBounds(288, 10, 376, 61);
