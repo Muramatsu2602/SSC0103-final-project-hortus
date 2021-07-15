@@ -189,7 +189,7 @@ public class ProdutorMenu {
 				// AQUI INVOCA A TELA DE DETALHES DA VENDA
 				new DetalhesCompraForm(vendas.get(table.getSelectedRow()));
 			}
-
+  
 		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
