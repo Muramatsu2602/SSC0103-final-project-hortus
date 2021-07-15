@@ -197,13 +197,6 @@ public class CadastroProdutoForm {
 		cbUnidade.setBounds(670, 151, 150, 34);
 		panel_1.add(cbUnidade);
 
-		JLabel lblNome_1_8 = new JLabel("*");
-		lblNome_1_8.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_8.setForeground(Color.RED);
-		lblNome_1_8.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_8.setBounds(440, 284, 48, 25);
-		panel_1.add(lblNome_1_8);
-
 		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o:");
 		lblDescricao.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDescricao.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -303,8 +296,8 @@ public class CadastroProdutoForm {
 			public void actionPerformed(ActionEvent e) {
 
 				// verificando se pelo menos um dos campos está vazio e/ou incompleto
-				if (txtNome.getText().isBlank() || txtPreco.getText().isBlank() || txtQuantidade.getText().isBlank()
-						|| txtDescricao.getText().isBlank() || txtIngredientes.getText().isBlank()) {
+				if (txtNome.getText().isBlank() || txtPreco.getText().isBlank() || txtQuantidade.getText().isBlank()) 
+				{
 					showMessageDialog(null, "Há campo(s) vazio(s)");
 					return;
 				}
@@ -347,13 +340,6 @@ public class CadastroProdutoForm {
 		txtIngredientes.setDocument(new JTextFieldLimit(98));
 		txtIngredientes.setLineWrap(true);
 		panel_1.add(txtIngredientes);
-
-		JLabel lblNome_1_8_2 = new JLabel("*");
-		lblNome_1_8_2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_8_2.setForeground(Color.RED);
-		lblNome_1_8_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_8_2.setBounds(135, 284, 48, 25);
-		panel_1.add(lblNome_1_8_2);
 
 		JLabel lblNome_1_4_1 = new JLabel("*");
 		lblNome_1_4_1.setHorizontalAlignment(SwingConstants.LEFT);

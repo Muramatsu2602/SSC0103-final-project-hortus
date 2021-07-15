@@ -347,7 +347,7 @@ public class CadastroProdutorForm {
 				if (txtNome.getText().isBlank() || txtEmail.getText().isBlank() || txtSenha.getText().isBlank()
 						|| txtConfirmaSenha.getText().isBlank() || txtCNPJ.getText().isBlank()
 						|| txtTelefone.getText().isBlank() || txtCCIR.getText().isBlank() || txtRua.getText().isBlank()
-						|| txtNum.getText().isBlank() || txtComplemento.getText().isBlank()
+						|| txtNum.getText().isBlank()
 						|| txtBairro.getText().isBlank() || txtCEP.getText().isBlank()
 						|| txtCidade.getText().isBlank()) {
 					showMessageDialog(null, "Há campo(s) vazio(s)");
@@ -507,13 +507,6 @@ public class CadastroProdutorForm {
 		lblComplemento.setBounds(343, 567, 146, 25);
 		panel_1_1.add(lblComplemento);
 
-		JLabel lblNome_1_3_2_3 = new JLabel("*");
-		lblNome_1_3_2_3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_2_3.setForeground(Color.RED);
-		lblNome_1_3_2_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_2_3.setBounds(483, 567, 77, 25);
-		panel_1_1.add(lblNome_1_3_2_3);
-
 		txtCCIR = new JFormattedTextField(new MaskFormatter("###########"));
 		txtCCIR.setHorizontalAlignment(SwingConstants.LEFT);
 		txtCCIR.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -566,13 +559,6 @@ public class CadastroProdutorForm {
 		lblDescricao.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblDescricao.setBounds(652, 198, 106, 25);
 		panel_1_1.add(lblDescricao);
-
-		JLabel lblNome_1_8 = new JLabel("*");
-		lblNome_1_8.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_8.setForeground(Color.RED);
-		lblNome_1_8.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_8.setBounds(739, 192, 77, 25);
-		panel_1_1.add(lblNome_1_8);
 
 		JSeparator separator_1_1 = new JSeparator();
 		separator_1_1.setOrientation(SwingConstants.VERTICAL);
