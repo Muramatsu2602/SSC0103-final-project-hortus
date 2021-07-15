@@ -63,7 +63,6 @@ public class ConsumidorMenu {
 					compras.get(i).getProdutor().getNome(), compras.get(i).getValorFinal().toString(),
 					compras.get(i).getDescricao() };
 		}
-	
 		return tableData;   
 	}
 

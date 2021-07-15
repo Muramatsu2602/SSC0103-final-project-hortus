@@ -114,6 +114,7 @@ public class ProdutorMenu {
 					vendas.get(i).getDescricao() };
 		}
 
+		System.out.println("Tamanho: "+vendas.size());
 		return tableData;
 	}
 
@@ -229,7 +230,7 @@ public class ProdutorMenu {
 
 			public void actionPerformed(ActionEvent e) {
 				CadastroProdutoForm cadastroProdutoForm;
-				cadastroProdutoForm = new CadastroProdutoForm();
+				cadastroProdutoForm = new CadastroProdutoForm(produtor);
 				cadastroProdutoForm.setVisible(true);
 			}
 		});
