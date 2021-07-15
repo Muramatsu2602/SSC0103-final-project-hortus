@@ -28,6 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
@@ -35,6 +36,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Rectangle;
 
 public class EstoqueProdutorForm {
 
@@ -54,26 +56,25 @@ public class EstoqueProdutorForm {
 	private static String[][] tableData;
 	private Vector<Produto> produtos;
 
-
 	/**
 	 * Metodos
 	 */
 	public static String[][] fetchData() {
-		SGBD banco = new SGBD();
-		// Querry para pegar todas compras
-		produtos = banco.getComprasByConsumidor(consumidor.getId());
-
-		tableData = new String[compras.size()][];
-
-		// "Nome", "Organico", "Unidade", "Preco", "Quantidade"
-		for (int i = 0; i < compras.size(); i++) {
-			tableData[i] = new String[] { compras.get(i).getDataCompra().toString(),
-					compras.get(i).getProdutor().getNome(), compras.get(i).getValorFinal().toString(),
-					compras.get(i).getDescricao() };
-		}
-		return tableData;   
+//		SGBD banco = new SGBD();
+//		// Querry para pegar todas compras
+//		produtos = banco.getComprasByConsumidor(consumidor.getId());
+//
+//		tableData = new String[compras.size()][];
+//
+//		// "Nome", "Organico", "Unidade", "Preco", "Quantidade"
+//		for (int i = 0; i < compras.size(); i++) {
+//			tableData[i] = new String[] { compras.get(i).getDataCompra().toString(),
+//					compras.get(i).getProdutor().getNome(), compras.get(i).getValorFinal().toString(),
+//					compras.get(i).getDescricao() };
+//		}
+		return tableData;
 	}
-	
+
 	/**
 	 * @param selectedRowIndex
 	 */
@@ -83,7 +84,7 @@ public class EstoqueProdutorForm {
 //				
 //				
 //		txtNome.setText(produto.getNomeProduto());
-		
+
 	}
 
 	/**
@@ -153,20 +154,12 @@ public class EstoqueProdutorForm {
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 10, 800, 666);
-		panel.add(scrollPane);
-
 		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			fetchData(),
-			new String[] {
-				"Nome", "Organico", "Unidade", "Pre\u00E7o", "Quantidade"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				true, true, true, true, false
-			};
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setModel(new DefaultTableModel(fetchData(),
+				new String[] { "Nome", "Organico", "Unidade", "Pre\u00E7o", "Quantidade" }) {
+			boolean[] columnEditables = new boolean[] { true, true, true, true, false };
+
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
@@ -181,9 +174,14 @@ public class EstoqueProdutorForm {
 		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setCellSelectionEnabled(true);
-		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		table.setBounds(0, 0, 1, 1);
-		panel.add(table);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		table.setBounds(10, 81, 624, 585);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(10, 10, 800, 666);
+		panel.add(scrollPane);
 
 		JLabel lblNewLabel = new JLabel("Gerenciar Estoque");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
@@ -197,8 +195,7 @@ public class EstoqueProdutorForm {
 		panel_2.setBounds(879, 773, 533, 56);
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
-		
-		
+
 		// SALVAR
 		JButton btnSalvarAlteracoes = new JButton("SALVAR");
 		btnSalvarAlteracoes.addActionListener(new ActionListener() {
@@ -210,12 +207,12 @@ public class EstoqueProdutorForm {
 		btnSalvarAlteracoes.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnSalvarAlteracoes.setBackground(new Color(51, 204, 51));
 		panel_2.add(btnSalvarAlteracoes);
-		
+
 		// APAGAR
 		JButton btnApagarProdutoSelecionado = new JButton("APAGAR");
 		btnApagarProdutoSelecionado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 		btnApagarProdutoSelecionado.setBounds(329, 10, 183, 35);
