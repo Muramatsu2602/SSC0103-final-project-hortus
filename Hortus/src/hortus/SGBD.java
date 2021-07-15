@@ -44,7 +44,8 @@ public class SGBD {
 			PRECO			NUMERIC(8,2)	NOT NULL,
 			UNIDADE			INTEGER			NOT NULL,
 			INGREDIENTES	CHAR(100),
-			ORGANICO		INTEGER			NOT NULL
+			ORGANICO		INTEGER			NOT NULL,
+			EXCLUIDO        INTEGER         DEFAULT 0
 		 );
 		 
 		 CREATE TABLE compra(
@@ -54,7 +55,8 @@ public class SGBD {
 		 	VALOR_FINAL		NUMERIC(8,2)	NOT NULL,
 		 	ID_ENDERECO		INTEGER			NOT NULL,	
 		 	DESCRICAO		CHAR(200),
-		 	DATA_COMPRA     CHAR(10)        NOT NULL
+		 	DATA_COMPRA     CHAR(10)        NOT NULL,
+		 	FINALIZADA      INTEGER         DEFAULT 0
 		 );
 		 
 		 CREATE TABLE itens_compra (
@@ -307,6 +309,49 @@ public class SGBD {
             System.out.println("Erro Endereço "+e.getMessage());
         }
 	}
+ 	
+ 	public void finalizarCompra(Compra compra) {
+		try {
+			Connection con = this.connect();
+			
+			String sql = "UPDATE compra set FINALIZADA = 1 WHERE ID = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setInt(1, compra.getIdCompra());
+			stmt.execute();
+			con.close();
+		} catch(SQLException e){
+            System.out.println("Erro finalizar Compra "+e.getMessage());
+        }
+		compra.setCompraFinalizada();
+	}
+	
+	public Consumidor excluirProduto(Produto prod) throws HortusException
+ 	{
+ 		try {
+			Connection con = this.connect();
+ 			String sql = "SELECT * FROM itens_compra INNER JOIN compra ON itens_compra.ID_COMPRA = compra.ID WHERE itens_compra.ID_PRODUTO = ? AND compra.FINALIZADA = 0;";
+			PreparedStatement stmt = con.prepareStatement(sql);
+ 			stmt.setInt(1, prod.getIdProduto());
+			ResultSet rs = stmt.executeQuery();
+			if(!rs.next())
+			{
+				// Não achou nenhum, então pode exlcuir
+				String sql2 = "UPDATE produto SET EXCLUIDO = 1 WHERE ID = ?;";
+				PreparedStatement stmt2 = con.prepareStatement(sql2);
+				stmt2.setInt(1, prod.getIdProduto());
+				stmt2.execute();
+				
+				con.close();
+			} else {
+				con.close();
+				throw new HortusException("Produto nao pode ser excluido, ha compras pendentes.");
+			}
+ 		} catch(SQLException e)
+ 		{
+ 			System.out.println("Erro exlcuir produto: "+e.getMessage());
+ 		}
+ 		return null;
+ 	}
  	
  	public void insereProdutoFavorito(Consumidor consumidor, Produto prod) {
 		try {
@@ -584,8 +629,12 @@ public class SGBD {
  			{
  				// Pegar todos os itens_compra da compra atual
  				Map<Produto, Double> listaProdutos = getItensCompra(rs.getInt("ID"));
- 				
- 				compras.add(new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA")));
+ 				Compra compra =new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA"));
+ 				if(rs.getInt("FINALIZADA") == 1) 
+ 				{
+					 compra.setCompraFinalizada();
+				}
+ 				compras.add(compra);
  			}
  			con.close();
  			return compras;
@@ -611,7 +660,12 @@ public class SGBD {
  				// Pegar todos os itens_compra da compra atual
  				Map<Produto, Double> listaProdutos = getItensCompra(rs.getInt("ID"));
  				
- 				compras.add(new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA")));
+ 				Compra compra = new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA"))
+ 				if(rs.getInt("FINALIZADA") == 1)
+ 				{
+ 					compra.setCompraFinalizada();
+ 				}
+ 				compras.add(compra);		
  			}
  			con.close();
  			return compras;

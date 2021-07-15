@@ -20,6 +20,9 @@ public class Compra {
 	
 	// Data da realização da compra
 	private Date dataCompra;
+	
+	// Compra finalizada
+	private boolean compraFinalizada = false;
 
 	public Compra(int idCompra, Consumidor consumidor, Produtor produtor, Map<Produto, Double> listaProdutos, Endereco endereco, String descricao, String dataCompra) {
 		this.setIdCompra(idCompra);
@@ -46,6 +49,11 @@ public class Compra {
 	}
 	*/
 
+	public void setCompraFinalizada()
+	{
+		this.compraFinalizada = true;
+	}
+	
 	public void setDataCompra(String dataCompra)
 	{   
 		try{  
