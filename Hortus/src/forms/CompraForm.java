@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.BorderLayout;
+
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import hortus.Endereco;
@@ -52,6 +54,13 @@ public class CompraForm {
 	private JLabel lblNewLabel;
 	private JScrollPane scrollLoja;
 	private JScrollPane scrollCarrinho;
+	
+	public String isOrganico(boolean organico) {
+		if (organico)
+			return "Sim";
+		else
+			return "Não";
+	}
 
 	/**
 	 * carrega os dados dos produtos vendidos pelo Produtor em uma tabela
@@ -63,19 +72,21 @@ public class CompraForm {
         // Backend
 
         // MOCK DATA
-        Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "Sï¿½o Carlos",
+        Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos",
                 "SP");
         Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456",
-                "1231231", 1, "De Sï¿½o Carlos, sï¿½");
-        Produto produto1 = new Produto(3, produtor, "Maï¿½a GOSTOSA", "Maï¿½a com gosto bom", 12.0, 5.99, 'k', "Maï¿½a, amor",
+                "1231231", 1, "De São Carlos, sô");
+        Produto produto1 = new Produto(3, produtor, "Maçã GOSTOSA", "Maçã com gosto bom", 12.0, 5.99, 'k', "Maçã, amor",
                 true);
         Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k',
                 "Banana, macaco e potassio", false);
+        
+        
 
         Object[][] MockData = new Object[][] {
-                { produto1, produto1.getDescricao(), produto1.getNomeProduto(), produto1.isOrganico(),
+                { produto1, produto1.getDescricao(), produto1.getNomeProduto(), isOrganico(produto1.isOrganico()),
                         produto1.getQuantidade(), 0.0 },
-                { produto2, produto2.getDescricao(), produto2.getNomeProduto(), produto2.isOrganico(),
+                { produto2, produto2.getDescricao(), produto2.getNomeProduto(), isOrganico(produto2.isOrganico()),
                         produto2.getQuantidade(), 0.0 }, };
 
         return MockData;
@@ -115,20 +126,38 @@ public class CompraForm {
 		frame.getContentPane().setLayout(null);
 
 		tblProdutosLoja = new JTable();
-		tblProdutosLoja.setModel(new DefaultTableModel(fetchData(), new String[] { "ProdutoObject",
-				"Descri\u00E7\u00E3o", "Nome", "Org\u00E2nico", "Quantidade Total", "Quantidade Desejada" }) {
-
-			Class[] columnTypes = new Class[] { Object.class, String.class, Object.class, Object.class, Double.class,
-					Double.class };
-
+		tblProdutosLoja.setModel(new DefaultTableModel(
+			fetchData(),
+			new String[] {
+				"ProdutoObject", "Descri\u00E7\u00E3o", "Nome", "Org\u00E2nico", "Quantidade Total", "Quantidade Desejada"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Object.class, String.class, Object.class, Object.class, Double.class, Double.class
+			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 		});
+		tblProdutosLoja.getColumnModel().getColumn(0).setResizable(false);
+		tblProdutosLoja.getColumnModel().getColumn(0).setPreferredWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(0).setMinWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(0).setMaxWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(1).setResizable(false);
+		tblProdutosLoja.getColumnModel().getColumn(1).setPreferredWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(1).setMinWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(1).setMaxWidth(0);
 		tblProdutosLoja.setBounds(482, 125, 397, 525);
 		tblProdutosLoja.setRowSelectionAllowed(true);
-//		tblProdutosLoja.removeColumn(tblProdutosLoja.getColumnModel().getColumn(0));
-//		tblProdutosLoja.removeColumn(tblProdutosLoja.getColumnModel().getColumn(0));
+		tblProdutosLoja.getTableHeader().setReorderingAllowed(false);
+		
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        
+        for (int i = 0; i < tblProdutosLoja.getColumnCount(); i++)
+        	tblProdutosLoja.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		
 
 		JScrollPane scrollLoja = new JScrollPane(tblProdutosLoja);
 
@@ -167,12 +196,12 @@ public class CompraForm {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = tblProdutosLoja.getSelectedRow();
 				if (selectedRow != -1) {
-					double novoValor = (Double) tblProdutosLoja.getValueAt(selectedRow, 3) - 1.0;
-					double quantAntiga = (Double) tblProdutosLoja.getValueAt(selectedRow, 2);
+					double novoValor = (Double) tblProdutosLoja.getValueAt(selectedRow, 5) - 1.0;
+					double quantAntiga = (Double) tblProdutosLoja.getValueAt(selectedRow, 4);
 					if (novoValor >= 0) {
-						tblProdutosLoja.setValueAt(novoValor, selectedRow, 3);
+						tblProdutosLoja.setValueAt(novoValor, selectedRow, 5);
 						quantAntiga += 1;
-						tblProdutosLoja.setValueAt(quantAntiga, selectedRow, 2);
+						tblProdutosLoja.setValueAt(quantAntiga, selectedRow, 4);
 					}
 				}
 			}
@@ -181,12 +210,12 @@ public class CompraForm {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = tblProdutosLoja.getSelectedRow();
 				if (selectedRow != -1) {
-					double novoDesejado = (Double) tblProdutosLoja.getValueAt(selectedRow, 3) + 1.0;
-					double quantAntiga = (Double) tblProdutosLoja.getValueAt(selectedRow, 2);
+					double novoDesejado = (Double) tblProdutosLoja.getValueAt(selectedRow, 5) + 1.0;
+					double quantAntiga = (Double) tblProdutosLoja.getValueAt(selectedRow, 4);
 					if (quantAntiga != 0) {
-						tblProdutosLoja.setValueAt(novoDesejado, selectedRow, 3);
+						tblProdutosLoja.setValueAt(novoDesejado, selectedRow, 5);
 						quantAntiga -= 1;
-						tblProdutosLoja.setValueAt(quantAntiga, selectedRow, 2);
+						tblProdutosLoja.setValueAt(quantAntiga, selectedRow, 4);
 					}
 				}
 			}
