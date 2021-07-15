@@ -221,6 +221,8 @@ public class CadastroProdutoForm {
 		txtDescricao.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtDescricao.setBackground(SystemColor.controlHighlight);
 		txtDescricao.setBounds(343, 324, 498, 163);
+		txtDescricao.setDocument(new JTextFieldLimit(198));
+		txtDescricao.setLineWrap(true);
 		panel_1.add(txtDescricao);
 
 		ckOrganico = new JCheckBox("\u00C9 um Produto Org\u00E2nico");
@@ -253,6 +255,7 @@ public class CadastroProdutoForm {
 		txtNome.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtNome.setColumns(10);
 		txtNome.setBounds(10, 148, 286, 42);
+		txtNome.setDocument(new JTextFieldLimit(48));
 		panel_1.add(txtNome);
 
 		JLabel lblNome = new JLabel("Nome:");
@@ -327,6 +330,7 @@ public class CadastroProdutoForm {
 		lblIngredientes.setHorizontalAlignment(SwingConstants.LEFT);
 		lblIngredientes.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblIngredientes.setBounds(10, 284, 150, 25);
+		//lblIngredientes
 		panel_1.add(lblIngredientes);
 
 		txtIngredientes = new JTextArea();
@@ -340,6 +344,8 @@ public class CadastroProdutoForm {
 		txtIngredientes.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtIngredientes.setBackground(SystemColor.controlHighlight);
 		txtIngredientes.setBounds(10, 324, 286, 235);
+		txtIngredientes.setDocument(new JTextFieldLimit(98));
+		txtIngredientes.setLineWrap(true);
 		panel_1.add(txtIngredientes);
 
 		JLabel lblNome_1_8_2 = new JLabel("*");
