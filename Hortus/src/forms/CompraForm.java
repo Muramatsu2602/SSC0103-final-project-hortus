@@ -13,6 +13,7 @@ import hortus.Produto;
 import hortus.Produtor;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -21,12 +22,60 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.JPanel;
+import java.awt.SystemColor;
+import java.awt.Color;
+import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 
 public class CompraForm {
 
+	// COMPONENTES
 	private JFrame frame;
-	private JButton btnNewButton;
-	private JTable table_2;
+	private JButton btnLess;
+	private JTable tblProdutosLoja;
+
+	// DADOS
+	private static Object[][] tableData;
+	private JPanel panel;
+	private JButton btnSair;
+	private JTable tblCarrinho;
+	private JPanel panel_1;
+	private JLabel lblCarrinho;
+	private JLabel lblProdutosDisponveis;
+	private JPanel panel_2;
+	private JButton btnAdicionarNoCarrinho;
+	private JButton btnFinalizarCompra;
+	private JPanel panel_3;
+	private JLabel lblNewLabel;
+
+	/**
+	 * carrega os dados dos produtos vendidos pelo Produtor em uma tabela
+	 * 
+	 * @return
+	 */
+	public Object[][] fetchData() {
+
+		// Backend
+
+		// MOCK DATA
+		Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos",
+				"SP");
+		Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456",
+				"1231231", 1, "De São Carlos, sô");
+		Produto produto1 = new Produto(3, produtor, "Maça GOSTOSA", "Maça com gosto bom", 12.0, 5.99, 'k', "Maça, amor",
+				true);
+		Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k',
+				"Banana, macaco e potassio", false);
+
+		Object[][] MockData = new Object[][] {
+				{ produto1, produto1.getDescricao(), produto1.getNomeProduto(), produto1.isOrganico(),
+						produto1.getQuantidade(), 0.0 },
+				{ produto2, produto2.getDescricao(), produto2.getNomeProduto(), produto2.isOrganico(),
+						produto2.getQuantidade(), 0.0 }, };
+
+		return MockData;
+	}
 
 	/**
 	 * Launch the application.
@@ -56,77 +105,150 @@ public class CompraForm {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.getContentPane().setBackground(new Color(153, 102, 255));
+		frame.setBounds(100, 100, 905, 749);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos", "SP");
-		Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456", "1231231", 1, "De São Carlos, sô");
-		
-		Produto produto1 = new Produto(3, produtor, "Maça GOSTOSA", "Maça com gosto bom", 12.0, 5.99, 'k', "Maça, amor", true);
- 		Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k', "Banana, macaco e potassio", false);
-		
-		table_2 = new JTable();
-		table_2.setModel(new DefaultTableModel(
-			new Object[][] {
-				{produto1, produto1.getDescricao(), produto1.getNomeProduto(), produto1.isOrganico(), produto1.getQuantidade(), 0.0},
-				{produto2, produto2.getDescricao(), produto2.getNomeProduto(), produto2.isOrganico(), produto2.getQuantidade(), 0.0},
-			},
-			new String[] {
-				"ProdutoObject", "Descri\u00E7\u00E3o", "Nome", "Org\u00E2nico", "Quantidade Total", "Quantidade Desejada"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Object.class, String.class, Object.class, Object.class, Double.class, Double.class
-			};
+
+		tblProdutosLoja = new JTable();
+		tblProdutosLoja.setModel(new DefaultTableModel(fetchData(), new String[] { "ProdutoObject", "Descri\u00E7\u00E3o",
+				"Nome", "Org\u00E2nico", "Quantidade Total", "Quantidade Desejada" }) {
+			Class[] columnTypes = new Class[] { Object.class, String.class, Object.class, Object.class, Double.class,
+					Double.class };
+
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 		});
-		table_2.setBounds(46, 78, 333, 32);
-		table_2.setRowSelectionAllowed(true);
-		table_2.removeColumn(table_2.getColumnModel().getColumn(0));
-		table_2.removeColumn(table_2.getColumnModel().getColumn(0));
-		frame.getContentPane().add(table_2);
-		
-		JButton btnPlusButton = new JButton("+");
-		btnPlusButton.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		btnPlusButton.addActionListener(new ActionListener() {
+		tblProdutosLoja.setBounds(482, 125, 397, 525);
+		tblProdutosLoja.setRowSelectionAllowed(true);
+		tblProdutosLoja.removeColumn(tblProdutosLoja.getColumnModel().getColumn(0));
+		tblProdutosLoja.removeColumn(tblProdutosLoja.getColumnModel().getColumn(0));
+
+		panel_1 = new JPanel();
+		panel_1.setBackground(Color.WHITE);
+		panel_1.setBounds(482, 674, 397, 52);
+		frame.getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+
+		JButton btnMore = new JButton("+");
+		btnMore.setForeground(new Color(255, 255, 255));
+		btnMore.setBackground(new Color(51, 204, 51));
+		btnMore.setBounds(27, 10, 50, 35);
+		panel_1.add(btnMore);
+		btnMore.setFont(new Font("Tahoma", Font.PLAIN, 22));
+
+		btnLess = new JButton("-");
+		btnLess.setForeground(new Color(255, 255, 255));
+		btnLess.setBackground(new Color(255, 0, 0));
+		btnLess.setBounds(96, 10, 49, 35);
+		panel_1.add(btnLess);
+		btnLess.setFont(new Font("Tahoma", Font.BOLD, 22));
+
+		btnAdicionarNoCarrinho = new JButton("Adicionar no Carrinho");
+		btnAdicionarNoCarrinho.setForeground(Color.WHITE);
+		btnAdicionarNoCarrinho.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		btnAdicionarNoCarrinho.setBackground(new Color(51, 204, 255));
+		btnAdicionarNoCarrinho.setBounds(168, 10, 219, 35);
+		panel_1.add(btnAdicionarNoCarrinho);
+		btnLess.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table_2.getSelectedRow();
+				int selectedRow = tblProdutosLoja.getSelectedRow();
 				if (selectedRow != -1) {
-					double novoDesejado = (Double) table_2.getValueAt(selectedRow, 3)+1.0;
-					double quantAntiga = (Double) table_2.getValueAt(selectedRow, 2);
-					if (quantAntiga != 0) {
-						table_2.setValueAt(novoDesejado, selectedRow, 3);
-						quantAntiga -= 1;
-						table_2.setValueAt(quantAntiga, selectedRow, 2);
-					}
-				}
-			}
-		});
-		btnPlusButton.setBounds(142, 190, 50, 50);
-		frame.getContentPane().add(btnPlusButton);
-		
-		btnNewButton = new JButton("-");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = table_2.getSelectedRow();
-				if (selectedRow != -1) {
-					double novoValor = (Double) table_2.getValueAt(selectedRow, 3)-1.0;
-					double quantAntiga = (Double) table_2.getValueAt(selectedRow, 2);
+					double novoValor = (Double) tblProdutosLoja.getValueAt(selectedRow, 3) - 1.0;
+					double quantAntiga = (Double) tblProdutosLoja.getValueAt(selectedRow, 2);
 					if (novoValor >= 0) {
-						table_2.setValueAt(novoValor, selectedRow, 3);
+						tblProdutosLoja.setValueAt(novoValor, selectedRow, 3);
 						quantAntiga += 1;
-						table_2.setValueAt(quantAntiga, selectedRow, 2);
+						tblProdutosLoja.setValueAt(quantAntiga, selectedRow, 2);
 					}
 				}
 			}
 		});
-		btnNewButton.setBounds(242, 190, 50, 50);
-		frame.getContentPane().add(btnNewButton);
-	
- 		frame.setVisible(true);
+		btnMore.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = tblProdutosLoja.getSelectedRow();
+				if (selectedRow != -1) {
+					double novoDesejado = (Double) tblProdutosLoja.getValueAt(selectedRow, 3) + 1.0;
+					double quantAntiga = (Double) tblProdutosLoja.getValueAt(selectedRow, 2);
+					if (quantAntiga != 0) {
+						tblProdutosLoja.setValueAt(novoDesejado, selectedRow, 3);
+						quantAntiga -= 1;
+						tblProdutosLoja.setValueAt(quantAntiga, selectedRow, 2);
+					}
+				}
+			}
+		});
+		frame.getContentPane().add(tblProdutosLoja);
+
+		panel = new JPanel();
+		panel.setLayout(null);
+		panel.setBackground(SystemColor.controlShadow);
+		panel.setBounds(0, 0, 905, 46);
+		frame.getContentPane().add(panel);
+
+		btnSair = new JButton("x");
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int option = JOptionPane.showConfirmDialog(frame, "Deseja sair do Menu de Produtos?",
+						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (option == JOptionPane.YES_OPTION) {
+					frame.dispose();
+				}
+			}
+		});
+		btnSair.setBounds(850, 0, 55, 46);
+		panel.add(btnSair);
+		btnSair.setForeground(Color.WHITE);
+		btnSair.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btnSair.setBackground(Color.RED);
+
+		tblCarrinho = new JTable();
+		tblCarrinho.setRowSelectionAllowed(true);
+		tblCarrinho.setBounds(23, 125, 397, 466);
+		frame.getContentPane().add(tblCarrinho);
+
+		lblCarrinho = new JLabel("Carrinho");
+		lblCarrinho.setForeground(new Color(255, 255, 255));
+		lblCarrinho.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCarrinho.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblCarrinho.setBounds(23, 73, 397, 46);
+		frame.getContentPane().add(lblCarrinho);
+
+		lblProdutosDisponveis = new JLabel("Loja");
+		lblProdutosDisponveis.setForeground(new Color(255, 255, 255));
+		lblProdutosDisponveis.setHorizontalAlignment(SwingConstants.CENTER);
+		lblProdutosDisponveis.setFont(new Font("Tahoma", Font.BOLD, 35));
+		lblProdutosDisponveis.setBounds(482, 69, 397, 46);
+		frame.getContentPane().add(lblProdutosDisponveis);
+
+		panel_2 = new JPanel();
+		panel_2.setLayout(null);
+		panel_2.setBackground(Color.WHITE);
+		panel_2.setBounds(23, 674, 397, 52);
+		frame.getContentPane().add(panel_2);
+
+		btnFinalizarCompra = new JButton("Finalizar Compra");
+		btnFinalizarCompra.setForeground(Color.WHITE);
+		btnFinalizarCompra.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		btnFinalizarCompra.setBackground(new Color(0, 204, 0));
+		btnFinalizarCompra.setBounds(79, 10, 219, 35);
+		panel_2.add(btnFinalizarCompra);
+
+		panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setBackground(Color.WHITE);
+		panel_3.setBounds(23, 601, 397, 49);
+		frame.getContentPane().add(panel_3);
+
+		lblNewLabel = new JLabel("TOTAL DA COMPRA: R$34224,00");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel.setBounds(10, 10, 377, 29);
+		panel_3.add(lblNewLabel);
+		frame.setUndecorated(true);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+
 	}
 }

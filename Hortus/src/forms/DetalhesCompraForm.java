@@ -21,6 +21,7 @@ import hortus.Produto;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
+import javax.swing.JScrollPane;
 
 public class DetalhesCompraForm {
 
@@ -54,12 +55,12 @@ public class DetalhesCompraForm {
 
 		initialize();
 		String strProdutos = new String();
-		Map<Produto, Double> produtos = compra.getListaProdutos();		
-		for (Produto prod : produtos.keySet()) 
-		{
+		Map<Produto, Double> produtos = compra.getListaProdutos();
+		for (Produto prod : produtos.keySet()) {
 			strProdutos += prod.getNomeProduto() + "\n\n";
 			strProdutos += String.format("Quantidade: %.3f %c\n", prod.getQuantidade(), prod.getUnidade());
-			strProdutos += String.format("Preço: %.2f X %.3f = %.2f\n", prod.getPrecoProduto(), produtos.get(prod), prod.getPrecoProduto() * produtos.get(prod));
+			strProdutos += String.format("Preço: %.2f X %.3f = %.2f\n", prod.getPrecoProduto(), produtos.get(prod),
+					prod.getPrecoProduto() * produtos.get(prod));
 			strProdutos += prod.getDescricao() + "\n";
 			strProdutos += "===================================================================\n\n";
 		}
@@ -111,5 +112,10 @@ public class DetalhesCompraForm {
 		txtDetalhes.setFont(new Font("Tahoma", Font.BOLD, 14));
 		txtDetalhes.setBounds(10, 10, 531, 445);
 		panelPrincipal.add(txtDetalhes);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 2, 2);
+		panelPrincipal.add(scrollPane);
+
 	}
 }
