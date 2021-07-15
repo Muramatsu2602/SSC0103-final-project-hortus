@@ -71,7 +71,7 @@ public class ConsumidorMenu {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+			public void run() {  
 				try {
 					ConsumidorMenu window = new ConsumidorMenu();
 					window.frame.setVisible(true);
