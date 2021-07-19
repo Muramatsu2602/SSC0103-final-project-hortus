@@ -1,39 +1,39 @@
 package forms;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
 import hortus.Endereco;
 import hortus.Produtor;
-import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import java.awt.event.MouseEvent;
-
-import javax.swing.SwingConstants;
-import javax.swing.JPanel;
-import java.awt.SystemColor;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JScrollPane;
 
 public class PesquisarProdutoresForm {
 
+	// Componentes
 	private JFrame frame;
-	private JTable table;
 	private JPanel panel;
 	private JButton btnSair;
 	private JScrollPane scrollPane;
+	private JTable table;
 
 	public Object[][] fetchData() {
 
 		// Backend
+		// "ProdutorObject", "Descricao", "Nome", "Tipo de Produção", "Cidade"
 
 		// MOCK DATA
 		Endereco end1 = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112",
@@ -42,7 +42,7 @@ public class PesquisarProdutoresForm {
 				"1231231", 1, "De São Carlos, sô");
 		Endereco end2 = new Endereco("Cesar Ricomi", "324", "Apto. 23", "Jardim Luftalla", "13213132", "Rio de Janeiro",
 				"SP");
-		Produtor produtor2 = new Produtor(1, "Kenzo", "04312127", "321313223", end2, "kenzo@gmail.com", "abcdef",
+		Produtor produtor2 = new Produtor(1, "Joaoponeis", "04312127", "321313223", end2, "kenzo@gmail.com", "abcdef",
 				"31231223", 2, "Preparando um Bauru pra todos");
 
 		Object[][] MockData = new Object[][] {
@@ -59,6 +59,7 @@ public class PesquisarProdutoresForm {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					PesquisarProdutoresForm window = new PesquisarProdutoresForm();
@@ -84,46 +85,40 @@ public class PesquisarProdutoresForm {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(153, 102, 255));
 		frame.setBounds(100, 100, 743, 707);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 
-		table = new JTable() {
-			public String getToolTipText(MouseEvent e) {
-				String tip = null;
-				java.awt.Point p = e.getPoint();
-				int rowIndex = rowAtPoint(p);
-				if (rowIndex >= 0)
-					tip = table.getModel().getValueAt(rowIndex, 1).toString();
-				return tip;
-			}
-		};
-		table.setBounds(24, 135, 696, 549);
-		frame.getContentPane().add(table);
+		table = new JTable();
+		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		table.setModel(new DefaultTableModel(fetchData(), new String[] { "ProdutorObject", "Nome",
+				"Descri\u00E7\u00E3o", "Tipo de Produ\u00E7\u00E3o", "Cidade" }) {
+			boolean[] columnEditables = new boolean[] { true, false, false, false, false };
 
-		table.setModel(new DefaultTableModel(fetchData(),
-				new String[] { "ProdutorObject", "Descri\u00E7\u00E3o", "Nome", "Tipo de Produção", "Cidade" }) {
-			Class[] columnTypes = new Class[] { Object.class, String.class, String.class, String.class, String.class };
-
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
 			}
 		});
-		table.removeColumn(table.getColumnModel().getColumn(0));
-		table.removeColumn(table.getColumnModel().getColumn(0));
-		table.setRowSelectionAllowed(true);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 2, 2);
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+		table.getColumnModel().getColumn(0).setMinWidth(0);
+		table.getColumnModel().getColumn(0).setMaxWidth(0);
+		table.getColumnModel().getColumn(3).setPreferredWidth(93);
+		table.setBounds(24, 135, 696, 549);
+
+		scrollPane = new JScrollPane(table);
+		scrollPane.setToolTipText("clique em qualquer linha para acessar a loja do produtor escolhido");
+		scrollPane.setBounds(24, 135, 696, 549);
 		frame.getContentPane().add(scrollPane);
 
-		JLabel lblNewLabel = new JLabel("Pesquisar Produtores");
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 45));
-		lblNewLabel.setBounds(24, 67, 696, 49);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel lblPesquisarProdutores = new JLabel("Pesquisar Produtores");
+		lblPesquisarProdutores.setForeground(Color.WHITE);
+		lblPesquisarProdutores.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPesquisarProdutores.setFont(new Font("Tahoma", Font.PLAIN, 45));
+		lblPesquisarProdutores.setBounds(24, 67, 696, 49);
+		frame.getContentPane().add(lblPesquisarProdutores);
 
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -133,6 +128,7 @@ public class PesquisarProdutoresForm {
 
 		btnSair = new JButton("x");
 		btnSair.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog(frame, "Deseja sair da pesquisa de produtores??",
 						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
