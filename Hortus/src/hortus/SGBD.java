@@ -537,7 +537,7 @@ public class SGBD {
 			return end;
  		} catch(SQLException e)
  		{
- 			System.out.println("erro"+e.getMessage());
+ 			System.out.println("erro get endereco by id"+e.getMessage());
  		}
  		return null;
  	}
@@ -588,7 +588,7 @@ public class SGBD {
  			return produtos;
  		} catch(Exception e)
  		{
- 			System.out.println("erro"+e.getMessage());
+ 			System.out.println("erro produtos produtor "+e.getMessage());
  		}
  		return null;
 	}
@@ -672,7 +672,7 @@ public class SGBD {
  			return compras;
  		} catch(Exception e)
  		{
- 			System.out.println("Erro get compras by consumidor: "+e.getMessage());
+ 			System.out.println("Erro get compras by produto: "+e.getMessage());
  		}
  		return null;
  	}

@@ -159,6 +159,7 @@ public class ProdutorMenu {
 		frame.getContentPane().add(separator);
 
 		JLabel lblPerfil = new JLabel("New label");
+		/*
 		lblPerfil.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -170,6 +171,7 @@ public class ProdutorMenu {
 				}
 			}
 		});
+		*/
 		lblPerfil.setIcon(new ImageIcon(ProdutorMenu.class.getResource("/assets/profile.png")));
 		lblPerfil.setBounds(1135, 56, 55, 55);
 		frame.getContentPane().add(lblPerfil);
