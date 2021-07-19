@@ -35,11 +35,12 @@ import javax.swing.ScrollPaneConstants;
 public class ProdutorMenu {
 
 // ========================== PROPRIEDADES ============================
+	// Componentes
 	private JFrame frame;
 	private JLabel lblBemVindo;
 	private JTable table;
 
-	// DATA
+	// Dados
 	private static Produtor produtor;
 	private static String[][] tableData;
 	private static Vector<Compra> vendas;
@@ -114,7 +115,7 @@ public class ProdutorMenu {
 					vendas.get(i).getDescricao() };
 		}
 
-		System.out.println("Tamanho: "+vendas.size());
+		System.out.println("Tamanho: " + vendas.size());
 		return tableData;
 	}
 
@@ -189,7 +190,7 @@ public class ProdutorMenu {
 				// AQUI INVOCA A TELA DE DETALHES DA VENDA
 				new DetalhesCompraForm(vendas.get(table.getSelectedRow()));
 			}
-  
+
 		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));

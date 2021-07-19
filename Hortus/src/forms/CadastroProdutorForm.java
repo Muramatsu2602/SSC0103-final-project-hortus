@@ -36,7 +36,9 @@ import java.awt.event.FocusEvent;
 import javax.swing.DefaultComboBoxModel;
 
 public class CadastroProdutorForm {
+	// ========================== PROPRIEDADES ============================
 
+	// Componentes
 	private JFrame frame;
 	private JTextField txtNome;
 	private JTextField txtEmail;
@@ -48,8 +50,6 @@ public class CadastroProdutorForm {
 	private JComboBox cbTipoProducao;
 	private JComboBox cbEstado;
 	private JTextArea txtDescricao;
-
-	// Endereco
 	private JFormattedTextField txtNum;
 	private JFormattedTextField txtCEP;
 	private JTextField txtRua;
@@ -57,30 +57,11 @@ public class CadastroProdutorForm {
 	private JTextField txtCidade;
 	private JTextField txtComplemento;
 
+	// ========================== METODOS ============================
 	/**
-	 * Métodos
+	 * limpa o formulario apos o submit
 	 */
-	@SuppressWarnings("deprecation")
-	public void submitForm() {
-
-		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
-
-		SGBD banco = new SGBD();
-
-		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(), txtBairro.getText(),
-				txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
-
-		banco.insereEndereco(end);
-		
-		Produtor produtor = new Produtor(0, txtNome.getText(), txtCNPJ.getText(), txtTelefone.getText(), end,
-				txtEmail.getText(), txtSenha.getText(), txtCCIR.getText(), cbTipoProducao.getSelectedIndex(),
-				txtDescricao.getText());
-
-		banco.insereProdutor(produtor);
-
-		banco.atualizaUsuarioEndereco(end, produtor.getId());
-
-		// limpando os campos
+	public void cleanFields() {
 		txtNome.setText("");
 		txtEmail.setText("");
 		txtCNPJ.setText("");
@@ -97,7 +78,33 @@ public class CadastroProdutorForm {
 		txtTelefone.setText("");
 		txtCCIR.setText("");
 		txtDescricao.setText("");
+	}
 
+	/**
+	 * envia os dados do formulario no banco
+	 */
+	@SuppressWarnings("deprecation")
+	public void submitForm() {
+
+		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
+
+		SGBD banco = new SGBD();
+
+		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(), txtBairro.getText(),
+				txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
+
+		banco.insereEndereco(end);
+
+		Produtor produtor = new Produtor(0, txtNome.getText(), txtCNPJ.getText(), txtTelefone.getText(), end,
+				txtEmail.getText(), txtSenha.getText(), txtCCIR.getText(), cbTipoProducao.getSelectedIndex(),
+				txtDescricao.getText());
+
+		banco.insereProdutor(produtor);
+
+		banco.atualizaUsuarioEndereco(end, produtor.getId());
+
+		// limpando os campos
+		cleanFields();
 		frame.dispose();
 	}
 
@@ -122,6 +129,8 @@ public class CadastroProdutorForm {
 		frame.setVisible(b);
 	}
 
+	// ========================== CONSTRUTORES ============================
+
 	/**
 	 * Create the application.
 	 * 
@@ -130,6 +139,8 @@ public class CadastroProdutorForm {
 	public CadastroProdutorForm() throws ParseException {
 		initialize();
 	}
+
+	// ========================== GUI ============================
 
 	/**
 	 * Initialize the contents of the frame.
@@ -230,7 +241,7 @@ public class CadastroProdutorForm {
 					showMessageDialog(null, "E-mail inserido está incorreto!");
 				}
 			}
-		}); 
+		});
 		txtEmail.setHorizontalAlignment(SwingConstants.LEFT);
 		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtEmail.setColumns(10);
@@ -347,8 +358,7 @@ public class CadastroProdutorForm {
 				if (txtNome.getText().isBlank() || txtEmail.getText().isBlank() || txtSenha.getText().isBlank()
 						|| txtConfirmaSenha.getText().isBlank() || txtCNPJ.getText().isBlank()
 						|| txtTelefone.getText().isBlank() || txtCCIR.getText().isBlank() || txtRua.getText().isBlank()
-						|| txtNum.getText().isBlank()
-						|| txtBairro.getText().isBlank() || txtCEP.getText().isBlank()
+						|| txtNum.getText().isBlank() || txtBairro.getText().isBlank() || txtCEP.getText().isBlank()
 						|| txtCidade.getText().isBlank()) {
 					showMessageDialog(null, "Há campo(s) vazio(s)");
 					return;
@@ -545,7 +555,9 @@ public class CadastroProdutorForm {
 		panel_1_1.add(lblNome_1_7);
 
 		cbTipoProducao = new JComboBox();
-		cbTipoProducao.setModel(new DefaultComboBoxModel(new String[] {"Apicultura", "Avicultura", "Bovinos", "Caprinos", "Cogumelos", "Condimentos", "Conservas", "Gr\u00E3os", "HortiFruiti", "Importados", "Latic\u00EDnios", "Ovinos", "Outros"}));
+		cbTipoProducao.setModel(new DefaultComboBoxModel(new String[] { "Apicultura", "Avicultura", "Bovinos",
+				"Caprinos", "Cogumelos", "Condimentos", "Conservas", "Gr\u00E3os", "HortiFruiti", "Importados",
+				"Latic\u00EDnios", "Ovinos", "Outros" }));
 		cbTipoProducao.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cbTipoProducao.setBounds(657, 148, 237, 34);
 		panel_1_1.add(cbTipoProducao);

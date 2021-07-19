@@ -37,6 +37,9 @@ import javax.swing.DefaultComboBoxModel;
 
 public class CadastroProdutoForm {
 
+	// ========================== PROPRIEDADES ============================
+
+	// componentes
 	private JFrame frame;
 	private final JPanel panel_1 = new JPanel();
 	private JTextField txtNome;
@@ -47,10 +50,13 @@ public class CadastroProdutoForm {
 	private JCheckBox ckOrganico;
 	private JTextArea txtIngredientes;
 
-	private Produtor produtor;
-	
+	// dados
+	private static Produtor produtor;
+
+	// ========================== METODOS ============================
+
 	/**
-	 * Métodos
+	 * cadastra um novo produto no banco a partir das informações do formulario
 	 */
 	public void submitForm() {
 
@@ -65,17 +71,16 @@ public class CadastroProdutoForm {
 
 		SGBD banco = new SGBD();
 
-		
-		Produto produto = new Produto(1, produtor, txtNome.getText(),
-		txtDescricao.getText(), Double.parseDouble(txtQuantidade.getText().replace(',', '.')),
-		Double.parseDouble(txtPreco.getText().replace(',', '.')), (char) cbUnidade.getSelectedIndex(),
-		txtIngredientes.getText(), ckOrganico.isSelected(), false);
-		 
+		Produto produto = new Produto(1, produtor, txtNome.getText(), txtDescricao.getText(),
+				Double.parseDouble(txtQuantidade.getText().replace(',', '.')),
+				Double.parseDouble(txtPreco.getText().replace(',', '.')), (char) cbUnidade.getSelectedIndex(),
+				txtIngredientes.getText(), ckOrganico.isSelected(), false);
+
 		banco.insereProduto(produto);
 
 		// Produto inserido com sucess
 		showMessageDialog(null, "Cadastro do produto '" + txtNome.getText() + "' efetuado com sucesso!");
-		
+
 		// limpando os campos
 		txtNome.setText("");
 		txtPreco.setText("0");
@@ -111,15 +116,19 @@ public class CadastroProdutoForm {
 		});
 	}
 
+	// ========================== CONSTRUCTORS ============================
+
 	/**
 	 * Create the application.
 	 */
 	public CadastroProdutoForm(Produtor produtorAtual) {
 		initialize();
 		produtor = produtorAtual;
-		
+
 		frame.setVisible(true);
 	}
+
+	// ========================== GUI ============================
 
 	/**
 	 * Initialize the contents of the frame.
@@ -145,8 +154,7 @@ public class CadastroProdutoForm {
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog(frame, "Deseja sair do cadastro de Produto?",
 						"Close Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (option == JOptionPane.YES_OPTION) 
-				{
+				if (option == JOptionPane.YES_OPTION) {
 					frame.dispose();
 				}
 			}
@@ -296,8 +304,7 @@ public class CadastroProdutoForm {
 			public void actionPerformed(ActionEvent e) {
 
 				// verificando se pelo menos um dos campos está vazio e/ou incompleto
-				if (txtNome.getText().isBlank() || txtPreco.getText().isBlank() || txtQuantidade.getText().isBlank()) 
-				{
+				if (txtNome.getText().isBlank() || txtPreco.getText().isBlank() || txtQuantidade.getText().isBlank()) {
 					showMessageDialog(null, "Há campo(s) vazio(s)");
 					return;
 				}
@@ -323,7 +330,7 @@ public class CadastroProdutoForm {
 		lblIngredientes.setHorizontalAlignment(SwingConstants.LEFT);
 		lblIngredientes.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblIngredientes.setBounds(10, 284, 150, 25);
-		//lblIngredientes
+		// lblIngredientes
 		panel_1.add(lblIngredientes);
 
 		txtIngredientes = new JTextArea();

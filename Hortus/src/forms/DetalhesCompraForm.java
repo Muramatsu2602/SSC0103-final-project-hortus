@@ -26,9 +26,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 
 public class DetalhesCompraForm {
+	// ========================== PROPRIEDADES ============================
 
+	// componentes
 	private JFrame frame;
 	private JTextArea txtDetalhes;
+
+	// ========================== METODOS ============================
 
 	/**
 	 * Launch the application.
@@ -45,6 +49,8 @@ public class DetalhesCompraForm {
 			}
 		});
 	}
+
+	// ========================== CONSTRUTORES ============================
 
 	/**
 	 * Create the application.
@@ -69,6 +75,8 @@ public class DetalhesCompraForm {
 		this.txtDetalhes.setText(strProdutos);
 		this.frame.setVisible(true);
 	}
+
+	// ========================== GUI ============================
 
 	/**
 	 * Initialize the contents of the frame.
@@ -102,7 +110,7 @@ public class DetalhesCompraForm {
 		btnSair.setForeground(Color.WHITE);
 		btnSair.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnSair.setBackground(Color.RED);
-		
+
 		JLabel lblNewLabel = new JLabel("Detalhes Da Compra");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel.setBounds(38, 9, 197, 26);
