@@ -46,8 +46,12 @@ public class PesquisarProdutoresForm {
 				"1231231", 1, "De São Carlos, sô");
 		Endereco end2 = new Endereco("Cesar Ricomi", "324", "Apto. 23", "Jardim Luftalla", "13213132", "Rio de Janeiro",
 				"SP");
-		Produtor produtor2 = new Produtor(1, "Joaoponeis", "04312127", "321313223", end2, "kenzo@gmail.com", "abcdef",
+		Produtor produtor2 = new Produtor(6, "Joaoponeis", "04312127", "321313223", end2, "kenzo@gmail.com", "abcdef",
 				"31231223", 2, "Preparando um Bauru pra todos");
+		
+		produtores = new Vector<Produtor>();
+		produtores.add(produtor1);
+		produtores.add(produtor2);
 
 		Object[][] MockData = new Object[][] {
 				{ produtor1, produtor1.getNome(), produtor1.getDescricao(), produtor1.getTipoProdString(),
@@ -115,7 +119,7 @@ public class PesquisarProdutoresForm {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
 				CompraForm compraForm = new CompraForm(produtores.get(table.getSelectedRow()));
-				compraForm.setVisible(true);
+				//compraForm.setVisible(true);
 			}
 		});
 

@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
@@ -60,6 +61,7 @@ public class CompraForm {
 	// DADOS
 	private static Produtor produtor;
 	private static Vector<Produto> produtosLoja;
+	private int produtoSelecionado;
 	private static Object[][] lojaData;
 	private static Object[][] carrinhoData;
 	private static Map<Produto, Double> produtosCarrinho;
@@ -82,11 +84,11 @@ public class CompraForm {
 		SGBD banco = new SGBD();
 		this.produtosLoja = banco.getProdutosProdutor(produtor.getId());
 		
-		String[][] tableData = new String[produtosLoja.size()][];
+		Object[][] tableData = new Object[produtosLoja.size()][];
 
 		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
 		for (int i = 0; i < produtosLoja.size(); i++) {
-			tableData[i] = new String[] { produtosLoja.get(i).getNomeProduto(),
+			tableData[i] = new Object[] { produtosLoja.get(i), produtosLoja.get(i).getDescricao(), produtosLoja.get(i).getNomeProduto(),
 					isOrganico(produtosLoja.get(i).isOrganico()), Double.toString(produtosLoja.get(i).getQuantidade()),
 					"0" };
 		}
@@ -137,13 +139,13 @@ public class CompraForm {
 	/**
 	 * Create the application.
 	 */
-	public CompraForm(Produtor produtor) throws HortusException {
-		if(produtor == null) {
-			throw new HortusException("Erro ao carregar o produtor.");
-		}
+	public CompraForm(Produtor produtor) {
+		
 		this.produtor = produtor;
 		
 		initialize();
+		produtosCarrinho = new HashMap<Produto, Double>();
+		frame.setVisible(true);
 		
 	}
 
@@ -158,31 +160,38 @@ public class CompraForm {
 		frame.getContentPane().setLayout(null);
 
 		tblProdutosLoja = new JTable();
+		tblProdutosLoja.getSelectionModel().addListSelectionListener(selectionEvent -> {
+			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(tblProdutosLoja.getSelectionModel())) {
+				
+				produtoSelecionado = tblProdutosLoja.getSelectedRow();
+
+			}
+
+		});
+		
 		tblProdutosLoja.setModel(new DefaultTableModel(
-			fetchData(),
+			new Object[][] {
+				{null, null, null, null, null, null, null},
+			},
 			new String[] {
-				"ProdutoObject", "Descri\u00E7\u00E3o", "Nome", "Org\u00E2nico", "Quantidade Total", "Quantidade Desejada"
+				"Descri\u00E7\u00E3o", "Nome", "Org\u00E2nico", "Pre\u00E7o por ", "ProdutoObject", "Quantidade Total", "Quantidade Desejada"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Object.class, String.class, Object.class, Object.class, Double.class, Double.class
+				String.class, Object.class, Object.class, Object.class, Object.class, Double.class, Double.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			};
-			public boolean isCellEditable(int row, int column)
-		    {
-		      return false;//This causes all cells to be not editable
-		    }
+			}
 		});
 		tblProdutosLoja.getColumnModel().getColumn(0).setResizable(false);
 		tblProdutosLoja.getColumnModel().getColumn(0).setPreferredWidth(0);
 		tblProdutosLoja.getColumnModel().getColumn(0).setMinWidth(0);
 		tblProdutosLoja.getColumnModel().getColumn(0).setMaxWidth(0);
-		tblProdutosLoja.getColumnModel().getColumn(1).setResizable(false);
-		tblProdutosLoja.getColumnModel().getColumn(1).setPreferredWidth(0);
-		tblProdutosLoja.getColumnModel().getColumn(1).setMinWidth(0);
-		tblProdutosLoja.getColumnModel().getColumn(1).setMaxWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(4).setResizable(false);
+		tblProdutosLoja.getColumnModel().getColumn(4).setPreferredWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(4).setMinWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(4).setMaxWidth(0);
 		tblProdutosLoja.setBounds(482, 125, 397, 525);
 		tblProdutosLoja.setRowSelectionAllowed(true);
 		tblProdutosLoja.getTableHeader().setReorderingAllowed(false);
@@ -228,8 +237,8 @@ public class CompraForm {
 				int selectedRow = tblProdutosLoja.getSelectedRow();
 				if (selectedRow != -1) {
 					Produto p = (Produto) tblProdutosLoja.getModel().getValueAt(selectedRow, 0);
-					double precoTotal = (Double) tblProdutosLoja.getValueAt(selectedRow, 5)*p.getPrecoProduto();
-					produtosCarrinho.put(p, (Double) tblProdutosLoja.getValueAt(selectedRow, 5));
+					double precoTotal = Double.parseDouble((String) tblProdutosLoja.getValueAt(selectedRow, 5))*p.getPrecoProduto();
+					produtosCarrinho.put(p, Double.parseDouble((String) tblProdutosLoja.getValueAt(selectedRow, 5)));
 					// Tenho que converter do Map produtosCarrinho para o Object[][] carrinhoData para que a tabela do carrinho seja atualizada
 				}
 				else {
