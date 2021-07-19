@@ -46,67 +46,66 @@ import java.awt.Button;
 import java.awt.Scrollbar;
 
 public class LoginForm {
+	// ================================= PROPRIEDADES ==========================
 
+	// Componentes
 	private JFrame frmLogin;
 	private JTextField txtEmail;
 	private JPasswordField txtSenha;
 	private JCheckBox ckSouProdutor;
 
+	// ================================= METODOS ==========================
+
 	/**
-	 * Métodos
+	 * envia os dados de login para serem autenticados com credenciais do BD
 	 */
 	@SuppressWarnings("deprecation")
 	public void submitForm() {
-		
-		SGBD banco = new SGBD();  
-		
-		if(ckSouProdutor.isSelected())
-		{
+
+		SGBD banco = new SGBD();
+
+		if (ckSouProdutor.isSelected()) {
 			Produtor produtorLogado;
 			// Login como produtor
-			try{
+			try {
 				produtorLogado = banco.loginProdutor(txtEmail.getText(), txtSenha.getText());
-				
+
 				// Ver se o produtorLogado não é nulo
-				if(produtorLogado != null)
-				{
-					System.out.println("ID logado: "+produtorLogado.getId());
-	 				new ProdutorMenu(produtorLogado);
-					// showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
-	 				frmLogin.dispose();
+				if (produtorLogado != null) {
+					System.out.println("ID logado: " + produtorLogado.getId());
+					new ProdutorMenu(produtorLogado);
+					// showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com
+					// sucesso!");
+					frmLogin.dispose();
 				}
-	 		} catch(HortusException err)
-	 		{
-	 			showMessageDialog(null, err.getMessage());
-	 		}
-			
+			} catch (HortusException err) {
+				showMessageDialog(null, err.getMessage());
+			}
+
 			// Depois de fazer login, ir para o Form de ProdutorMenu
-			
-		}
-		else
-		{
+
+		} else {
 			// Login como Consumidor
 			Consumidor consumidorLogado = null;
-			try{
+			try {
 				consumidorLogado = banco.loginConsumidor(txtEmail.getText(), txtSenha.getText());
-				
+
 				// Ver se o consumidorLogado não é nulo
-				if(consumidorLogado != null)
-				{
-					System.out.println("ID logado: "+consumidorLogado.getId());
-	 				new ConsumidorMenu(consumidorLogado);
-					//showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com sucesso!");
-	 				frmLogin.dispose();
+				if (consumidorLogado != null) {
+					System.out.println("ID logado: " + consumidorLogado.getId());
+					new ConsumidorMenu(consumidorLogado);
+					// showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com
+					// sucesso!");
+					frmLogin.dispose();
 				}
-	 		} catch(HortusException err)
-	 		{
-	 			showMessageDialog(null, err.getMessage());
-	 		}
-			
+			} catch (HortusException err) {
+				showMessageDialog(null, err.getMessage());
+			}
+
 			// Depois de fazer login, ir para o Form de Pro
-			//ConsumidorMenu
+			// ConsumidorMenu
 		}
-		
+
 	}
 
 	/**
@@ -125,12 +124,16 @@ public class LoginForm {
 		});
 	}
 
+	// ================================= COSNTRUTORES ==========================
+
 	/**
 	 * Create the application.
 	 */
 	public LoginForm() {
 		initialize();
 	}
+
+	// ================================= GUI ==========================
 
 	/**
 	 * Initialize the contents of the frame.
@@ -161,7 +164,7 @@ public class LoginForm {
 					System.exit(0);
 				}
 			}
-		});  
+		});
 		btnSair.setBounds(336, 0, 42, 40);
 		panel.add(btnSair);
 		btnSair.setBackground(new Color(255, 0, 0));

@@ -11,12 +11,14 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.text.ParseException;
+import java.util.Hashtable;
 
 import javax.swing.JTextPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
+import hortus.Consumidor;
 import hortus.Endereco;
 import hortus.Produtor;
 import hortus.SGBD;
@@ -35,8 +37,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.DefaultComboBoxModel;
 
-public class CadastroProdutorForm {
-	// ========================== PROPRIEDADES ============================
+public class PerfilProdutorForm {
+
+	// ================================= PROPRIEDADES ==========================
 
 	// Componentes
 	private JFrame frame;
@@ -50,6 +53,8 @@ public class CadastroProdutorForm {
 	private JComboBox cbTipoProducao;
 	private JComboBox cbEstado;
 	private JTextArea txtDescricao;
+
+	// Endereco
 	private JFormattedTextField txtNum;
 	private JFormattedTextField txtCEP;
 	private JTextField txtRua;
@@ -57,9 +62,51 @@ public class CadastroProdutorForm {
 	private JTextField txtCidade;
 	private JTextField txtComplemento;
 
-	// ========================== METODOS ============================
+	// dados
+	private static Produtor produtorLogado;
+	private static Hashtable<String, Integer> siglaEstadoDict;
+
+	// ================================= METODOS ==========================
+
 	/**
-	 * limpa o formulario apos o submit
+	 * inicializa e preenche o dicionario de siglas de estado
+	 * 
+	 * @param sigla
+	 * @return
+	 */
+	public void fillSiglaEstadoDict() {
+		siglaEstadoDict = new Hashtable<String, Integer>();
+		siglaEstadoDict.put("AC", 0);
+		siglaEstadoDict.put("AL", 1);
+		siglaEstadoDict.put("AP", 2);
+		siglaEstadoDict.put("AM", 3);
+		siglaEstadoDict.put("BA", 4);
+		siglaEstadoDict.put("CE", 5);
+		siglaEstadoDict.put("ES", 6);
+		siglaEstadoDict.put("GO", 7);
+		siglaEstadoDict.put("MA", 8);
+		siglaEstadoDict.put("MT", 9);
+		siglaEstadoDict.put("MS", 10);
+		siglaEstadoDict.put("MG", 11);
+		siglaEstadoDict.put("PA", 12);
+		siglaEstadoDict.put("PB", 13);
+		siglaEstadoDict.put("PR", 14);
+		siglaEstadoDict.put("PE", 15);
+		siglaEstadoDict.put("PI", 16);
+		siglaEstadoDict.put("RJ", 17);
+		siglaEstadoDict.put("RN", 18);
+		siglaEstadoDict.put("RS", 19);
+		siglaEstadoDict.put("RO", 20);
+		siglaEstadoDict.put("RR", 21);
+		siglaEstadoDict.put("SC", 22);
+		siglaEstadoDict.put("SP", 23);
+		siglaEstadoDict.put("SE", 24);
+		siglaEstadoDict.put("TO", 25);
+		siglaEstadoDict.put("DF", 25);
+	}
+
+	/**
+	 * limpa os campos apos dar submit
 	 */
 	public void cleanFields() {
 		txtNome.setText("");
@@ -81,29 +128,85 @@ public class CadastroProdutorForm {
 	}
 
 	/**
-	 * envia os dados do formulario no banco
+	 * carrega os dados do usuario logado no formulario
+	 */
+	public void loadFormData() {
+
+		// preenchendo o siglaEstado dicionario
+		fillSiglaEstadoDict();
+
+		// preenchendo os dados na tela
+		txtNome.setText(produtorLogado.getNome());
+		txtEmail.setText(produtorLogado.getEmail());
+		txtCNPJ.setText(produtorLogado.getCpf());
+		txtNum.setText(produtorLogado.getTelefone());
+		cbTipoProducao.setSelectedIndex(produtorLogado.getTipoProd());
+		txtNum.setText(produtorLogado.getEndereco().getEndNum());
+		cbEstado.setSelectedIndex(siglaEstadoDict.get(produtorLogado.getEndereco().getEndEstado()));
+		txtCidade.setText(produtorLogado.getEndereco().getEndCidade());
+		txtCEP.setText(produtorLogado.getEndereco().getEndCEP());
+		txtBairro.setText(produtorLogado.getEndereco().getEndBairro());
+		txtRua.setText(produtorLogado.getEndereco().getEndRua());
+		txtComplemento.setText(produtorLogado.getEndereco().getEndComplemento());
+	}
+
+	/**
+	 * salva as alterações feitas pelo usuario em seu perfil
+	 */
+	public void salvarConta() {
+
+		String senha = txtSenha.getText();
+		String confirmaSenha = txtConfirmaSenha.getText();
+
+		// verificando se pelo menos um dos campos está vazio e/ou incompleto
+		if (txtNome.getText().isBlank() || txtEmail.getText().isBlank() || txtCNPJ.getText().isBlank()
+				|| txtTelefone.getText().isBlank() || txtCCIR.getText().isBlank() || txtRua.getText().isBlank()
+				|| txtNum.getText().isBlank() || txtBairro.getText().isBlank() || txtCEP.getText().isBlank()
+				|| txtCidade.getText().isBlank()) {
+			showMessageDialog(null, "Há campo(s) vazio(s)");
+			return;
+		}
+
+		// testando se senha bate com confirmaSenha
+		if (senha.equals(confirmaSenha)) {
+			// BACKEND GOES HERE
+			submitForm();
+		} else {
+			showMessageDialog(null, "Suas senhas não são iguais.");
+		}
+	}
+
+	/**
+	 * envia os dados do formulario para o banco
 	 */
 	@SuppressWarnings("deprecation")
 	public void submitForm() {
 
-		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
 
 		SGBD banco = new SGBD();
-
 		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(), txtBairro.getText(),
 				txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
 
 		banco.insereEndereco(end);
 
+		// se o usuario deixou os campos de senha e alterar senha em branco, a senha
+		// permanece a anterior
+		String password = "";
+		if (txtSenha.getText().isBlank() || txtConfirmaSenha.getText().isBlank()) {
+			password = produtorLogado.getSenha();
+		} else {
+			password = txtSenha.getText();
+		}
+
 		Produtor produtor = new Produtor(0, txtNome.getText(), txtCNPJ.getText(), txtTelefone.getText(), end,
-				txtEmail.getText(), txtSenha.getText(), txtCCIR.getText(), cbTipoProducao.getSelectedIndex(),
+				txtEmail.getText(), password, txtCCIR.getText(), cbTipoProducao.getSelectedIndex(),
 				txtDescricao.getText());
 
 		banco.insereProdutor(produtor);
-
 		banco.atualizaUsuarioEndereco(end, produtor.getId());
 
-		// limpando os campos
+		// limpando os campos e fechando a tela
+		showMessageDialog(null, "Alterações de '" + txtNome.getText() + "' efetuado com sucesso!");
 		cleanFields();
 		frame.dispose();
 	}
@@ -115,7 +218,7 @@ public class CadastroProdutorForm {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CadastroProdutorForm window = new CadastroProdutorForm();
+					PerfilProdutorForm window = new PerfilProdutorForm();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -129,19 +232,18 @@ public class CadastroProdutorForm {
 		frame.setVisible(b);
 	}
 
-	// ========================== CONSTRUTORES ============================
+	// ========================== CONSTRUTORES ==========================
 
 	/**
 	 * Create the application.
 	 * 
 	 * @throws ParseException
 	 */
-	public CadastroProdutorForm() throws ParseException {
+	public PerfilProdutorForm() throws ParseException {
 		initialize();
 	}
 
-	// ========================== GUI ============================
-
+	// ================================ GUI ==========================
 	/**
 	 * Initialize the contents of the frame.
 	 * 
@@ -155,7 +257,7 @@ public class CadastroProdutorForm {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(26, 83, 1081, 755);
+		panel.setBounds(26, 83, 1081, 838);
 		frame.getContentPane().add(panel);
 
 		JPanel panel_1_1 = new JPanel();
@@ -206,13 +308,6 @@ public class CadastroProdutorForm {
 		txtCNPJ.setColumns(10);
 		txtCNPJ.setBounds(343, 148, 286, 42);
 		panel_1_1.add(txtCNPJ);
-
-		JTextPane lblCadastro = new JTextPane();
-		lblCadastro.setEditable(false);
-		lblCadastro.setText("Novo Produtor");
-		lblCadastro.setFont(new Font("Tahoma", Font.PLAIN, 45));
-		lblCadastro.setBounds(412, 10, 332, 61);
-		panel_1_1.add(lblCadastro);
 
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBounds(10, 81, 1071, 2);
@@ -290,93 +385,11 @@ public class CadastroProdutorForm {
 		txtTelefone.setBounds(343, 255, 286, 42);
 		panel_1_1.add(txtTelefone);
 
-		JLabel lblNome_1 = new JLabel("*");
-		lblNome_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1.setForeground(Color.RED);
-		lblNome_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1.setBounds(73, 113, 77, 25);
-		panel_1_1.add(lblNome_1);
-
-		JLabel lblNome_1_1 = new JLabel("*");
-		lblNome_1_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_1.setForeground(Color.RED);
-		lblNome_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_1.setBounds(73, 219, 77, 25);
-		panel_1_1.add(lblNome_1_1);
-
-		JLabel lblNome_1_2 = new JLabel("*");
-		lblNome_1_2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_2.setForeground(Color.RED);
-		lblNome_1_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_2.setBounds(73, 469, 77, 25);
-		panel_1_1.add(lblNome_1_2);
-
-		JLabel lblNome_1_3 = new JLabel("*");
-		lblNome_1_3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3.setForeground(Color.RED);
-		lblNome_1_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3.setBounds(164, 567, 77, 25);
-		panel_1_1.add(lblNome_1_3);
-
-		JLabel lblNome_1_4 = new JLabel("*");
-		lblNome_1_4.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_4.setForeground(Color.RED);
-		lblNome_1_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_4.setBounds(400, 113, 77, 25);
-		panel_1_1.add(lblNome_1_4);
-
-		JLabel lblNome_1_5 = new JLabel("*Campos obrigat\u00F3rios");
-		lblNome_1_5.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_5.setForeground(Color.RED);
-		lblNome_1_5.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_5.setBounds(24, 707, 217, 25);
-		panel_1_1.add(lblNome_1_5);
-
 		JLabel lblTelefone = new JLabel("Telefone:");
 		lblTelefone.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTelefone.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTelefone.setBounds(343, 219, 124, 25);
 		panel_1_1.add(lblTelefone);
-
-		JLabel lblNome_1_6 = new JLabel("*");
-		lblNome_1_6.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_6.setForeground(Color.RED);
-		lblNome_1_6.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_6.setBounds(430, 219, 77, 25);
-		panel_1_1.add(lblNome_1_6);
-
-		JButton btnCriarConta = new JButton("Criar Conta");
-		btnCriarConta.setForeground(new Color(255, 255, 255));
-		btnCriarConta.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent e) {
-
-				String senha = txtSenha.getText();
-				String confirmaSenha = txtConfirmaSenha.getText();
-
-				// verificando se pelo menos um dos campos está vazio e/ou incompleto
-				if (txtNome.getText().isBlank() || txtEmail.getText().isBlank() || txtSenha.getText().isBlank()
-						|| txtConfirmaSenha.getText().isBlank() || txtCNPJ.getText().isBlank()
-						|| txtTelefone.getText().isBlank() || txtCCIR.getText().isBlank() || txtRua.getText().isBlank()
-						|| txtNum.getText().isBlank() || txtBairro.getText().isBlank() || txtCEP.getText().isBlank()
-						|| txtCidade.getText().isBlank()) {
-					showMessageDialog(null, "Há campo(s) vazio(s)");
-					return;
-				}
-
-				// testando se senha bate com confirmaSenha
-				if (senha.equals(confirmaSenha)) {
-					// BACKEND GOES HERE
-					submitForm();
-				} else {
-					showMessageDialog(null, "Suas senhas não são iguais.");
-				}
-			}
-		});
-		btnCriarConta.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnCriarConta.setBackground(new Color(51, 204, 102));
-		btnCriarConta.setBounds(875, 698, 167, 42);
-		panel_1_1.add(btnCriarConta);
 
 		txtRua = new JTextField();
 		txtRua.setHorizontalAlignment(SwingConstants.LEFT);
@@ -433,34 +446,6 @@ public class CadastroProdutorForm {
 		lblCEP.setBounds(875, 468, 77, 25);
 		panel_1_1.add(lblCEP);
 
-		JLabel lblNome_1_3_1 = new JLabel("*");
-		lblNome_1_3_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_1.setForeground(Color.RED);
-		lblNome_1_3_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_1.setBounds(390, 362, 77, 25);
-		panel_1_1.add(lblNome_1_3_1);
-
-		JLabel lblNome_1_3_2 = new JLabel("*");
-		lblNome_1_3_2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_2.setForeground(Color.RED);
-		lblNome_1_3_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_2.setBounds(412, 470, 77, 25);
-		panel_1_1.add(lblNome_1_3_2);
-
-		JLabel lblNome_1_3_3 = new JLabel("*");
-		lblNome_1_3_3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_3.setForeground(Color.RED);
-		lblNome_1_3_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_3.setBounds(1004, 351, 77, 25);
-		panel_1_1.add(lblNome_1_3_3);
-
-		JLabel lblNome_1_3_4 = new JLabel("*");
-		lblNome_1_3_4.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_4.setForeground(Color.RED);
-		lblNome_1_3_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_4.setBounds(922, 472, 77, 25);
-		panel_1_1.add(lblNome_1_3_4);
-
 		JLabel lblCidade = new JLabel("Cidade:");
 		lblCidade.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCidade.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -489,20 +474,6 @@ public class CadastroProdutorForm {
 		cbEstado.setBounds(584, 693, 55, 34);
 		panel_1_1.add(cbEstado);
 
-		JLabel lblNome_1_3_2_1 = new JLabel("*");
-		lblNome_1_3_2_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_2_1.setForeground(Color.RED);
-		lblNome_1_3_2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_2_1.setBounds(412, 654, 77, 25);
-		panel_1_1.add(lblNome_1_3_2_1);
-
-		JLabel lblNome_1_3_2_2 = new JLabel("*");
-		lblNome_1_3_2_2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_2_2.setForeground(Color.RED);
-		lblNome_1_3_2_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_2_2.setBounds(652, 654, 77, 25);
-		panel_1_1.add(lblNome_1_3_2_2);
-
 		txtComplemento = new JTextField();
 		txtComplemento.setHorizontalAlignment(SwingConstants.LEFT);
 		txtComplemento.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -530,13 +501,6 @@ public class CadastroProdutorForm {
 		lblCCIR.setBounds(10, 365, 77, 25);
 		panel_1_1.add(lblCCIR);
 
-		JLabel lblNome_1_4_1 = new JLabel("*");
-		lblNome_1_4_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_4_1.setForeground(Color.RED);
-		lblNome_1_4_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_4_1.setBounds(73, 360, 77, 25);
-		panel_1_1.add(lblNome_1_4_1);
-
 		JLabel lblCNPJ_1 = new JLabel("Tipo de Produ\u00E7\u00E3o");
 		lblCNPJ_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCNPJ_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -546,13 +510,6 @@ public class CadastroProdutorForm {
 		JSeparator separator_2_2 = new JSeparator();
 		separator_2_2.setBounds(325, 337, 1071, 2);
 		panel_1_1.add(separator_2_2);
-
-		JLabel lblNome_1_7 = new JLabel("*");
-		lblNome_1_7.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_7.setForeground(Color.RED);
-		lblNome_1_7.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_7.setBounds(817, 117, 77, 25);
-		panel_1_1.add(lblNome_1_7);
 
 		cbTipoProducao = new JComboBox();
 		cbTipoProducao.setModel(new DefaultComboBoxModel(new String[] { "Apicultura", "Avicultura", "Bovinos",
@@ -578,6 +535,12 @@ public class CadastroProdutorForm {
 		separator_1_1_1.setBounds(639, 81, 442, 257);
 		panel_1_1.add(separator_1_1_1);
 
+		JLabel lblNewLabel = new JLabel("Perfil do Produtor");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 45));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(10, 10, 1060, 63);
+		panel_1_1.add(lblNewLabel);
+
 		JTextPane txtpnNovoProdutor = new JTextPane();
 		txtpnNovoProdutor.setText("Novo Produtor");
 		txtpnNovoProdutor.setFont(new Font("Tahoma", Font.PLAIN, 45));
@@ -592,6 +555,23 @@ public class CadastroProdutorForm {
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		separator_1.setBounds(394, 83, 354, 448);
 		panel.add(separator_1);
+
+		JSeparator separator_5 = new JSeparator();
+		separator_5.setBounds(10, 749, 1071, 2);
+		panel.add(separator_5);
+
+		JButton btnCriarConta = new JButton("Salvar altera\u00E7\u00F5es");
+		btnCriarConta.setBounds(377, 771, 347, 46);
+		panel.add(btnCriarConta);
+		btnCriarConta.setForeground(new Color(255, 255, 255));
+		btnCriarConta.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			public void actionPerformed(ActionEvent e) {
+				salvarConta();
+			}
+		});
+		btnCriarConta.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnCriarConta.setBackground(new Color(51, 204, 102));
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(SystemColor.controlShadow);
@@ -614,7 +594,7 @@ public class CadastroProdutorForm {
 		btnSair.setForeground(Color.WHITE);
 		btnSair.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnSair.setBackground(Color.RED);
-		frame.setBounds(100, 100, 1147, 862);
+		frame.setBounds(100, 100, 1147, 942);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		frame.setUndecorated(true);

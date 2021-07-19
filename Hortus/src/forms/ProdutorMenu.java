@@ -31,15 +31,18 @@ import hortus.SGBD;
 import javax.swing.ListSelectionModel;
 import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ProdutorMenu {
 
 // ========================== PROPRIEDADES ============================
+	// Componentes
 	private JFrame frame;
 	private JLabel lblBemVindo;
 	private JTable table;
 
-	// DATA
+	// Dados
 	private static Produtor produtor;
 	private static String[][] tableData;
 	private static Vector<Compra> vendas;
@@ -114,7 +117,7 @@ public class ProdutorMenu {
 					vendas.get(i).getDescricao() };
 		}
 
-		System.out.println("Tamanho: "+vendas.size());
+		System.out.println("Tamanho: " + vendas.size());
 		return tableData;
 	}
 
@@ -155,10 +158,21 @@ public class ProdutorMenu {
 		separator.setBounds(804, 112, 396, 2);
 		frame.getContentPane().add(separator);
 
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(ProdutorMenu.class.getResource("/assets/profile.png")));
-		lblNewLabel.setBounds(1135, 56, 55, 55);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel lblPerfil = new JLabel("New label");
+		lblPerfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					new PerfilProdutorForm(produtor);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		lblPerfil.setIcon(new ImageIcon(ProdutorMenu.class.getResource("/assets/profile.png")));
+		lblPerfil.setBounds(1135, 56, 55, 55);
+		frame.getContentPane().add(lblPerfil);
 
 		lblBemVindo = new JLabel("Bem-vindo(a), ");
 		lblBemVindo.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -189,7 +203,7 @@ public class ProdutorMenu {
 				// AQUI INVOCA A TELA DE DETALHES DA VENDA
 				new DetalhesCompraForm(vendas.get(table.getSelectedRow()));
 			}
-  
+
 		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
