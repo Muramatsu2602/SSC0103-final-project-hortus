@@ -738,13 +738,15 @@ public class SGBD {
 				String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
 				
-				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
+				stmt2.setInt(1, rs.getInt("ID_ENDERECO"));
 				ResultSet rs2 = stmt2.executeQuery();
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
 				}
- 				
+ 				if(end == null) {
+ 					System.out.println("Erro end nulo");
+ 				}
  				Produtor produtor = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CNPJ"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
  				produtores.add(produtor);
  			}
@@ -752,7 +754,7 @@ public class SGBD {
  			return produtores;
  		} catch(Exception e)
  		{
- 			System.out.println("Erro get compras by consumidor: "+e.getMessage());
+ 			System.out.println("Erro get all produtores : "+e.getMessage());
  		}
  		return null;
  	}

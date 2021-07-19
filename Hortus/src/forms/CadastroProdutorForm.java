@@ -545,11 +545,7 @@ public class CadastroProdutorForm {
 		panel_1_1.add(lblNome_1_7);
 
 		cbTipoProducao = new JComboBox();
-		cbTipoProducao.setModel(new DefaultComboBoxModel(
-				new String[] { "Apicultura", "Avicultura", "Bovinos", "Caprinos", "Cogumelos", "Condimentos",
-						"Conservas", "Gr\u00E3os", "HortiFruiti", "Importados", "Latic\u00EDnios", "Ovinos", "A granel",
-						"Apicultura", "Avicultura", "Bovinos", "Caprinos", "Cogumelos", "Condimentos", "Conservas",
-						"Gr\u00E3os", "HortiFruiti", "Importados", "Latic\u00EDnios", "Outro", "Ovinos" }));
+		cbTipoProducao.setModel(new DefaultComboBoxModel(new String[] {"Apicultura", "Avicultura", "Bovinos", "Caprinos", "Cogumelos", "Condimentos", "Conservas", "Gr\u00E3os", "HortiFruiti", "Importados", "Latic\u00EDnios", "Ovinos", "Outros"}));
 		cbTipoProducao.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cbTipoProducao.setBounds(657, 148, 237, 34);
 		panel_1_1.add(cbTipoProducao);
