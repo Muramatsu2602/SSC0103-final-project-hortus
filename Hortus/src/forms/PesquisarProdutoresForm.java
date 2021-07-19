@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,10 +31,13 @@ public class PesquisarProdutoresForm {
 	private JScrollPane scrollPane;
 	private JTable table;
 
+	// Dados
+	private static Vector<Produtor> produtores;
+
 	public Object[][] fetchData() {
 
 		// Backend
-		// "ProdutorObject", "Descricao", "Nome", "Tipo de Produção", "Cidade"
+		// "ProdutorObject", "Nome", "Descricao", "Tipo de Produção", "Cidade"
 
 		// MOCK DATA
 		Endereco end1 = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112",
@@ -46,9 +50,9 @@ public class PesquisarProdutoresForm {
 				"31231223", 2, "Preparando um Bauru pra todos");
 
 		Object[][] MockData = new Object[][] {
-				{ produtor1, produtor1.getDescricao(), produtor1.getNome(), produtor1.getTipoProdString(),
+				{ produtor1, produtor1.getNome(), produtor1.getDescricao(), produtor1.getTipoProdString(),
 						produtor1.getEndereco().getEndCidade() },
-				{ produtor2, produtor2.getDescricao(), produtor2.getNome(), produtor2.getTipoProdString(),
+				{ produtor2, produtor2.getNome(), produtor2.getDescricao(), produtor2.getTipoProdString(),
 						produtor2.getEndereco().getEndCidade() }, };
 
 		return MockData;
@@ -91,7 +95,7 @@ public class PesquisarProdutoresForm {
 		frame.getContentPane().setLayout(null);
 
 		table = new JTable();
-		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		table.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		table.setModel(new DefaultTableModel(fetchData(), new String[] { "ProdutorObject", "Nome",
 				"Descri\u00E7\u00E3o", "Tipo de Produ\u00E7\u00E3o", "Cidade" }) {
 			boolean[] columnEditables = new boolean[] { true, false, false, false, false };
@@ -107,6 +111,13 @@ public class PesquisarProdutoresForm {
 		table.getColumnModel().getColumn(0).setMaxWidth(0);
 		table.getColumnModel().getColumn(3).setPreferredWidth(93);
 		table.setBounds(24, 135, 696, 549);
+		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
+			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
+				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
+				CompraForm compraForm = new CompraForm(produtores.get(table.getSelectedRow()));
+				compraForm.setVisible(true);
+			}
+		});
 
 		scrollPane = new JScrollPane(table);
 		scrollPane.setToolTipText("clique em qualquer linha para acessar a loja do produtor escolhido");
