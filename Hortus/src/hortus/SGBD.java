@@ -720,6 +720,40 @@ public class SGBD {
             System.out.println("Erro Endereço "+e.getMessage());
         }
  	}
+ 	
+ 	public Vector<Produtor> getAllProdutores()
+ 	{
+ 		try {
+ 			Connection con = this.connect();
+ 			String sql = "SELECT * FROM produtor;";
+ 			PreparedStatement stmt = con.prepareStatement(sql);
+ 			ResultSet rs = stmt.executeQuery();
+ 			
+ 			Vector<Produtor> produtores = new Vector<Produtor>();
+ 			while(rs.next())
+ 			{
+ 				Endereco end = null;
+				String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
+				PreparedStatement stmt2 = con.prepareStatement(sql2);
+				
+				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
+				ResultSet rs2 = stmt2.executeQuery();
+				if(rs2.next())
+				{
+					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+				}
+ 				
+ 				Produtor produtor = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CNPJ"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
+ 				produtores.add(produtor);
+ 			}
+ 			con.close();
+ 			return produtores;
+ 		} catch(Exception e)
+ 		{
+ 			System.out.println("Erro get compras by consumidor: "+e.getMessage());
+ 		}
+ 		return null;
+ 	}
  	 
  	public static void main(String args[])
  	{
