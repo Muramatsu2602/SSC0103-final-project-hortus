@@ -10,8 +10,10 @@ public class Produto {
 	private char unidade;
 	private String ingredientes;
 	private boolean organico;
+	private boolean excluido = false;
 	
-	public Produto(int idProduto, Produtor produtor, String nomeProduto, String descricao, double quantidade, double precoProduto, char unidade, String ingredientes, boolean organico) {	
+	
+	public Produto(int idProduto, Produtor produtor, String nomeProduto, String descricao, double quantidade, double precoProduto, char unidade, String ingredientes, boolean organico, boolean excluido) {	
 		
 		this.setIdProduto(idProduto);
 		this.setProdutor(produtor);
@@ -22,6 +24,7 @@ public class Produto {
 		this.setUnidade(unidade);
 		this.setIngredientes(ingredientes);
 		this.setOrganico(organico);
+		this.setExcluido(excluido);
 	}
 
 	public int getIdProduto() {
@@ -95,4 +98,13 @@ public class Produto {
 	public void setOrganico(boolean organico) {
 		this.organico = organico;
 	}
+
+	public boolean isExcluido() {
+		return excluido;
+	}
+
+	public void setExcluido(boolean excluido) {
+		this.excluido = excluido;
+	}
+	
 }

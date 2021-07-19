@@ -69,7 +69,7 @@ public class CadastroProdutoForm {
 		Produto produto = new Produto(1, produtor, txtNome.getText(),
 		txtDescricao.getText(), Double.parseDouble(txtQuantidade.getText().replace(',', '.')),
 		Double.parseDouble(txtPreco.getText().replace(',', '.')), (char) cbUnidade.getSelectedIndex(),
-		txtIngredientes.getText(), ckOrganico.isSelected());
+		txtIngredientes.getText(), ckOrganico.isSelected(), false);
 		 
 		banco.insereProduto(produto);
 
