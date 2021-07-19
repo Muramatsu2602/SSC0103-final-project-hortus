@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import hortus.Consumidor;
 import hortus.Endereco;
 import hortus.Produtor;
 import hortus.SGBD;
@@ -38,8 +39,8 @@ public class PesquisarProdutoresForm {
 	private static Object[][] tableData;
 
 	// Metodos
-	public static Hashtable<Integer, String> fillTipoProdDictionary(Hashtable<Integer, String> tipoProdDict) {
-		tipoProdDict = new Hashtable<Integer, String>();
+	public static Hashtable<Integer, String> fillTipoProdDictionary() {
+		Hashtable<Integer, String> tipoProdDict = new Hashtable<Integer, String>();
 
 		tipoProdDict.put(0, "Apicultura");
 		tipoProdDict.put(1, "Avicultura");
@@ -48,9 +49,9 @@ public class PesquisarProdutoresForm {
 		tipoProdDict.put(4, "Cogumelos");
 		tipoProdDict.put(5, "Condimentos");
 		tipoProdDict.put(6, "Conservas");
-		tipoProdDict.put(7, "Gr„os");
+		tipoProdDict.put(7, "Gr√£os");
 		tipoProdDict.put(8, "HortiFruiti");
-		tipoProdDict.put(9, "LaticÌnios");
+		tipoProdDict.put(9, "Latic√≠nios");
 		tipoProdDict.put(10, "Ovinos");
 		tipoProdDict.put(11, "Outros");
 
@@ -60,16 +61,16 @@ public class PesquisarProdutoresForm {
 	public Object[][] fetchData() {
 
 		// Backend
-		// "ProdutorObject", "Nome", "CCIR", "Tipo de ProduÁ„o", "Cidade"
+		// "ProdutorObject", "Nome", "CCIR", "Tipo de Produ√ß√£o", "Cidade"
 
 		SGBD banco = new SGBD();
 		// Querry para pegar todos os produtor do produtor
-
+		produtores = new Vector<Produtor>();
 		produtores = banco.getAllProdutores();
 
 		// dicionario para tipos de producao
 		tableData = new Object[produtores.size()][];
-		Hashtable<Integer, String> tipoProdDict = fillTipoProdDictionary(tipoProdDict);
+		Hashtable<Integer, String> tipoProdDict = fillTipoProdDictionary();
 
 		// dicionario para os tipos de producao
 
@@ -102,6 +103,11 @@ public class PesquisarProdutoresForm {
 	 */
 	public PesquisarProdutoresForm() {
 		initialize();
+	}
+	
+	public PesquisarProdutoresForm(Consumidor consumidor) {
+		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -136,7 +142,7 @@ public class PesquisarProdutoresForm {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
 				CompraForm compraForm = new CompraForm(produtores.get(table.getSelectedRow()));
-				compraForm.setVisible(true);
+				//compraForm.setVisible(true);
 			}
 		});
 

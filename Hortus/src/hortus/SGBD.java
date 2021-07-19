@@ -569,7 +569,7 @@ public class SGBD {
  		return null;
  	}
  	
- 	public Vector<Produto> getProdutosProdutor(int idProdutor) {
+ 	public Vector<Produto> getProdutosProdutor(int idProdutor, boolean pegarExcluidos) {
  		try {
  			Connection con = this.connect();
  			String sql = "SELECT * FROM produto WHERE ID_PRODUTOR = ?;";
@@ -580,7 +580,8 @@ public class SGBD {
  			Vector<Produto> produtos = new Vector<Produto>();
  			while(rs.next())
  			{
- 				produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")));
+ 				if(pegarExcluidos == false && rs.getBoolean("EXCLUIDO") == false)
+ 					produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")));
  			}
  			
  			con.close();
@@ -704,7 +705,7 @@ public class SGBD {
  		try {
 			Connection con = this.connect();
 			
-			String sql = "UPDATE produto set NOME = ?, DESCRICAO = ?, QUANTIDADE = ?, PRECO = ?, UNIDADE = ?, INGREDIENTES = ?, ORGANICO = ? WHERE ID = ?";
+			String sql = "UPDATE produto set NOME = ?, DESCRICAO = ?, QUANTIDADE = ?, PRECO = ?, UNIDADE = ?, INGREDIENTES = ?, ORGANICO = ?, EXCLUIDO = ? WHERE ID = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, prod.getNomeProduto());
 			stmt.setString(2, prod.getDescricao());
@@ -713,11 +714,12 @@ public class SGBD {
 			stmt.setInt(5, prod.getUnidade());
 			stmt.setString(6, prod.getIngredientes());
 			stmt.setBoolean(7, prod.isOrganico());
-			stmt.setInt(8, prod.getIdProduto());
-			stmt.executeQuery();
+			stmt.setBoolean(8, prod.isExcluido());
+			stmt.setInt(9, prod.getIdProduto());
+			stmt.execute();
 			con.close();
 		} catch(SQLException e){
-            System.out.println("Erro Endereço "+e.getMessage());
+            System.out.println("Erro Atualiza Produto "+e.getMessage());
         }
  	}
  	
@@ -736,13 +738,15 @@ public class SGBD {
 				String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
 				
-				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
+				stmt2.setInt(1, rs.getInt("ID_ENDERECO"));
 				ResultSet rs2 = stmt2.executeQuery();
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
 				}
- 				
+ 				if(end == null) {
+ 					System.out.println("Erro end nulo");
+ 				}
  				Produtor produtor = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CNPJ"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
  				produtores.add(produtor);
  			}
@@ -750,7 +754,7 @@ public class SGBD {
  			return produtores;
  		} catch(Exception e)
  		{
- 			System.out.println("Erro get compras by consumidor: "+e.getMessage());
+ 			System.out.println("Erro get all produtores : "+e.getMessage());
  		}
  		return null;
  	}

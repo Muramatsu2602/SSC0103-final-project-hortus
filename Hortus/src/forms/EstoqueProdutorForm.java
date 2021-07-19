@@ -3,6 +3,9 @@ package forms;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.Color;
 import javax.swing.JPanel;
 import java.awt.SystemColor;
@@ -37,7 +40,10 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import java.awt.Rectangle;
 
 public class EstoqueProdutorForm {
@@ -70,6 +76,18 @@ public class EstoqueProdutorForm {
 		if (option == JOptionPane.YES_OPTION) {
 			// Atualizar o produto
 			SGBD banco = new SGBD();
+			System.out.println("Atualiza o da linha "+lastSelectedRow+"\nNome: "+produtos.get(lastSelectedRow).getNomeProduto()+"\nID: "+produtos.get(lastSelectedRow).getIdProduto());
+			
+			Produto produto = produtos.get(lastSelectedRow);
+			produto.setNomeProduto(txtNome.getText());
+			produto.setQuantidade(Double.parseDouble(txtQuantidade.getText().replace(',', '.')));
+			produto.setPrecoProduto(Double.parseDouble(txtPreco.getText().replace(',', '.')));
+			System.out.println("Unidade: "+cbUnidade.getSelectedIndex());
+			produto.setUnidade((char)cbUnidade.getSelectedIndex());
+			produto.setIngredientes(txtIngredientes.getText());
+			produto.setDescricao(txtDescricao.getText());
+			produto.setOrganico(cbOrganico.isSelected());
+			
 			banco.atualizaProduto(produtos.get(lastSelectedRow));
 			
 			// Atualizar a tabela com o produto atualizado
@@ -91,12 +109,47 @@ public class EstoqueProdutorForm {
 						return columnEditables[column];
 					}
 				});
+			
+			// Produto atualizado com sucesso
+			showMessageDialog(null, "Produto '" + txtNome.getText() + "' atualizado com sucesso!");
 		}
 	}
 	
 	public void apagarProduto(int selectedRowIndex)
 	{
-		
+		int option = JOptionPane.showConfirmDialog(frame, "Deseja mesmo apagar o produto atual?", "Confirmação de remoção.",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (option == JOptionPane.YES_OPTION) {
+			// Apagar o produto
+			SGBD banco = new SGBD();
+			Produto produto = produtos.get(lastSelectedRow);
+			
+			produto.setExcluido(true);
+			banco.atualizaProduto(produto);
+			
+			// Atualizar a tabela com os produtos não excluidos
+			table.setModel(new DefaultTableModel(fetchData(),
+					new String[] {
+						"Nome", "Organico", "Unidade", "Pre\u00E7o", "Quantidade", "Descricao"
+					}
+				) {
+					Class[] columnTypes = new Class[] {
+						Object.class, Boolean.class, Object.class, Object.class, Object.class, Object.class
+					};
+					public Class getColumnClass(int columnIndex) {
+						return columnTypes[columnIndex];
+					}
+					boolean[] columnEditables = new boolean[] {
+						false, false, false, false, false, false
+					};
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+				});
+			
+			// Produto atualizado com sucesso
+			showMessageDialog(null, "Produto '" + txtNome.getText() + "' removido com sucesso!");
+		}
 	}
 	
 	public static String getUnidadeString(char unidade)
@@ -123,8 +176,8 @@ public class EstoqueProdutorForm {
 		SGBD banco = new SGBD();
 		// Querry para pegar todos os produtor do produtor
 		
-		produtos = banco.getProdutosProdutor(produtor.getId());
-
+		produtos = banco.getProdutosProdutor(produtor.getId(), false);
+		
 		tableData = new Object[produtos.size()][];
 
 		// "Nome", "Organico", "Unidade", "Preco", "Quantidade"
@@ -142,20 +195,23 @@ public class EstoqueProdutorForm {
 	 */
 	public static void loadProductIntoForm(int selectedRowIndex) {
 		if(selectedRowIndex != -1)
+		{
 			lastSelectedRow = selectedRowIndex;
-		produto = produtos.get(selectedRowIndex); 
-		
-				
-		txtNome.setText(produto.getNomeProduto());
-		cbOrganico.setSelected(produto.isOrganico());
-		txtQuantidade.setText(Double.toString(produto.getQuantidade()));
-		txtPreco.setText(Double.toString(produto.getPrecoProduto()));
-		
-		cbUnidade.setSelectedIndex(Character.getNumericValue(produto.getUnidade()));
-		txtIngredientes.setText(null);
-		txtIngredientes.append(produto.getIngredientes());
-		txtDescricao.setText(null);
-		txtDescricao.append(produto.getDescricao());
+			
+			produto = produtos.get(selectedRowIndex); 
+			
+					
+			txtNome.setText(produto.getNomeProduto());
+			cbOrganico.setSelected(produto.isOrganico());
+			txtQuantidade.setText(Double.toString(produto.getQuantidade()));
+			txtPreco.setText(Double.toString(produto.getPrecoProduto()));
+			
+			cbUnidade.setSelectedIndex(Character.getNumericValue(produto.getUnidade()));
+			txtIngredientes.setText(null);
+			txtIngredientes.append(produto.getIngredientes());
+			txtDescricao.setText(null);
+			txtDescricao.append(produto.getDescricao());
+		}
 	}
 
 	/**
@@ -351,7 +407,7 @@ public class EstoqueProdutorForm {
 		cbOrganico.setBounds(326, 104, 193, 42);
 		panel_3.add(cbOrganico);
 
-		txtQuantidade = new JFormattedTextField(formatter2);
+		txtQuantidade = new JFormattedTextField(formatter1);
 		txtQuantidade.setHorizontalAlignment(SwingConstants.LEFT);
 		txtQuantidade.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtQuantidade.setColumns(10);

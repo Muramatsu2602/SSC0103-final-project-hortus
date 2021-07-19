@@ -225,6 +225,11 @@ public class ConsumidorMenu {
 		panel.setLayout(null);
 
 		JButton btnPesquisarProdutor = new JButton("Pesquisar Produtores");
+		btnPesquisarProdutor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new PesquisarProdutoresForm(consumidor);
+			}
+		});
 		btnPesquisarProdutor.setForeground(Color.WHITE);
 		btnPesquisarProdutor.setFont(new Font("Tahoma", Font.BOLD, 30));
 		btnPesquisarProdutor.setBackground(new Color(51, 204, 102));
