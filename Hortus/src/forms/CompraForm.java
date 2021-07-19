@@ -82,7 +82,7 @@ public class CompraForm {
 
         // Backend
 		SGBD banco = new SGBD();
-		this.produtosLoja = banco.getProdutosProdutor(produtor.getId());
+		this.produtosLoja = banco.getProdutosProdutor(produtor.getId(), false);
 		
 		Object[][] tableData = new Object[produtosLoja.size()][];
 

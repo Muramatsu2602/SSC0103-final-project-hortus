@@ -569,7 +569,7 @@ public class SGBD {
  		return null;
  	}
  	
- 	public Vector<Produto> getProdutosProdutor(int idProdutor) {
+ 	public Vector<Produto> getProdutosProdutor(int idProdutor, boolean pegarExcluidos) {
  		try {
  			Connection con = this.connect();
  			String sql = "SELECT * FROM produto WHERE ID_PRODUTOR = ?;";
@@ -580,7 +580,8 @@ public class SGBD {
  			Vector<Produto> produtos = new Vector<Produto>();
  			while(rs.next())
  			{
- 				produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")));
+ 				if(pegarExcluidos == false && rs.getBoolean("EXCLUIDO") == false)
+ 					produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")));
  			}
  			
  			con.close();
@@ -704,7 +705,7 @@ public class SGBD {
  		try {
 			Connection con = this.connect();
 			
-			String sql = "UPDATE produto set NOME = ?, DESCRICAO = ?, QUANTIDADE = ?, PRECO = ?, UNIDADE = ?, INGREDIENTES = ?, ORGANICO = ? WHERE ID = ?";
+			String sql = "UPDATE produto set NOME = ?, DESCRICAO = ?, QUANTIDADE = ?, PRECO = ?, UNIDADE = ?, INGREDIENTES = ?, ORGANICO = ?, EXCLUIDO = ? WHERE ID = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, prod.getNomeProduto());
 			stmt.setString(2, prod.getDescricao());
@@ -713,11 +714,12 @@ public class SGBD {
 			stmt.setInt(5, prod.getUnidade());
 			stmt.setString(6, prod.getIngredientes());
 			stmt.setBoolean(7, prod.isOrganico());
-			stmt.setInt(8, prod.getIdProduto());
-			stmt.executeQuery();
+			stmt.setBoolean(8, prod.isExcluido());
+			stmt.setInt(9, prod.getIdProduto());
+			stmt.execute();
 			con.close();
 		} catch(SQLException e){
-            System.out.println("Erro Endereço "+e.getMessage());
+            System.out.println("Erro Atualiza Produto "+e.getMessage());
         }
  	}
  	
