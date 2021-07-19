@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -36,24 +37,45 @@ public class PesquisarProdutoresForm {
 	private static Vector<Produtor> produtores;
 	private static Object[][] tableData;
 
+	// Metodos
+	public static Hashtable<Integer, String> fillTipoProdDictionary(Hashtable<Integer, String> tipoProdDict) {
+		tipoProdDict = new Hashtable<Integer, String>();
+
+		tipoProdDict.put(0, "Apicultura");
+		tipoProdDict.put(1, "Avicultura");
+		tipoProdDict.put(2, "Bovinos");
+		tipoProdDict.put(3, "Caprinos");
+		tipoProdDict.put(4, "Cogumelos");
+		tipoProdDict.put(5, "Condimentos");
+		tipoProdDict.put(6, "Conservas");
+		tipoProdDict.put(7, "Grãos");
+		tipoProdDict.put(8, "HortiFruiti");
+		tipoProdDict.put(9, "Laticínios");
+		tipoProdDict.put(10, "Ovinos");
+		tipoProdDict.put(11, "Outros");
+
+		return tipoProdDict;
+	}
+
 	public Object[][] fetchData() {
 
 		// Backend
-		// "ProdutorObject", "Nome", "Descricao", "Tipo de Produção", "Cidade"
+		// "ProdutorObject", "Nome", "CCIR", "Tipo de Produção", "Cidade"
 
 		SGBD banco = new SGBD();
 		// Querry para pegar todos os produtor do produtor
-		
-		produtores = banco.getProdutores()
 
+		produtores = banco.getAllProdutores();
+
+		// dicionario para tipos de producao
 		tableData = new Object[produtores.size()][];
+		Hashtable<Integer, String> tipoProdDict = fillTipoProdDictionary(tipoProdDict);
 
-		// "Nome", "Organico", "Unidade", "Preco", "Quantidade"
-		
+		// dicionario para os tipos de producao
+
 		for (int i = 0; i < produtores.size(); i++) {
-			tableData[i] = new Object[] { produtores.get(i).getNomeProduto(),
-					produtos.get(i).isOrganico(), getUnidadeString(produtos.get(i).getUnidade()),
-					produtos.get(i).getPrecoProduto(), produtos.get(i).getQuantidade(), produtos.get(i).getDescricao()};
+			tableData[i] = new Object[] { produtores.get(i).getNome(), produtores.get(i).getCcir(),
+					tipoProdDict.get(produtores.get(i).getTipoProd()), produtores.get(i).getEndereco().getEndCidade() };
 		}
 		return tableData;
 	}
@@ -96,11 +118,10 @@ public class PesquisarProdutoresForm {
 
 		table = new JTable();
 		table.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		table.setModel(new DefaultTableModel(fetchData(), new String[] { "ProdutorObject", "Nome",
-				"Descri\u00E7\u00E3o", "Tipo de Produ\u00E7\u00E3o", "Cidade" }) {
+		table.setModel(new DefaultTableModel(fetchData(),
+				new String[] { "ProdutorObject", "Nome", "CCIR", "Tipo de Produ\u00E7\u00E3o", "Cidade" }) {
 			boolean[] columnEditables = new boolean[] { true, false, false, false, false };
 
-			@Override
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
