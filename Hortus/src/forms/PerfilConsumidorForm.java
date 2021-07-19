@@ -66,7 +66,7 @@ public class PerfilConsumidorForm {
 	private JTextField txtComplemento;
 
 	// dados
-	private static Consumidor consumidorLogado;
+	private Consumidor consumidorLogado;
 	private static Hashtable<String, Integer> siglaEstadoDict;
 
 	// ================================= METODOS ==========================
@@ -181,11 +181,6 @@ public class PerfilConsumidorForm {
 
 		SGBD banco = new SGBD();
 
-		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(), txtBairro.getText(),
-				txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
-
-		banco.insereEndereco(end);
-
 		// se o usuario deixou os campos de senha e alterar senha em branco, a senha
 		// permanece a anterior
 		String password = "";
@@ -195,11 +190,24 @@ public class PerfilConsumidorForm {
 			password = txtSenha.getText();
 		}
 
-		Consumidor consum = new Consumidor(1, txtNome.getText(), txtCPF.getText(), txtTelefone.getText(), end,
-				txtEmail.getText(), password);
+		consumidorLogado.setNome(txtNome.getText());
+		consumidorLogado.setEmail(txtEmail.getText());
+		consumidorLogado.setCpf(txtCPF.getText());
+		consumidorLogado.setTelefone(txtTelefone.getText());
+		consumidorLogado.setSenha(password);
+		
+		// Atualizar o endereço do consumidor
+		Endereco end = consumidorLogado.getEndereco();
 
-		banco.insereConsumidor(consum);
-		banco.atualizaUsuarioEndereco(end, consum.getId());
+		end.setEndRua(txtRua.getText());
+		end.setEndBairro(txtBairro.getText());
+		end.setEndComplemento(txtComplemento.getText());
+		end.setEndCidade(txtCidade.getText());
+		end.setEndEstado(cbEstado.getSelectedItem().toString());
+		end.setEndCEP(txtCEP.getText());
+		end.setEndNum(txtNum.getText());
+		
+		banco.atualizaConsumidor(consumidorLogado);
 
 		// limpando os campos
 		showMessageDialog(null, "Alterações de '" + txtNome.getText() + "' salvas com sucesso!");
@@ -241,6 +249,7 @@ public class PerfilConsumidorForm {
 		// carregar na tela os dados do consumidor
 		loadFormData();
 		initialize();
+		frame.setVisible(true);
 	}
 
 	// ================================ GUI ==========================

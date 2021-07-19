@@ -55,6 +55,7 @@ public class CompraForm {
 	private JButton btnFinalizarCompra;
 	private JPanel panel_3;
 	private JLabel lblNewLabel;
+	private JLabel lblValorTotal;
 	private JScrollPane scrollLoja;
 	private JScrollPane scrollCarrinho;
 
@@ -73,12 +74,54 @@ public class CompraForm {
 			return "Não";
 	}
 
+	public Object[][] fetchDataCarrinho() {
+
+        // Backend
+		SGBD banco = new SGBD();
+		
+		Object[][] tableData = new Object[produtosCarrinho.size()][];
+		int i = 0;
+		Produto produtoAux;
+
+		// Nome, quantidade, preço unitario, total
+		for(Map.Entry<Produto, Double> entry: produtosCarrinho.entrySet())
+		{
+			produtoAux = entry.getKey();
+			tableData[i] = new Object[] { produtoAux.getNomeProduto(), entry.getValue(), produtoAux.getPrecoProduto(), (entry.getValue() * produtoAux.getPrecoProduto())};
+			i++;
+		}
+		
+		return tableData;   
+
+		/*
+        // MOCK DATA
+        Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos",
+                "SP");
+        Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456",
+                "1231231", 1, "De São Carlos, sô");
+        Produto produto1 = new Produto(3, produtor, "Maçã GOSTOSA", "Maçã com gosto bom", 12.0, 5.99, 'k', "Maçã, amor",
+                true);
+        Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k',
+                "Banana, macaco e potassio", false);
+        
+        
+
+        Object[][] MockData = new Object[][] {
+                { produto1, produto1.getDescricao(), produto1.getNomeProduto(), isOrganico(produto1.isOrganico()),
+                        produto1.getQuantidade(), 0.0 },
+                { produto2, produto2.getDescricao(), produto2.getNomeProduto(), isOrganico(produto2.isOrganico()),
+                        produto2.getQuantidade(), 0.0 }, };
+
+        return MockData;
+        */
+    }
+
 	/**
 	 * carrega os dados dos produtos vendidos pelo Produtor em uma tabela
 	 * 
 	 * @return
 	 */
-	public Object[][] fetchData() {
+	public Object[][] fetchDataProdutos() {
 
         // Backend
 		SGBD banco = new SGBD();
@@ -88,9 +131,9 @@ public class CompraForm {
 
 		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PREï¿½O DA COMPRA
 		for (int i = 0; i < produtosLoja.size(); i++) {
-			tableData[i] = new Object[] { produtosLoja.get(i), produtosLoja.get(i).getDescricao(), produtosLoja.get(i).getNomeProduto(),
+			tableData[i] = new Object[] { produtosLoja.get(i), produtosLoja.get(i).getNomeProduto(), produtosLoja.get(i).getDescricao(),
 					isOrganico(produtosLoja.get(i).isOrganico()), Double.toString(produtosLoja.get(i).getPrecoProduto()), Double.toString(produtosLoja.get(i).getQuantidade()),
-					"0" };
+					"" };
 		}
 		return tableData;   
 
@@ -170,27 +213,29 @@ public class CompraForm {
 
 		});
 		
-		tblProdutosLoja.setModel(new DefaultTableModel(
-			fetchData(),
+		tblProdutosLoja.setModel(new DefaultTableModel(fetchDataProdutos(),
 			new String[] {
-				"Descri\u00E7\u00E3o", "ProdutoObject", "Nome", "Org\u00E2nico", "Pre\u00E7o por unidade", "Quantidade Total", "Quantidade Desejada"
+				"ProdutoObject", "Nome", "Descri\u00E7\u00E3o", "Org\u00E2nico", "Pre\u00E7o por unidade", "Quantidade Total", "Quantidade Desejada"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Object.class, Object.class, Object.class, Object.class, Double.class, Double.class
+				Object.class, Object.class, String.class, Object.class, Object.class, Double.class, Double.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				true, false, false, false, false, false, true
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
 			}
 		});
 		tblProdutosLoja.getColumnModel().getColumn(0).setResizable(false);
 		tblProdutosLoja.getColumnModel().getColumn(0).setPreferredWidth(0);
 		tblProdutosLoja.getColumnModel().getColumn(0).setMinWidth(0);
 		tblProdutosLoja.getColumnModel().getColumn(0).setMaxWidth(0);
-		tblProdutosLoja.getColumnModel().getColumn(1).setResizable(false);
-		tblProdutosLoja.getColumnModel().getColumn(1).setPreferredWidth(0);
-		tblProdutosLoja.getColumnModel().getColumn(1).setMinWidth(0);
-		tblProdutosLoja.getColumnModel().getColumn(1).setMaxWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(2).setResizable(false);
 		tblProdutosLoja.setBounds(482, 125, 397, 525);
 		tblProdutosLoja.setRowSelectionAllowed(true);
 		tblProdutosLoja.getTableHeader().setReorderingAllowed(false);
@@ -235,13 +280,37 @@ public class CompraForm {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = tblProdutosLoja.getSelectedRow();
 				if (selectedRow != -1) {
-					Produto p = (Produto) tblProdutosLoja.getModel().getValueAt(selectedRow, 0);
-					double precoTotal = Double.parseDouble((String) tblProdutosLoja.getValueAt(selectedRow, 5))*p.getPrecoProduto();
-					produtosCarrinho.put(p, Double.parseDouble((String) tblProdutosLoja.getValueAt(selectedRow, 5)));
-					// Tenho que converter do Map produtosCarrinho para o Object[][] carrinhoData para que a tabela do carrinho seja atualizada
+					try {
+						Produto p = (Produto) tblProdutosLoja.getModel().getValueAt(selectedRow, 0);
+						Double qtdSelecionada = Double.parseDouble(tblProdutosLoja.getValueAt(selectedRow, 6).toString());
+						if(qtdSelecionada <= 0) {
+							JOptionPane.showMessageDialog(null, "Insira uma quantidade válida.");
+						} else if(qtdSelecionada > p.getQuantidade()) {
+							JOptionPane.showMessageDialog(null, "Quantidade selecionada acima da disponível.");
+						} else {
+							double precoTotal = qtdSelecionada * p.getPrecoProduto();
+							produtosCarrinho.put(p, qtdSelecionada);
+							// Tenho que converter do Map produtosCarrinho para o Object[][] carrinhoData para que a tabela do carrinho seja atualizada
+							tblCarrinho.setModel(new DefaultTableModel(fetchDataCarrinho(), 
+									new String[] { "Nome", "Quantidade", "Preço Unitário", "Total" }));
+							
+							Double valorTotal = 0.0;
+							for(int i = 0; i < tblCarrinho.getRowCount(); i++) {
+								valorTotal += Double.parseDouble(tblCarrinho.getValueAt(i, 3).toString());
+							}
+							
+							
+							lblValorTotal.setText(String.format("%.2f", valorTotal));
+							
+								
+						}
+					} catch(Exception err) {
+						JOptionPane.showMessageDialog(null, "Insira uma quantidade válida.");
+					}
 				}
 				else {
 					// Aviso que tem que especificar um produto para adicionar ao carrinho
+					JOptionPane.showMessageDialog(null, "Selecione um produto para adicionar.");
 				}
 			}
 		});
@@ -349,11 +418,17 @@ public class CompraForm {
 		panel_3.setBounds(23, 601, 397, 49);
 		frame.getContentPane().add(panel_3);
 
-		lblNewLabel = new JLabel("TOTAL DA COMPRA: R$34224,00");
+		lblNewLabel = new JLabel("TOTAL DA COMPRA: R$");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel.setBounds(10, 10, 377, 29);
+		lblNewLabel.setBounds(10, 11, 199, 29);
 		panel_3.add(lblNewLabel);
+		
+		lblValorTotal = new JLabel("0,00");
+		lblValorTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblValorTotal.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblValorTotal.setBounds(210, 11, 177, 29);
+		panel_3.add(lblValorTotal);
 		frame.setUndecorated(true);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
