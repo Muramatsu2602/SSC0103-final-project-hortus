@@ -63,7 +63,7 @@ public class PerfilProdutorForm {
 	private JTextField txtComplemento;
 
 	// dados
-	private static Produtor produtorLogado;
+	private Produtor produtorLogado;
 	private static Hashtable<String, Integer> siglaEstadoDict;
 
 	// ================================= METODOS ==========================
@@ -139,8 +139,11 @@ public class PerfilProdutorForm {
 		txtNome.setText(produtorLogado.getNome());
 		txtEmail.setText(produtorLogado.getEmail());
 		txtCNPJ.setText(produtorLogado.getCpf());
+		txtTelefone.setText(produtorLogado.getTelefone());
 		txtNum.setText(produtorLogado.getTelefone());
+		txtCCIR.setText(produtorLogado.getCcir());
 		cbTipoProducao.setSelectedIndex(produtorLogado.getTipoProd());
+		txtDescricao.setText(produtorLogado.getDescricao());
 		txtNum.setText(produtorLogado.getEndereco().getEndNum());
 		cbEstado.setSelectedIndex(siglaEstadoDict.get(produtorLogado.getEndereco().getEndEstado()));
 		txtCidade.setText(produtorLogado.getEndereco().getEndCidade());
@@ -182,12 +185,7 @@ public class PerfilProdutorForm {
 	@SuppressWarnings("deprecation")
 	public void submitForm() {
 
-
 		SGBD banco = new SGBD();
-		Endereco end = new Endereco(txtRua.getText(), txtNum.getText(), txtComplemento.getText(), txtBairro.getText(),
-				txtCEP.getText(), txtCidade.getText(), cbEstado.getSelectedItem().toString());
-
-		banco.insereEndereco(end);
 
 		// se o usuario deixou os campos de senha e alterar senha em branco, a senha
 		// permanece a anterior
@@ -198,12 +196,27 @@ public class PerfilProdutorForm {
 			password = txtSenha.getText();
 		}
 
-		Produtor produtor = new Produtor(0, txtNome.getText(), txtCNPJ.getText(), txtTelefone.getText(), end,
-				txtEmail.getText(), password, txtCCIR.getText(), cbTipoProducao.getSelectedIndex(),
-				txtDescricao.getText());
+		produtorLogado.setNome(txtNome.getText());
+		produtorLogado.setEmail(txtEmail.getText());
+		produtorLogado.setCpf(txtCNPJ.getText());
+		produtorLogado.setTelefone(txtTelefone.getText());
+		produtorLogado.setSenha(password);
+		produtorLogado.setTipoProd(cbTipoProducao.getSelectedIndex());
+		produtorLogado.setDescricao(txtDescricao.getText());
+		produtorLogado.setCcir(txtCCIR.getText());
+		
+		// Atualizar o endereço do consumidor
+		Endereco end = produtorLogado.getEndereco();
 
-		banco.insereProdutor(produtor);
-		banco.atualizaUsuarioEndereco(end, produtor.getId());
+		end.setEndRua(txtRua.getText());
+		end.setEndBairro(txtBairro.getText());
+		end.setEndComplemento(txtComplemento.getText());
+		end.setEndCidade(txtCidade.getText());
+		end.setEndEstado(cbEstado.getSelectedItem().toString());
+		end.setEndCEP(txtCEP.getText());
+		end.setEndNum(txtNum.getText());
+		
+		banco.atualizaProdutor(produtorLogado);
 
 		// limpando os campos e fechando a tela
 		showMessageDialog(null, "Alterações de '" + txtNome.getText() + "' efetuado com sucesso!");
@@ -241,6 +254,16 @@ public class PerfilProdutorForm {
 	 */
 	public PerfilProdutorForm() throws ParseException {
 		initialize();
+	}
+	
+	public PerfilProdutorForm(Produtor produtor) throws ParseException {
+
+		this.produtorLogado = produtor;
+
+		// carregar na tela os dados do consumidor
+		initialize();
+		loadFormData();
+		frame.setVisible(true);
 	}
 
 	// ================================ GUI ==========================
@@ -468,8 +491,8 @@ public class PerfilProdutorForm {
 
 		cbEstado = new JComboBox();
 		cbEstado.setModel(new DefaultComboBoxModel(
-				new String[] { "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE",
-						"PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF" }));
+				new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR",
+						"PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF" }));
 		cbEstado.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cbEstado.setBounds(584, 693, 55, 34);
 		panel_1_1.add(cbEstado);
