@@ -58,10 +58,47 @@ public class EstoqueProdutorForm {
 	private static Produtor produtor;
 	private static Object[][] tableData;
 	private static Vector<Produto> produtos;
+	private static Integer lastSelectedRow;
 
 	/**
 	 * Metodos
 	 */
+	public void salvarProduto(int selectedRowIndex)
+	{
+		int option = JOptionPane.showConfirmDialog(frame, "Deseja mesmo alterar o produto atual?", "Confirmação de alteração.",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (option == JOptionPane.YES_OPTION) {
+			// Atualizar o produto
+			SGBD banco = new SGBD();
+			banco.atualizaProduto(produtos.get(lastSelectedRow));
+			
+			// Atualizar a tabela com o produto atualizado
+			table.setModel(new DefaultTableModel(fetchData(),
+					new String[] {
+						"Nome", "Organico", "Unidade", "Pre\u00E7o", "Quantidade", "Descricao"
+					}
+				) {
+					Class[] columnTypes = new Class[] {
+						Object.class, Boolean.class, Object.class, Object.class, Object.class, Object.class
+					};
+					public Class getColumnClass(int columnIndex) {
+						return columnTypes[columnIndex];
+					}
+					boolean[] columnEditables = new boolean[] {
+						false, false, false, false, false, false
+					};
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+				});
+		}
+	}
+	
+	public void apagarProduto(int selectedRowIndex)
+	{
+		
+	}
+	
 	public static String getUnidadeString(char unidade)
 	{
 		//"Arroba", "Grama", "Metro", "Quilograma", "Unit\u00E1rio" 
@@ -104,6 +141,8 @@ public class EstoqueProdutorForm {
 	 * @param selectedRowIndex
 	 */
 	public static void loadProductIntoForm(int selectedRowIndex) {
+		if(selectedRowIndex != -1)
+			lastSelectedRow = selectedRowIndex;
 		produto = produtos.get(selectedRowIndex); 
 		
 				
@@ -249,6 +288,7 @@ public class EstoqueProdutorForm {
 		JButton btnSalvarAlteracoes = new JButton("SALVAR");
 		btnSalvarAlteracoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				salvarProduto(table.getSelectedRow());
 			}
 		});
 		btnSalvarAlteracoes.setBounds(31, 10, 153, 35);
@@ -261,7 +301,7 @@ public class EstoqueProdutorForm {
 		JButton btnApagarProdutoSelecionado = new JButton("APAGAR");
 		btnApagarProdutoSelecionado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				apagarProduto(table.getSelectedRow());
 			}
 		});
 		btnApagarProdutoSelecionado.setBounds(329, 10, 183, 35);
