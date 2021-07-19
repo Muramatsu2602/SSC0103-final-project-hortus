@@ -822,6 +822,7 @@ public class SGBD {
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+					end.setIdEndereco(rs.rs.getInt("ID_ENDERECO"));
 				}
  				if(end == null) {
  					System.out.println("Erro end nulo");
