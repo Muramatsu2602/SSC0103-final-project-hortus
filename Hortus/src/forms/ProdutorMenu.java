@@ -30,6 +30,8 @@ import hortus.SGBD;
 
 import javax.swing.ListSelectionModel;
 import java.awt.Component;
+import java.awt.Cursor;
+
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -159,6 +161,8 @@ public class ProdutorMenu {
 		frame.getContentPane().add(separator);
 
 		JLabel lblPerfil = new JLabel("New label");
+		lblPerfil.setToolTipText("clique aqui para abrir seu perfil!");
+		lblPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblPerfil.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -272,6 +276,19 @@ public class ProdutorMenu {
 		btnGerenciarEstoque.setBackground(new Color(51, 204, 102));
 		btnGerenciarEstoque.setBounds(46, 195, 381, 86);
 		panel.add(btnGerenciarEstoque);
+		
+		JButton btnLogout = new JButton("Sair");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// LOGOUT
+			}
+		});
+		btnLogout.setBackground(Color.RED);
+		btnLogout.setForeground(Color.WHITE);
+		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnLogout.setIcon(new ImageIcon(ProdutorMenu.class.getResource("/assets/logout.png")));
+		btnLogout.setBounds(654, 68, 79, 46);
+		frame.getContentPane().add(btnLogout);
 		frame.setBounds(100, 100, 1200, 725);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);

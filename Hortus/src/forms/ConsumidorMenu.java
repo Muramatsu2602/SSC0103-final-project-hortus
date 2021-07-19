@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -33,6 +35,7 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
+import javax.swing.SwingConstants;
 
 public class ConsumidorMenu {
 
@@ -230,6 +233,7 @@ public class ConsumidorMenu {
 			}
 		});
 		lblPerfil.setToolTipText("clique aqui para abrir seu perfil!");
+		lblPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblPerfil.setIcon(new ImageIcon(ConsumidorMenu.class.getResource("/assets/profile.png")));
 		lblPerfil.setBounds(1135, 56, 55, 55);
 		frame.getContentPane().add(lblPerfil);
@@ -257,6 +261,18 @@ public class ConsumidorMenu {
 		btnPesquisarProdutor.setBackground(new Color(51, 204, 102));
 		btnPesquisarProdutor.setBounds(46, 138, 381, 86);
 		panel.add(btnPesquisarProdutor);
+
+		JButton btnLogout = new JButton("Sair");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// LOGOUT
+			}
+		});
+		btnLogout.setForeground(Color.WHITE);
+		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnLogout.setBackground(Color.RED);
+		btnLogout.setBounds(652, 68, 79, 46);
+		frame.getContentPane().add(btnLogout);
 
 		frame.setBounds(100, 100, 1200, 721);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
