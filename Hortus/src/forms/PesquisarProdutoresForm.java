@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import hortus.Endereco;
 import hortus.Produtor;
+import hortus.SGBD;
 
 public class PesquisarProdutoresForm {
 
@@ -33,29 +34,28 @@ public class PesquisarProdutoresForm {
 
 	// Dados
 	private static Vector<Produtor> produtores;
+	private static Object[][] tableData;
 
 	public Object[][] fetchData() {
 
 		// Backend
 		// "ProdutorObject", "Nome", "Descricao", "Tipo de Produção", "Cidade"
 
-		// MOCK DATA
-		Endereco end1 = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112",
-				"São Carlos", "SP");
-		Produtor produtor1 = new Produtor(1, "Gabriel", "06712148", "61991436969", end1, "gabriel@gmail.com", "123456",
-				"1231231", 1, "De São Carlos, sô");
-		Endereco end2 = new Endereco("Cesar Ricomi", "324", "Apto. 23", "Jardim Luftalla", "13213132", "Rio de Janeiro",
-				"SP");
-		Produtor produtor2 = new Produtor(1, "Joaoponeis", "04312127", "321313223", end2, "kenzo@gmail.com", "abcdef",
-				"31231223", 2, "Preparando um Bauru pra todos");
+		SGBD banco = new SGBD();
+		// Querry para pegar todos os produtor do produtor
+		
+		produtores = banco.getProdutores()
 
-		Object[][] MockData = new Object[][] {
-				{ produtor1, produtor1.getNome(), produtor1.getDescricao(), produtor1.getTipoProdString(),
-						produtor1.getEndereco().getEndCidade() },
-				{ produtor2, produtor2.getNome(), produtor2.getDescricao(), produtor2.getTipoProdString(),
-						produtor2.getEndereco().getEndCidade() }, };
+		tableData = new Object[produtores.size()][];
 
-		return MockData;
+		// "Nome", "Organico", "Unidade", "Preco", "Quantidade"
+		
+		for (int i = 0; i < produtores.size(); i++) {
+			tableData[i] = new Object[] { produtores.get(i).getNomeProduto(),
+					produtos.get(i).isOrganico(), getUnidadeString(produtos.get(i).getUnidade()),
+					produtos.get(i).getPrecoProduto(), produtos.get(i).getQuantidade(), produtos.get(i).getDescricao()};
+		}
+		return tableData;
 	}
 
 	/**
