@@ -243,6 +243,14 @@ public class ProdutorMenu {
 		JButton btnGerenciarEstoque = new JButton("Gerenciar Estoque");
 		btnGerenciarEstoque.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				EstoqueProdutorForm estoqueProdutor;
+				try {
+					estoqueProdutor = new EstoqueProdutorForm(produtor);
+					estoqueProdutor.setVisible(true);
+				} catch (HortusException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnGerenciarEstoque.setForeground(Color.WHITE);

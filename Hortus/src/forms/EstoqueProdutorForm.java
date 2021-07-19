@@ -20,7 +20,9 @@ import javax.swing.text.NumberFormatter;
 
 import hortus.Compra;
 import hortus.Consumidor;
+import hortus.HortusException;
 import hortus.Produto;
+import hortus.Produtor;
 import hortus.SGBD;
 
 import javax.swing.JSeparator;
@@ -43,35 +45,58 @@ public class EstoqueProdutorForm {
 	// Componentes
 	private JFrame frame;
 	private JTable table;
-	private JTextField txtNome;
-	private JCheckBox cbOrganico;
-	private JFormattedTextField txtQuantidade;
-	private JComboBox cbUnidade;
-	private JFormattedTextField txtPreco;
-	private JTextArea txtIngredientes;
-	private JTextArea txtDescricao;
+	private static JTextField txtNome;
+	private static JCheckBox cbOrganico;
+	private static JFormattedTextField txtQuantidade;
+	private static JComboBox cbUnidade;
+	private static JFormattedTextField txtPreco;
+	private static JTextArea txtIngredientes;
+	private static JTextArea txtDescricao;
 
 	// Dados
 	private static Produto produto;
-	private static String[][] tableData;
-	private Vector<Produto> produtos;
+	private static Produtor produtor;
+	private static Object[][] tableData;
+	private static Vector<Produto> produtos;
 
 	/**
 	 * Metodos
 	 */
-	public static String[][] fetchData() {
-//		SGBD banco = new SGBD();
-//		// Querry para pegar todas compras
-//		produtos = banco.getComprasByConsumidor(consumidor.getId());
-//
-//		tableData = new String[compras.size()][];
-//
-//		// "Nome", "Organico", "Unidade", "Preco", "Quantidade"
-//		for (int i = 0; i < compras.size(); i++) {
-//			tableData[i] = new String[] { compras.get(i).getDataCompra().toString(),
-//					compras.get(i).getProdutor().getNome(), compras.get(i).getValorFinal().toString(),
-//					compras.get(i).getDescricao() };
-//		}
+	public static String getUnidadeString(char unidade)
+	{
+		//"Arroba", "Grama", "Metro", "Quilograma", "Unit\u00E1rio" 
+		switch(unidade)
+		{
+			case '0':
+				return "Arroba";
+			case '1':
+				return "Grama";
+			case '2':
+				return "Metro";
+			case '3':
+				return "Quilograma";
+			case '4':
+				return "Unitario";
+		}	
+		return null;
+	}
+	
+	public static Object[][] fetchData() {
+		
+		SGBD banco = new SGBD();
+		// Querry para pegar todos os produtor do produtor
+		
+		produtos = banco.getProdutosProdutor(produtor.getId());
+
+		tableData = new Object[produtos.size()][];
+
+		// "Nome", "Organico", "Unidade", "Preco", "Quantidade"
+		
+		for (int i = 0; i < produtos.size(); i++) {
+			tableData[i] = new Object[] { produtos.get(i).getNomeProduto(),
+					produtos.get(i).isOrganico(), getUnidadeString(produtos.get(i).getUnidade()),
+					produtos.get(i).getPrecoProduto(), produtos.get(i).getQuantidade(), produtos.get(i).getDescricao()};
+		}
 		return tableData;
 	}
 
@@ -79,12 +104,19 @@ public class EstoqueProdutorForm {
 	 * @param selectedRowIndex
 	 */
 	public static void loadProductIntoForm(int selectedRowIndex) {
-//		produto = 
-//				
-//				
-//				
-//		txtNome.setText(produto.getNomeProduto());
-
+		produto = produtos.get(selectedRowIndex); 
+		
+				
+		txtNome.setText(produto.getNomeProduto());
+		cbOrganico.setSelected(produto.isOrganico());
+		txtQuantidade.setText(Double.toString(produto.getQuantidade()));
+		txtPreco.setText(Double.toString(produto.getPrecoProduto()));
+		
+		cbUnidade.setSelectedIndex(Character.getNumericValue(produto.getUnidade()));
+		txtIngredientes.setText(null);
+		txtIngredientes.append(produto.getIngredientes());
+		txtDescricao.setText(null);
+		txtDescricao.append(produto.getDescricao());
 	}
 
 	/**
@@ -94,7 +126,7 @@ public class EstoqueProdutorForm {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EstoqueProdutorForm window = new EstoqueProdutorForm();
+					EstoqueProdutorForm window = new EstoqueProdutorForm(null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -106,8 +138,15 @@ public class EstoqueProdutorForm {
 	/**
 	 * Create the application.
 	 */
-	public EstoqueProdutorForm() {
+	public EstoqueProdutorForm(Produtor produtorAtual) throws HortusException {
+		if (produtorAtual == null)
+			throw new HortusException("Erro ao carregar as informacoes do Produtor! Objeto vazio");
+		
+		this.produtor = produtorAtual;
+
+		// Exibir formulario
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -157,9 +196,19 @@ public class EstoqueProdutorForm {
 		table = new JTable();
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setModel(new DefaultTableModel(fetchData(),
-				new String[] { "Nome", "Organico", "Unidade", "Pre\u00E7o", "Quantidade" }) {
-			boolean[] columnEditables = new boolean[] { true, true, true, true, false };
-
+			new String[] {
+				"Nome", "Organico", "Unidade", "Pre\u00E7o", "Quantidade", "Descricao"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Object.class, Boolean.class, Object.class, Object.class, Object.class, Object.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false
+			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
@@ -325,5 +374,9 @@ public class EstoqueProdutorForm {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
 		frame.setLocationRelativeTo(null);
+	}
+
+	public void setVisible(boolean b) {
+		frame.setVisible(b);
 	}
 }
