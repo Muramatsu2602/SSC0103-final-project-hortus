@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -19,8 +20,10 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import hortus.Consumidor;
 import hortus.Endereco;
 import hortus.Produtor;
+import hortus.SGBD;
 
 public class PesquisarProdutoresForm {
 
@@ -33,33 +36,49 @@ public class PesquisarProdutoresForm {
 
 	// Dados
 	private static Vector<Produtor> produtores;
+	private static Object[][] tableData;
+
+	// Metodos
+	public static Hashtable<Integer, String> fillTipoProdDictionary() {
+		Hashtable<Integer, String> tipoProdDict = new Hashtable<Integer, String>();
+
+		tipoProdDict.put(0, "Apicultura");
+		tipoProdDict.put(1, "Avicultura");
+		tipoProdDict.put(2, "Bovinos");
+		tipoProdDict.put(3, "Caprinos");
+		tipoProdDict.put(4, "Cogumelos");
+		tipoProdDict.put(5, "Condimentos");
+		tipoProdDict.put(6, "Conservas");
+		tipoProdDict.put(7, "Gr√£os");
+		tipoProdDict.put(8, "HortiFruiti");
+		tipoProdDict.put(9, "Latic√≠nios");
+		tipoProdDict.put(10, "Ovinos");
+		tipoProdDict.put(11, "Outros");
+
+		return tipoProdDict;
+	}
 
 	public Object[][] fetchData() {
 
 		// Backend
-		// "ProdutorObject", "Nome", "Descricao", "Tipo de ProduÁ„o", "Cidade"
+		// "ProdutorObject", "Nome", "CCIR", "Tipo de Produ√ß√£o", "Cidade"
 
-		// MOCK DATA
-		Endereco end1 = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112",
-				"S„o Carlos", "SP");
-		Produtor produtor1 = new Produtor(1, "Gabriel", "06712148", "61991436969", end1, "gabriel@gmail.com", "123456",
-				"1231231", 1, "De S„o Carlos, sÙ");
-		Endereco end2 = new Endereco("Cesar Ricomi", "324", "Apto. 23", "Jardim Luftalla", "13213132", "Rio de Janeiro",
-				"SP");
-		Produtor produtor2 = new Produtor(6, "Joaoponeis", "04312127", "321313223", end2, "kenzo@gmail.com", "abcdef",
-				"31231223", 2, "Preparando um Bauru pra todos");
-		
+		SGBD banco = new SGBD();
+		// Querry para pegar todos os produtor do produtor
 		produtores = new Vector<Produtor>();
-		produtores.add(produtor1);
-		produtores.add(produtor2);
+		produtores = banco.getAllProdutores();
 
-		Object[][] MockData = new Object[][] {
-				{ produtor1, produtor1.getNome(), produtor1.getDescricao(), produtor1.getTipoProdString(),
-						produtor1.getEndereco().getEndCidade() },
-				{ produtor2, produtor2.getNome(), produtor2.getDescricao(), produtor2.getTipoProdString(),
-						produtor2.getEndereco().getEndCidade() }, };
+		// dicionario para tipos de producao
+		tableData = new Object[produtores.size()][];
+		Hashtable<Integer, String> tipoProdDict = fillTipoProdDictionary();
 
-		return MockData;
+		// dicionario para os tipos de producao
+
+		for (int i = 0; i < produtores.size(); i++) {
+			tableData[i] = new Object[] { produtores.get(i).getNome(), produtores.get(i).getCcir(),
+					tipoProdDict.get(produtores.get(i).getTipoProd()), produtores.get(i).getEndereco().getEndCidade() };
+		}
+		return tableData;
 	}
 
 	/**
@@ -85,6 +104,11 @@ public class PesquisarProdutoresForm {
 	public PesquisarProdutoresForm() {
 		initialize();
 	}
+	
+	public PesquisarProdutoresForm(Consumidor consumidor) {
+		initialize();
+		frame.setVisible(true);
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -100,11 +124,10 @@ public class PesquisarProdutoresForm {
 
 		table = new JTable();
 		table.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		table.setModel(new DefaultTableModel(fetchData(), new String[] { "ProdutorObject", "Nome",
-				"Descri\u00E7\u00E3o", "Tipo de Produ\u00E7\u00E3o", "Cidade" }) {
+		table.setModel(new DefaultTableModel(fetchData(),
+				new String[] { "ProdutorObject", "Nome", "CCIR", "Tipo de Produ\u00E7\u00E3o", "Cidade" }) {
 			boolean[] columnEditables = new boolean[] { true, false, false, false, false };
 
-			@Override
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}

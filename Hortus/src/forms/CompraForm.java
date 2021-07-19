@@ -89,7 +89,7 @@ public class CompraForm {
 		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
 		for (int i = 0; i < produtosLoja.size(); i++) {
 			tableData[i] = new Object[] { produtosLoja.get(i), produtosLoja.get(i).getDescricao(), produtosLoja.get(i).getNomeProduto(),
-					isOrganico(produtosLoja.get(i).isOrganico()), Double.toString(produtosLoja.get(i).getQuantidade()),
+					isOrganico(produtosLoja.get(i).isOrganico()), Double.toString(produtosLoja.get(i).getPrecoProduto()), Double.toString(produtosLoja.get(i).getQuantidade()),
 					"0" };
 		}
 		return tableData;   
@@ -142,6 +142,7 @@ public class CompraForm {
 	public CompraForm(Produtor produtor) {
 		
 		this.produtor = produtor;
+		System.out.println(produtor.getId());
 		
 		initialize();
 		produtosCarrinho = new HashMap<Produto, Double>();
@@ -171,10 +172,9 @@ public class CompraForm {
 		
 		tblProdutosLoja.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"Descri\u00E7\u00E3o", "Nome", "Org\u00E2nico", "Pre\u00E7o por ", "ProdutoObject", "Quantidade Total", "Quantidade Desejada"
+				"Descri\u00E7\u00E3o", "ProdutoObject", "Nome", "Org\u00E2nico", "Pre\u00E7o por unidade", "Quantidade Total", "Quantidade Desejada"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -188,10 +188,10 @@ public class CompraForm {
 		tblProdutosLoja.getColumnModel().getColumn(0).setPreferredWidth(0);
 		tblProdutosLoja.getColumnModel().getColumn(0).setMinWidth(0);
 		tblProdutosLoja.getColumnModel().getColumn(0).setMaxWidth(0);
-		tblProdutosLoja.getColumnModel().getColumn(4).setResizable(false);
-		tblProdutosLoja.getColumnModel().getColumn(4).setPreferredWidth(0);
-		tblProdutosLoja.getColumnModel().getColumn(4).setMinWidth(0);
-		tblProdutosLoja.getColumnModel().getColumn(4).setMaxWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(1).setResizable(false);
+		tblProdutosLoja.getColumnModel().getColumn(1).setPreferredWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(1).setMinWidth(0);
+		tblProdutosLoja.getColumnModel().getColumn(1).setMaxWidth(0);
 		tblProdutosLoja.setBounds(482, 125, 397, 525);
 		tblProdutosLoja.setRowSelectionAllowed(true);
 		tblProdutosLoja.getTableHeader().setReorderingAllowed(false);
