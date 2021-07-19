@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
+import java.util.Hashtable;
 
 import javax.swing.JSeparator;
 import javax.swing.JInternalFrame;
@@ -44,6 +45,9 @@ import java.awt.SystemColor;
 
 public class PerfilConsumidorForm {
 
+	// ================================= PROPRIEDADES ==========================
+
+	// Componentes
 	private JFrame frame;
 	private JTextField txtNome;
 	private JTextField txtEmail;
@@ -63,27 +67,62 @@ public class PerfilConsumidorForm {
 
 	// dados
 	private static Consumidor consumidorLogado;
+	private static Hashtable<String, Integer> siglaEstadoDict;
+
+	// ================================= METODOS ==========================
 
 	/**
-	 * Métodos
+	 * inicializa e preenche o dicionario de siglas de estado
+	 * 
+	 * @param sigla
+	 * @return
 	 */
-	
-	public int getCbEstadoIndex(String sigla) {
-		int index = -1;
-		
-		
-		
-		
-		return index;
+	public void fillSiglaEstadoDict() {
+		siglaEstadoDict = new Hashtable<String, Integer>();
+		siglaEstadoDict.put("AC", 0);
+		siglaEstadoDict.put("AL", 1);
+		siglaEstadoDict.put("AP", 2);
+		siglaEstadoDict.put("AM", 3);
+		siglaEstadoDict.put("BA", 4);
+		siglaEstadoDict.put("CE", 5);
+		siglaEstadoDict.put("ES", 6);
+		siglaEstadoDict.put("GO", 7);
+		siglaEstadoDict.put("MA", 8);
+		siglaEstadoDict.put("MT", 9);
+		siglaEstadoDict.put("MS", 10);
+		siglaEstadoDict.put("MG", 11);
+		siglaEstadoDict.put("PA", 12);
+		siglaEstadoDict.put("PB", 13);
+		siglaEstadoDict.put("PR", 14);
+		siglaEstadoDict.put("PE", 15);
+		siglaEstadoDict.put("PI", 16);
+		siglaEstadoDict.put("RJ", 17);
+		siglaEstadoDict.put("RN", 18);
+		siglaEstadoDict.put("RS", 19);
+		siglaEstadoDict.put("RO", 20);
+		siglaEstadoDict.put("RR", 21);
+		siglaEstadoDict.put("SC", 22);
+		siglaEstadoDict.put("SP", 23);
+		siglaEstadoDict.put("SE", 24);
+		siglaEstadoDict.put("TO", 25);
+		siglaEstadoDict.put("DF", 25);
 	}
 
+	/**
+	 * carrega os dados do usuario logado no formulario
+	 */
 	public void loadFormData() {
+
+		// preenchendo o siglaEstado dicionario
+		fillSiglaEstadoDict();
+
+		// preenchendo os dados na tela
 		txtNome.setText(consumidorLogado.getNome());
 		txtCPF.setText(consumidorLogado.getCpf());
 		txtTelefone.setText(consumidorLogado.getTelefone());
 		txtEmail.setText(consumidorLogado.getEmail());
 		txtNum.setText(consumidorLogado.getEndereco().getEndNum());
-		cbEstado.setSelectedIndex(getCbEstadoIndex(consumidorLogado.getEndereco().getEndEstado()));
+		cbEstado.setSelectedIndex(siglaEstadoDict.get(consumidorLogado.getEndereco().getEndEstado()));
 		txtCidade.setText(consumidorLogado.getEndereco().getEndCidade());
 		txtCEP.setText(consumidorLogado.getEndereco().getEndCEP());
 		txtBairro.setText(consumidorLogado.getEndereco().getEndBairro());
@@ -91,12 +130,54 @@ public class PerfilConsumidorForm {
 		txtComplemento.setText(consumidorLogado.getEndereco().getEndComplemento());
 	}
 
+	/**
+	 * limpa os campos apos dar submit
+	 */
+	public void cleanFields() {
+		txtNome.setText("");
+		txtCPF.setText("");
+		txtTelefone.setText("");
+		txtEmail.setText("");
+		txtSenha.setText("");
+		txtConfirmaSenha.setText("");
+		txtNum.setText("");
+		cbEstado.setSelectedIndex(0);
+		txtCidade.setText("");
+		txtCEP.setText("");
+		txtBairro.setText("");
+		txtRua.setText("");
+		txtComplemento.setText("");
+	}
+
+	/**
+	 * salva as alterações feitas pelo usuario em seu perfil
+	 */
+	public void salvarConta() {
+		String senha = txtSenha.getText();
+		String confirmaSenha = txtConfirmaSenha.getText();
+
+		// verificando se pelo menos um dos campos está vazio e/ou incompleto
+		if (txtNome.getText().isBlank() || txtEmail.getText().isBlank() || txtCPF.getText().isBlank()
+				|| txtTelefone.getText().isBlank() || txtRua.getText().isBlank() || txtNum.getText().isBlank()
+				|| txtBairro.getText().isBlank() || txtCEP.getText().isBlank() || txtCidade.getText().isBlank()) {
+			showMessageDialog(null, "Há campo(s) deixados em branco(s)");
+			return;
+		}
+
+		// testando se senha bate com confirmaSenha
+		// aqui so pode
+		if (senha.equals(confirmaSenha)) {
+			submitForm();
+		} else {
+			showMessageDialog(null, "Suas senhas não são iguais.");
+		}
+	}
+
+	/**
+	 * envia os dados do formulario para o banco
+	 */
 	@SuppressWarnings("deprecation")
 	public void submitForm() {
-
-//		Consumidor consumidor = new Consumidor();
-
-		showMessageDialog(null, "Alterações de '" + txtNome.getText() + "' salvas com sucesso!");
 
 		SGBD banco = new SGBD();
 
@@ -118,25 +199,17 @@ public class PerfilConsumidorForm {
 				txtEmail.getText(), password);
 
 		banco.insereConsumidor(consum);
-
 		banco.atualizaUsuarioEndereco(end, consum.getId());
 
 		// limpando os campos
-		txtNome.setText("");
-		txtCPF.setText("");
-		txtTelefone.setText("");
-		txtEmail.setText("");
-		txtSenha.setText("");
-		txtConfirmaSenha.setText("");
-		txtNum.setText("");
-		cbEstado.setSelectedIndex(0);
-		txtCidade.setText("");
-		txtCEP.setText("");
-		txtBairro.setText("");
-		txtRua.setText("");
-		txtComplemento.setText("");
-
+		showMessageDialog(null, "Alterações de '" + txtNome.getText() + "' salvas com sucesso!");
+		cleanFields();
 		frame.dispose();
+	}
+
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		frame.setVisible(true);
 	}
 
 	/**
@@ -155,16 +228,8 @@ public class PerfilConsumidorForm {
 		});
 	}
 
-	public void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		frame.setVisible(true);
-	}
+	// ========================== CONSTRUTORES ==========================
 
-	/**
-	 * Create the application.
-	 * 
-	 * @throws ParseException
-	 */
 	public PerfilConsumidorForm() throws ParseException {
 		initialize();
 	}
@@ -178,6 +243,7 @@ public class PerfilConsumidorForm {
 		initialize();
 	}
 
+	// ================================ GUI ==========================
 	/**
 	 * Initialize the contents of the frame.
 	 * 
@@ -226,13 +292,6 @@ public class PerfilConsumidorForm {
 		txtCPF.setColumns(10);
 		txtCPF.setBounds(343, 148, 286, 42);
 		panel_1.add(txtCPF);
-
-		JTextPane lblPerfilConsumidor = new JTextPane();
-		lblPerfilConsumidor.setEditable(false);
-		lblPerfilConsumidor.setText("Perfil do Consumidor");
-		lblPerfilConsumidor.setFont(new Font("Tahoma", Font.PLAIN, 45));
-		lblPerfilConsumidor.setBounds(244, 10, 417, 61);
-		panel_1.add(lblPerfilConsumidor);
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 81, 831, 2);
@@ -310,60 +369,11 @@ public class PerfilConsumidorForm {
 		txtTelefone.setBounds(343, 255, 286, 42);
 		panel_1.add(txtTelefone);
 
-		JLabel lblNome_1 = new JLabel("*");
-		lblNome_1.setForeground(Color.RED);
-		lblNome_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1.setBounds(73, 113, 77, 25);
-		panel_1.add(lblNome_1);
-
-		JLabel lblNome_1_1 = new JLabel("*");
-		lblNome_1_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_1.setForeground(Color.RED);
-		lblNome_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_1.setBounds(73, 224, 77, 25);
-		panel_1.add(lblNome_1_1);
-
-		JLabel lblNome_1_2 = new JLabel("*");
-		lblNome_1_2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_2.setForeground(Color.RED);
-		lblNome_1_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_2.setBounds(73, 327, 77, 25);
-		panel_1.add(lblNome_1_2);
-
-		JLabel lblNome_1_3 = new JLabel("*");
-		lblNome_1_3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3.setForeground(Color.RED);
-		lblNome_1_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3.setBounds(164, 425, 77, 25);
-		panel_1.add(lblNome_1_3);
-
-		JLabel lblNome_1_4 = new JLabel("*");
-		lblNome_1_4.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_4.setForeground(Color.RED);
-		lblNome_1_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_4.setBounds(390, 113, 77, 25);
-		panel_1.add(lblNome_1_4);
-
-		JLabel lblNome_1_5 = new JLabel("*Campos obrigat\u00F3rios");
-		lblNome_1_5.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_5.setForeground(Color.RED);
-		lblNome_1_5.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_5.setBounds(24, 666, 217, 25);
-		panel_1.add(lblNome_1_5);
-
 		JLabel lblTelefone = new JLabel("Telefone:");
 		lblTelefone.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTelefone.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTelefone.setBounds(343, 219, 124, 25);
 		panel_1.add(lblTelefone);
-
-		JLabel lblNome_1_6 = new JLabel("*");
-		lblNome_1_6.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_6.setForeground(Color.RED);
-		lblNome_1_6.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_6.setBounds(430, 219, 77, 25);
-		panel_1.add(lblNome_1_6);
 
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBounds(323, 327, 528, 2);
@@ -371,31 +381,11 @@ public class PerfilConsumidorForm {
 
 		JButton btnSalvarAlteracoes = new JButton("Salvar Altera\u00E7\u00F5es");
 		btnSalvarAlteracoes.setForeground(new Color(255, 255, 255));
-		btnSalvarAlteracoes.setBounds(443, 737, 286, 45);
+		btnSalvarAlteracoes.setBounds(283, 738, 286, 45);
 		panel_1.add(btnSalvarAlteracoes);
 		btnSalvarAlteracoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				String senha = txtSenha.getText();
-				String confirmaSenha = txtConfirmaSenha.getText();
-
-				// verificando se pelo menos um dos campos está vazio e/ou incompleto
-				if (txtNome.getText().isBlank() || txtEmail.getText().isBlank() || txtCPF.getText().isBlank()
-						|| txtTelefone.getText().isBlank() || txtRua.getText().isBlank() || txtNum.getText().isBlank()
-						|| txtBairro.getText().isBlank() || txtCEP.getText().isBlank()
-						|| txtCidade.getText().isBlank()) {
-					showMessageDialog(null, "Há campo(s) vazio(s)");
-					return;
-				}
-
-				// testando se senha bate com confirmaSenha
-				// aqui so pode
-				if (senha.equals(confirmaSenha)) {
-
-					submitForm();
-				} else {
-					showMessageDialog(null, "Suas senhas não são iguais.");
-				}
+				salvarConta();
 			}
 		});
 		btnSalvarAlteracoes.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -456,34 +446,6 @@ public class PerfilConsumidorForm {
 		lblCEP.setBounds(652, 449, 77, 25);
 		panel_1.add(lblCEP);
 
-		JLabel lblNome_1_3_1 = new JLabel("*");
-		lblNome_1_3_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_1.setForeground(Color.RED);
-		lblNome_1_3_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_1.setBounds(390, 348, 77, 25);
-		panel_1.add(lblNome_1_3_1);
-
-		JLabel lblNome_1_3_2 = new JLabel("*");
-		lblNome_1_3_2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_2.setForeground(Color.RED);
-		lblNome_1_3_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_2.setBounds(412, 449, 77, 25);
-		panel_1.add(lblNome_1_3_2);
-
-		JLabel lblNome_1_3_3 = new JLabel("*");
-		lblNome_1_3_3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_3.setForeground(Color.RED);
-		lblNome_1_3_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_3.setBounds(699, 337, 77, 25);
-		panel_1.add(lblNome_1_3_3);
-
-		JLabel lblNome_1_3_4 = new JLabel("*");
-		lblNome_1_3_4.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_4.setForeground(Color.RED);
-		lblNome_1_3_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_4.setBounds(699, 449, 77, 25);
-		panel_1.add(lblNome_1_3_4);
-
 		JLabel lblCidade = new JLabel("Cidade:");
 		lblCidade.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCidade.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -512,20 +474,6 @@ public class PerfilConsumidorForm {
 		cbEstado.setBounds(584, 661, 55, 34);
 		panel_1.add(cbEstado);
 
-		JLabel lblNome_1_3_2_1 = new JLabel("*");
-		lblNome_1_3_2_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_2_1.setForeground(Color.RED);
-		lblNome_1_3_2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_2_1.setBounds(412, 622, 77, 25);
-		panel_1.add(lblNome_1_3_2_1);
-
-		JLabel lblNome_1_3_2_2 = new JLabel("*");
-		lblNome_1_3_2_2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNome_1_3_2_2.setForeground(Color.RED);
-		lblNome_1_3_2_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNome_1_3_2_2.setBounds(652, 622, 77, 25);
-		panel_1.add(lblNome_1_3_2_2);
-
 		txtComplemento = new JTextField();
 		txtComplemento.setHorizontalAlignment(SwingConstants.LEFT);
 		txtComplemento.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -545,20 +493,15 @@ public class PerfilConsumidorForm {
 		separator_1.setBounds(323, 81, 528, 631);
 		panel_1.add(separator_1);
 
-		JButton btnApagarConta = new JButton("Apagar Conta");
-		btnApagarConta.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnApagarConta.setForeground(Color.WHITE);
-		btnApagarConta.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnApagarConta.setBackground(Color.RED);
-		btnApagarConta.setBounds(114, 736, 286, 47);
-		panel_1.add(btnApagarConta);
-
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setBounds(10, 710, 831, 2);
 		panel_1.add(separator_3);
+
+		JLabel lblNewLabel = new JLabel("Perfil do Consumidor");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 45));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(10, 10, 831, 61);
+		panel_1.add(lblNewLabel);
 		frame.setBounds(100, 100, 907, 884);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
