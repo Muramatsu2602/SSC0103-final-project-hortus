@@ -12,8 +12,10 @@ import javax.swing.table.DefaultTableModel;
 
 import hortus.Compra;
 import hortus.Endereco;
+import hortus.HortusException;
 import hortus.Produto;
 import hortus.Produtor;
+import hortus.SGBD;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -56,6 +58,8 @@ public class CompraForm {
 	private JScrollPane scrollCarrinho;
 
 	// DADOS
+	private static Produtor produtor;
+	private static Vector<Produto> produtosLoja;
 	private static Object[][] lojaData;
 	private static Object[][] carrinhoData;
 	private static Map<Produto, Double> produtosCarrinho;
@@ -75,7 +79,20 @@ public class CompraForm {
 	public Object[][] fetchData() {
 
         // Backend
+		SGBD banco = new SGBD();
+		this.produtosLoja = banco.getProdutosProdutor(produtor.getId());
+		
+		String[][] tableData = new String[produtosLoja.size()][];
 
+		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PREï¿½O DA COMPRA
+		for (int i = 0; i < produtosLoja.size(); i++) {
+			tableData[i] = new String[] { produtosLoja.get(i).getNomeProduto(),
+					isOrganico(produtosLoja.get(i).isOrganico()), Double.toString(produtosLoja.get(i).getQuantidade()),
+					"0" };
+		}
+		return tableData;   
+
+		/*
         // MOCK DATA
         Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos",
                 "SP");
@@ -95,6 +112,7 @@ public class CompraForm {
                         produto2.getQuantidade(), 0.0 }, };
 
         return MockData;
+        */
     }
 
 	/**
@@ -113,11 +131,20 @@ public class CompraForm {
 		});
 	}
 
+	public CompraForm() {
+		initialize();
+	}
 	/**
 	 * Create the application.
 	 */
-	public CompraForm() {
+	public CompraForm(Produtor produtor) throws HortusException {
+		if(produtor == null) {
+			throw new HortusException("Erro ao carregar o produtor.");
+		}
+		this.produtor = produtor;
+		
 		initialize();
+		
 	}
 
 	/**
