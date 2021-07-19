@@ -723,6 +723,79 @@ public class SGBD {
         }
  	}
  	
+ 	public void atualizaProdutor(Produtor produtor)
+ 	{
+ 		try {
+			Connection con = this.connect();
+			
+			String sql = "UPDATE produtor set NOME = ?, EMAIL = ?, SENHA = ?, CNPJ = ?, TELEFONE = ?, CCIR = ?, TIPO_PROD = ?, DESCRICAO = ? WHERE ID = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, produtor.getNome());
+			stmt.setString(2, produtor.getEmail());
+			stmt.setString(3, produtor.getSenha());
+			stmt.setString(4, produtor.getCpf());
+			stmt.setString(5, produtor.getTelefone());
+			stmt.setString(6, produtor.getCcir());
+			stmt.setInt(7, produtor.getTipoProd());
+			stmt.setString(8, produtor.getDescricao());
+			stmt.setInt(9, produtor.getId());
+			stmt.execute();
+			con.close();
+			
+			// Atualizar agora o endereço do produtor
+			atualizaEndereco(produtor.getEndereco());
+			
+		} catch(SQLException e){
+            System.out.println("Erro Atualiza Produtor "+e.getMessage());
+        }
+ 	}
+ 	
+ 	public void atualizaConsumidor(Consumidor consum)
+ 	{
+ 		try {
+			Connection con = this.connect();
+			
+			String sql = "UPDATE consumidor set NOME = ?, EMAIL = ?, SENHA = ?, CPF = ?, TELEFONE = ? WHERE ID = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, consum.getNome());
+			stmt.setString(2, consum.getEmail());
+			stmt.setString(3, consum.getSenha());
+			stmt.setString(4, consum.getCpf());
+			stmt.setString(5, consum.getTelefone());
+			stmt.setInt(6, consum.getId());
+			stmt.execute();
+			con.close();
+			
+			// Atualizar agora o endereço da pessoa
+			atualizaEndereco(consum.getEndereco());
+			
+		} catch(SQLException e){
+            System.out.println("Erro Atualiza Consumidor "+e.getMessage());
+        }
+ 	}
+ 	
+ 	public void atualizaEndereco(Endereco end)
+ 	{
+ 		try {
+			Connection con = this.connect();
+			
+			String sql = "UPDATE endereco set RUA = ?, NUMERO = ?, COMPLEMENTO = ?, BAIRRO = ?, CEP = ?, CIDADE = ?, ESTADO = ? WHERE ID = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, end.getEndRua());
+			stmt.setString(2, end.getEndNum());
+			stmt.setString(3, end.getEndComplemento());
+			stmt.setString(4, end.getEndBairro());
+			stmt.setString(5, end.getEndCEP());
+			stmt.setString(6, end.getEndCidade());
+			stmt.setString(7, end.getEndEstado());
+			stmt.setInt(8, end.getIdEndereco());
+			stmt.execute();
+			con.close();
+		} catch(SQLException e){
+            System.out.println("Erro Atualiza Endereco "+e.getMessage());
+        }
+ 	}
+ 	
  	public Vector<Produtor> getAllProdutores()
  	{
  		try {
