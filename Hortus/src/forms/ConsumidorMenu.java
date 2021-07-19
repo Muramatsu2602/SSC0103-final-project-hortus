@@ -32,6 +32,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
 
 public class ConsumidorMenu {
 
@@ -216,10 +217,22 @@ public class ConsumidorMenu {
 		separator.setBounds(804, 112, 396, 2);
 		frame.getContentPane().add(separator);
 
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon(ConsumidorMenu.class.getResource("/assets/profile.png")));
-		lblNewLabel.setBounds(1135, 56, 55, 55);
-		frame.getContentPane().add(lblNewLabel);
+		JLabel lblPerfil = new JLabel("New label");
+		lblPerfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					new PerfilConsumidorForm(consumidor);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		lblPerfil.setToolTipText("clique aqui para abrir seu perfil!");
+		lblPerfil.setIcon(new ImageIcon(ConsumidorMenu.class.getResource("/assets/profile.png")));
+		lblPerfil.setBounds(1135, 56, 55, 55);
+		frame.getContentPane().add(lblPerfil);
 
 		lblBemVindo = new JLabel("Bem-vindo(a), ");
 		lblBemVindo.setFont(new Font("Tahoma", Font.PLAIN, 16));
