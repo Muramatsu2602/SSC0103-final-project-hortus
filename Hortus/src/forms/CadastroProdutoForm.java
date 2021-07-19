@@ -78,8 +78,8 @@ public class CadastroProdutoForm {
 		
 		// limpando os campos
 		txtNome.setText("");
-		txtPreco.setText("");
-		txtQuantidade.setText("");
+		txtPreco.setText("0");
+		txtQuantidade.setText("0");
 		cbUnidade.setSelectedIndex(0);
 		ckOrganico.setSelected(false);
 		txtDescricao.setText("");
