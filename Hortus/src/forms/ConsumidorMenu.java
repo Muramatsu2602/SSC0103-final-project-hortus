@@ -35,18 +35,23 @@ import java.awt.event.MouseEvent;
 
 public class ConsumidorMenu {
 
-	// COMPONENTS
+	// ========================== PROPRIEDADES ============================
+
+	// componentes
 	private JFrame frame;
 	private JScrollPane scrollPane;
 	private JTable table;
 	private JLabel lblBemVindo;
 
-	// DATA
+	// dados
 	private static Consumidor consumidor;
 	private static String[][] tableData;
-	private Vector<Compra> compras;
+	private static Vector<Compra> compras;
+
+	// ========================== METODOS ============================
 
 	/**
+	 * Preenche a tabela com dados do BD
 	 * 
 	 * @return
 	 */
@@ -63,7 +68,20 @@ public class ConsumidorMenu {
 					compras.get(i).getProdutor().getNome(), compras.get(i).getValorFinal().toString(),
 					compras.get(i).getDescricao() };
 		}
-		return tableData;   
+		return tableData;
+	}
+
+	/**
+	 * loads consumidor content into screen
+	 * 
+	 * @param produtor
+	 */
+	public void loadConsumidorToForm() {
+		SGBD banco = new SGBD();
+		// Agora, buscar todas as informa��es necess�rias para a tela de
+		// consumidor
+
+		lblBemVindo.setText("Bem-vindo(a) " + consumidor.getNome());
 	}
 
 	/**
@@ -71,7 +89,7 @@ public class ConsumidorMenu {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {  
+			public void run() {
 				try {
 					ConsumidorMenu window = new ConsumidorMenu();
 					window.frame.setVisible(true);
@@ -81,6 +99,8 @@ public class ConsumidorMenu {
 			}
 		});
 	}
+
+	// ========================== CONSTRUTORES ============================
 
 	/**
 	 * Create the application.
@@ -105,18 +125,7 @@ public class ConsumidorMenu {
 		frame.setVisible(true);
 	}
 
-	/**
-	 * loads consumidor content into screen
-	 * 
-	 * @param produtor
-	 */
-	public void loadConsumidorToForm() {
-		SGBD banco = new SGBD();
-		// Agora, buscar todas as informa��es necess�rias para a tela de
-		// consumidor
-
-		lblBemVindo.setText("Bem-vindo(a) " + consumidor.getNome());
-	}
+	// ========================== GUI ============================
 
 	/**
 	 * Initialize the contents of the frame.

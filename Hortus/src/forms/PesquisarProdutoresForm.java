@@ -49,9 +49,9 @@ public class PesquisarProdutoresForm {
 		tipoProdDict.put(4, "Cogumelos");
 		tipoProdDict.put(5, "Condimentos");
 		tipoProdDict.put(6, "Conservas");
-		tipoProdDict.put(7, "Grãos");
+		tipoProdDict.put(7, "Graos");
 		tipoProdDict.put(8, "HortiFruiti");
-		tipoProdDict.put(9, "Laticínios");
+		tipoProdDict.put(9, "Laticinios");
 		tipoProdDict.put(10, "Ovinos");
 		tipoProdDict.put(11, "Outros");
 
