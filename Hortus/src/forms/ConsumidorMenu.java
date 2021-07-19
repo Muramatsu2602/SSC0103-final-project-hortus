@@ -195,6 +195,7 @@ public class ConsumidorMenu {
 		panelHistoricoDeCompras.add(scrollPane);
 
 		JTextPane txtpnDashboardDoConsumidor = new JTextPane();
+		txtpnDashboardDoConsumidor.setEditable(false);
 		txtpnDashboardDoConsumidor.setForeground(new Color(255, 255, 255));
 		txtpnDashboardDoConsumidor.setBackground(new Color(153, 102, 255));
 		txtpnDashboardDoConsumidor.setBounds(770, 139, 314, 73);

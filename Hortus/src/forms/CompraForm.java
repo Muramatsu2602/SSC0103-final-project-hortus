@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import hortus.Compra;
 import hortus.Endereco;
 import hortus.Produto;
 import hortus.Produtor;
@@ -21,6 +22,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -38,9 +41,6 @@ public class CompraForm {
 	private JFrame frame;
 	private JButton btnLess;
 	private JTable tblProdutosLoja;
-
-	// DADOS
-	private static Object[][] tableData;
 	private JPanel panel;
 	private JButton btnSair;
 	private JTable tblCarrinho;
@@ -54,6 +54,11 @@ public class CompraForm {
 	private JLabel lblNewLabel;
 	private JScrollPane scrollLoja;
 	private JScrollPane scrollCarrinho;
+
+	// DADOS
+	private static Object[][] lojaData;
+	private static Object[][] carrinhoData;
+	private static Map<Produto, Double> produtosCarrinho;
 	
 	public String isOrganico(boolean organico) {
 		if (organico)
@@ -137,7 +142,11 @@ public class CompraForm {
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
+			};
+			public boolean isCellEditable(int row, int column)
+		    {
+		      return false;//This causes all cells to be not editable
+		    }
 		});
 		tblProdutosLoja.getColumnModel().getColumn(0).setResizable(false);
 		tblProdutosLoja.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -187,6 +196,20 @@ public class CompraForm {
 		btnLess.setFont(new Font("Tahoma", Font.BOLD, 22));
 
 		btnAdicionarNoCarrinho = new JButton("Adicionar no Carrinho");
+		btnAdicionarNoCarrinho.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = tblProdutosLoja.getSelectedRow();
+				if (selectedRow != -1) {
+					Produto p = (Produto) tblProdutosLoja.getModel().getValueAt(selectedRow, 0);
+					double precoTotal = (Double) tblProdutosLoja.getValueAt(selectedRow, 5)*p.getPrecoProduto();
+					produtosCarrinho.put(p, (Double) tblProdutosLoja.getValueAt(selectedRow, 5));
+					// Tenho que converter do Map produtosCarrinho para o Object[][] carrinhoData para que a tabela do carrinho seja atualizada
+				}
+				else {
+					// Aviso que tem que especificar um produto para adicionar ao carrinho
+				}
+			}
+		});
 		btnAdicionarNoCarrinho.setForeground(Color.WHITE);
 		btnAdicionarNoCarrinho.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		btnAdicionarNoCarrinho.setBackground(new Color(51, 204, 255));
@@ -245,7 +268,7 @@ public class CompraForm {
 
 		tblCarrinho = new JTable();
 		tblCarrinho.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "Nome", "Quantidade", "Pre\u00E7o Unit\u00E1rio", "Total" }));
+				new String[] { "Nome", "Quantidade", "Preço Unitário", "Total" }));
 		tblCarrinho.setRowSelectionAllowed(true);
 		tblCarrinho.setBounds(23, 125, 397, 466);
 

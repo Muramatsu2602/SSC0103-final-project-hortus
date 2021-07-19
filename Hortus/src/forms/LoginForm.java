@@ -169,6 +169,7 @@ public class LoginForm {
 		btnSair.setFont(new Font("Tahoma", Font.PLAIN, 17));
 
 		JTextPane txtpnLogin = new JTextPane();
+		txtpnLogin.setEditable(false);
 		txtpnLogin.setBounds(131, 53, 128, 61);
 		txtpnLogin.setFont(new Font("Tahoma", Font.PLAIN, 45));
 		txtpnLogin.setText("Login");
@@ -282,6 +283,7 @@ public class LoginForm {
 		panel.add(ckSouProdutor);
 
 		JTextPane txtpnDesignedAnd = new JTextPane();
+		txtpnDesignedAnd.setEditable(false);
 		txtpnDesignedAnd.setForeground(new Color(255, 255, 255));
 		txtpnDesignedAnd.setBackground(new Color(153, 102, 255));
 		txtpnDesignedAnd.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -295,6 +297,7 @@ public class LoginForm {
 		frmLogin.getContentPane().add(lblNewLabel);
 
 		JTextArea txtrHortus = new JTextArea();
+		txtrHortus.setEditable(false);
 		txtrHortus.setForeground(new Color(255, 255, 255));
 		txtrHortus.setBackground(new Color(153, 102, 255));
 		txtrHortus.setFont(new Font("Tahoma", Font.BOLD, 53));
@@ -303,6 +306,7 @@ public class LoginForm {
 		frmLogin.getContentPane().add(txtrHortus);
 
 		JTextArea txtrDaHorta = new JTextArea();
+		txtrDaHorta.setEditable(false);
 		txtrDaHorta.setForeground(new Color(255, 255, 255));
 		txtrDaHorta.setBackground(new Color(153, 102, 255));
 		txtrDaHorta.setFont(new Font("Tahoma", Font.PLAIN, 20));
