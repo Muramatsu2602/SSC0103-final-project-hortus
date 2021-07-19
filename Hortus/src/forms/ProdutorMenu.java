@@ -211,6 +211,7 @@ public class ProdutorMenu {
 		panelHistoricoDeCompras.add(scrollPane);
 
 		JTextPane txtpnDashboardDoProdutor = new JTextPane();
+		txtpnDashboardDoProdutor.setEditable(false);
 		txtpnDashboardDoProdutor.setText("Dashboard do Produtor");
 		txtpnDashboardDoProdutor.setForeground(Color.WHITE);
 		txtpnDashboardDoProdutor.setFont(new Font("Tahoma", Font.BOLD, 40));
