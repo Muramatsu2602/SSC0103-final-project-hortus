@@ -139,9 +139,11 @@ public class PerfilProdutorForm {
 		txtNome.setText(produtorLogado.getNome());
 		txtEmail.setText(produtorLogado.getEmail());
 		txtCNPJ.setText(produtorLogado.getCpf());
+		txtTelefone.setText(produtorLogado.getTelefone());
 		txtNum.setText(produtorLogado.getTelefone());
 		txtCCIR.setText(produtorLogado.getCcir());
 		cbTipoProducao.setSelectedIndex(produtorLogado.getTipoProd());
+		txtDescricao.setText(produtorLogado.getDescricao());
 		txtNum.setText(produtorLogado.getEndereco().getEndNum());
 		cbEstado.setSelectedIndex(siglaEstadoDict.get(produtorLogado.getEndereco().getEndEstado()));
 		txtCidade.setText(produtorLogado.getEndereco().getEndCidade());
@@ -259,8 +261,8 @@ public class PerfilProdutorForm {
 		this.produtorLogado = produtor;
 
 		// carregar na tela os dados do consumidor
-		loadFormData();
 		initialize();
+		loadFormData();
 		frame.setVisible(true);
 	}
 
@@ -489,8 +491,8 @@ public class PerfilProdutorForm {
 
 		cbEstado = new JComboBox();
 		cbEstado.setModel(new DefaultComboBoxModel(
-				new String[] { "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE",
-						"PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF" }));
+				new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR",
+						"PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF" }));
 		cbEstado.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cbEstado.setBounds(584, 693, 55, 34);
 		panel_1_1.add(cbEstado);
