@@ -70,7 +70,7 @@ public class CompraForm {
 		if (organico)
 			return "Sim";
 		else
-			return "Não";
+			return "NÃ£o";
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class CompraForm {
 		
 		Object[][] tableData = new Object[produtosLoja.size()][];
 
-		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PREï¿½O DA COMPRA
+		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PREÃ¯Â¿Â½O DA COMPRA
 		for (int i = 0; i < produtosLoja.size(); i++) {
 			tableData[i] = new Object[] { produtosLoja.get(i), produtosLoja.get(i).getDescricao(), produtosLoja.get(i).getNomeProduto(),
 					isOrganico(produtosLoja.get(i).isOrganico()), Double.toString(produtosLoja.get(i).getPrecoProduto()), Double.toString(produtosLoja.get(i).getQuantidade()),
@@ -96,11 +96,11 @@ public class CompraForm {
 
 		/*
         // MOCK DATA
-        Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos",
+        Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "SÃ£o Carlos",
                 "SP");
         Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456",
-                "1231231", 1, "De São Carlos, sô");
-        Produto produto1 = new Produto(3, produtor, "Maçã GOSTOSA", "Maçã com gosto bom", 12.0, 5.99, 'k', "Maçã, amor",
+                "1231231", 1, "De SÃ£o Carlos, sÃ´");
+        Produto produto1 = new Produto(3, produtor, "MaÃ§Ã£ GOSTOSA", "MaÃ§Ã£ com gosto bom", 12.0, 5.99, 'k', "MaÃ§Ã£, amor",
                 true);
         Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k',
                 "Banana, macaco e potassio", false);
@@ -303,7 +303,7 @@ public class CompraForm {
 
 		tblCarrinho = new JTable();
 		tblCarrinho.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "Nome", "Quantidade", "Preço Unitário", "Total" }));
+				new String[] { "Nome", "Quantidade", "PreÃ§o UnitÃ¡rio", "Total" }));
 		tblCarrinho.setRowSelectionAllowed(true);
 		tblCarrinho.setBounds(23, 125, 397, 466);
 
