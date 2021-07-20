@@ -69,7 +69,7 @@ public class ConsumidorMenu {
 		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
 		for (int i = 0; i < compras.size(); i++) {
 			tableData[i] = new String[] { compras.get(i).getDataCompra().toString(),
-					compras.get(i).getProdutor().getNome(), compras.get(i).getValorFinal().toString(),
+					compras.get(i).getProdutor().getNome(), Double.toString(compras.get(i).getValorFinal()),
 					compras.get(i).getDescricao() };
 		}
 		return tableData;
