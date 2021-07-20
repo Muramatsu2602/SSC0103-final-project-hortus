@@ -634,7 +634,7 @@ public class SGBD {
  			{
  				// Pegar todos os itens_compra da compra atual
  				Map<Produto, Double> listaProdutos = getItensCompra(rs.getInt("ID"));
- 				Compra compra =new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA"));
+ 				Compra compra = new Compra(rs.getInt("ID"), getConsumidorById(rs.getInt("ID_CONSUMIDOR")), getProdutorById(rs.getInt("ID_PRODUTOR")), listaProdutos, getEnderecoById(rs.getInt("ID_ENDERECO")), rs.getString("DESCRICAO"), rs.getString("DATA_COMPRA"));
  				if(rs.getInt("FINALIZADA") == 1) 
  				{
 					 compra.setCompraFinalizada();

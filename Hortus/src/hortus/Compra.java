@@ -84,6 +84,7 @@ public class Compra {
 	}
 
 	public void setListaProdutos(Map<Produto, Double> listaProdutos) {
+		System.out.println("TAMANHO DA LISTA DE PRODUTOS: "+listaProdutos.size());
 		this.listaProdutos = listaProdutos;
 	}
 
