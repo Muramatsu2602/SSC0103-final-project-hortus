@@ -208,6 +208,7 @@ public class ConsumidorMenu {
 		panelHistoricoDeCompras.add(scrollPane);
 		
 		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.setIcon(new ImageIcon(ConsumidorMenu.class.getResource("/assets/refresh.png")));
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// REFRESH
@@ -216,7 +217,7 @@ public class ConsumidorMenu {
 		btnRefresh.setForeground(Color.WHITE);
 		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnRefresh.setBackground(new Color(51, 204, 102));
-		btnRefresh.setBounds(10, 8, 105, 46);
+		btnRefresh.setBounds(10, 8, 117, 46);
 		panelHistoricoDeCompras.add(btnRefresh);
 
 		JTextPane txtpnDashboardDoConsumidor = new JTextPane();
@@ -275,6 +276,7 @@ public class ConsumidorMenu {
 		panel.add(btnPesquisarProdutor);
 
 		JButton btnLogout = new JButton("Sair");
+		btnLogout.setIcon(new ImageIcon(ConsumidorMenu.class.getResource("/assets/logout.png")));
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// LOGOUT
@@ -289,7 +291,7 @@ public class ConsumidorMenu {
 		btnLogout.setForeground(Color.WHITE);
 		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnLogout.setBackground(Color.RED);
-		btnLogout.setBounds(652, 68, 79, 46);
+		btnLogout.setBounds(652, 68, 115, 46);
 		frame.getContentPane().add(btnLogout);
 
 		frame.setBounds(100, 100, 1200, 721);
