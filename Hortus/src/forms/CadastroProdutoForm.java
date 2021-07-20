@@ -56,6 +56,19 @@ public class CadastroProdutoForm {
 	// ========================== METODOS ============================
 
 	/**
+	 * limpa os campos preenchidos no formulario
+	 */
+	public void cleanFields() {
+		txtNome.setText("");
+		txtPreco.setText("0");
+		txtQuantidade.setText("0");
+		cbUnidade.setSelectedIndex(0);
+		ckOrganico.setSelected(false);
+		txtDescricao.setText("");
+		txtIngredientes.setText("");
+	}
+
+	/**
 	 * cadastra um novo produto no banco a partir das informações do formulario
 	 */
 	public void submitForm() {
