@@ -276,7 +276,7 @@ public class ConsumidorMenu {
 		panel.add(btnPesquisarProdutor);
 
 		JButton btnLogout = new JButton("Sair");
-		btnLogout.setIcon(new ImageIcon(ConsumidorMenu.class.getResource("/assets/logout.png")));
+		btnLogout.setIcon(new ImageIcon(ConsumidorMenu.class.getResource("/assets/log_out_small.png")));
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// LOGOUT

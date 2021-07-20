@@ -304,8 +304,8 @@ public class ProdutorMenu {
 		btnLogout.setBackground(Color.RED);
 		btnLogout.setForeground(Color.WHITE);
 		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnLogout.setIcon(new ImageIcon(ProdutorMenu.class.getResource("/assets/logout.png")));
-		btnLogout.setBounds(654, 68, 103, 46);
+		btnLogout.setIcon(new ImageIcon(ProdutorMenu.class.getResource("/assets/log_out_small.png")));
+		btnLogout.setBounds(654, 68, 116, 46);
 		frame.getContentPane().add(btnLogout);
 		frame.setBounds(100, 100, 1200, 725);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
