@@ -76,7 +76,7 @@ public class PesquisarProdutoresForm {
 		// dicionario para os tipos de producao
 
 		for (int i = 0; i < produtores.size(); i++) {
-			tableData[i] = new Object[] { produtores.get(i).getNome(), produtores.get(i).getCcir(),
+			tableData[i] = new Object[] { null, produtores.get(i).getNome(), produtores.get(i).getCcir(),
 					tipoProdDict.get(produtores.get(i).getTipoProd()), produtores.get(i).getEndereco().getEndCidade() };
 		}
 		return tableData;
