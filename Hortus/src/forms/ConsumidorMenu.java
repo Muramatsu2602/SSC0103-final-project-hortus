@@ -212,6 +212,14 @@ public class ConsumidorMenu {
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// REFRESH
+				table.setModel(new DefaultTableModel(fetchData(),
+						new String[] { "Data", "Produtor", "Pre\u00E7o", "Descri\u00E7\u00E3o" }) {
+					boolean[] columnEditables = new boolean[] { true, false, false, false };
+
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+			 	});
 			}
 		});
 		btnRefresh.setForeground(Color.WHITE);

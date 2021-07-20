@@ -557,7 +557,7 @@ public class SGBD {
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 			{
-				prod = new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO"));
+				prod = new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getInt("UNIDADE"), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO"));
 			}
 			else {
 				con.close();
@@ -585,7 +585,7 @@ public class SGBD {
  			while(rs.next())
  			{
  				if(pegarExcluidos == false && rs.getBoolean("EXCLUIDO") == false)
- 					produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")));
+ 					produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getInt("UNIDADE"), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")));
  			}
  			
  			con.close();
@@ -608,7 +608,7 @@ public class SGBD {
  			Vector<Produto> produtos = new Vector<Produto>();
  			while(rs.next())
  			{
- 				produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")));
+ 				produtos.add(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getInt("UNIDADE"), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")));
  			}
  			
  			con.close();
@@ -692,7 +692,7 @@ public class SGBD {
  			Map<Produto, Double> itensCompra = new HashMap<Produto, Double>();
  			while(rs.next())
  			{
- 				itensCompra.put(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getString("UNIDADE").charAt(0), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")), rs.getDouble("QTD"));
+ 				itensCompra.put(new Produto(rs.getInt("ID"), getProdutorById(rs.getInt("ID_PRODUTOR")), rs.getString("NOME"), rs.getString("DESCRICAO"), rs.getDouble("QUANTIDADE"), rs.getDouble("PRECO"), rs.getInt("UNIDADE"), rs.getString("INGREDIENTES"), rs.getBoolean("ORGANICO"), rs.getBoolean("EXCLUIDO")), rs.getDouble("QTD"));
  			}
  			
  			con.close();

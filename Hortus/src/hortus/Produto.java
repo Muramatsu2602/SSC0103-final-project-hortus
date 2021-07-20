@@ -7,13 +7,13 @@ public class Produto {
 	private String descricao;
 	private double quantidade;
 	private double precoProduto;
-	private char unidade;
+	private int unidade;
 	private String ingredientes;
 	private boolean organico;
 	private boolean excluido = false;
 	
 	
-	public Produto(int idProduto, Produtor produtor, String nomeProduto, String descricao, double quantidade, double precoProduto, char unidade, String ingredientes, boolean organico, boolean excluido) {	
+	public Produto(int idProduto, Produtor produtor, String nomeProduto, String descricao, double quantidade, double precoProduto, int unidade, String ingredientes, boolean organico, boolean excluido) {	
 		
 		this.setIdProduto(idProduto);
 		this.setProdutor(produtor);
@@ -75,11 +75,11 @@ public class Produto {
 		this.precoProduto = precoProduto;
 	}
 
-	public char getUnidade() {
+	public int getUnidade() {
 		return unidade;
 	}
 
-	public void setUnidade(char unidade) {
+	public void setUnidade(int unidade) {
 		this.unidade = unidade;
 	}
 

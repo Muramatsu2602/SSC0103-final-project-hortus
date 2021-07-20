@@ -115,6 +115,16 @@ public class EstoqueProdutorForm {
 		}
 	}
 	
+	public void cleanFields() {
+        txtNome.setText("");
+        txtPreco.setText("0");
+        txtQuantidade.setText("0");
+        cbUnidade.setSelectedIndex(0);
+        cbOrganico.setSelected(false);
+        txtDescricao.setText("");
+        txtIngredientes.setText("");
+    }
+	
 	public void apagarProduto(int selectedRowIndex)
 	{
 		int option = JOptionPane.showConfirmDialog(frame, "Deseja mesmo apagar o produto atual?", "Confirmação de remoção.",
@@ -147,25 +157,26 @@ public class EstoqueProdutorForm {
 					}
 				});
 			
-			// Produto atualizado com sucesso
+			// Produto removido com sucesso
 			showMessageDialog(null, "Produto '" + txtNome.getText() + "' removido com sucesso!");
+			cleanFields();
 		}
 	}
 	
-	public static String getUnidadeString(char unidade)
+	public static String getUnidadeString(int unidade)
 	{
 		//"Arroba", "Grama", "Metro", "Quilograma", "Unit\u00E1rio" 
 		switch(unidade)
 		{
-			case '0':
+			case 0:
 				return "Arroba";
-			case '1':
+			case 1:
 				return "Grama";
-			case '2':
+			case 2:
 				return "Metro";
-			case '3':
+			case 3:
 				return "Quilograma";
-			case '4':
+			case 4:
 				return "Unitario";
 		}	
 		return null;
@@ -206,7 +217,7 @@ public class EstoqueProdutorForm {
 			txtQuantidade.setText(Double.toString(produto.getQuantidade()));
 			txtPreco.setText(Double.toString(produto.getPrecoProduto()));
 			
-			cbUnidade.setSelectedIndex(Character.getNumericValue(produto.getUnidade()));
+			cbUnidade.setSelectedIndex(produto.getUnidade());
 			txtIngredientes.setText(null);
 			txtIngredientes.append(produto.getIngredientes());
 			txtDescricao.setText(null);

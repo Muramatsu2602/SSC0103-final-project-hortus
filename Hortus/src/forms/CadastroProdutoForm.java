@@ -71,24 +71,32 @@ public class CadastroProdutoForm {
 
 		SGBD banco = new SGBD();
 
-		Produto produto = new Produto(1, produtor, txtNome.getText(), txtDescricao.getText(),
-				Double.parseDouble(txtQuantidade.getText().replace(',', '.')),
-				Double.parseDouble(txtPreco.getText().replace(',', '.')), (char) cbUnidade.getSelectedIndex(),
-				txtIngredientes.getText(), ckOrganico.isSelected(), false);
+		try {
+			Produto produto = new Produto(1, produtor, txtNome.getText(), txtDescricao.getText(),
+					Double.parseDouble(txtQuantidade.getText().replace(',', '.')),
+					Double.parseDouble(txtPreco.getText().replace(',', '.')), (char) cbUnidade.getSelectedIndex(),
+					txtIngredientes.getText(), ckOrganico.isSelected(), false);
 
-		banco.insereProduto(produto);
+			banco.insereProduto(produto);
 
-		// Produto inserido com sucess
-		showMessageDialog(null, "Cadastro do produto '" + txtNome.getText() + "' efetuado com sucesso!");
-
-		// limpando os campos
-		txtNome.setText("");
-		txtPreco.setText("0");
-		txtQuantidade.setText("0");
-		cbUnidade.setSelectedIndex(0);
-		ckOrganico.setSelected(false);
-		txtDescricao.setText("");
-		txtIngredientes.setText("");
+			// Produto inserido com sucess
+			showMessageDialog(null, "Cadastro do produto '" + txtNome.getText() + "' efetuado com sucesso!");
+			
+			// limpando os campos
+			txtNome.setText("");
+			txtPreco.setText("0");
+			txtQuantidade.setText("0");
+			cbUnidade.setSelectedIndex(0);
+			ckOrganico.setSelected(false);
+			txtDescricao.setText("");
+			txtIngredientes.setText("");
+		} catch(NumberFormatException erro1)
+		{
+			showMessageDialog(null, "Os campos númericos contém valores inválidos!");
+		} catch(Exception erro2)
+		{
+			showMessageDialog(null, "Erro ao cadastrar produto!");
+		}
 	}
 
 	/*
@@ -136,7 +144,7 @@ public class CadastroProdutoForm {
 	private void initialize() {
 		// number-only mask
 		DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance();
-		df.setGroupingUsed(true);
+		df.setGroupingUsed(false);
 		df.setDecimalSeparatorAlwaysShown(true);
 		NumberFormatter formatter1 = new NumberFormatter(df); // create the formatter
 		formatter1.setAllowsInvalid(false); // must specify that invalid chars are not allowed
@@ -145,7 +153,9 @@ public class CadastroProdutoForm {
 		frame.getContentPane().setBackground(new Color(123, 104, 238));
 		frame.getContentPane().setLayout(null);
 
-		NumberFormatter formatter2 = new NumberFormatter(); // create the formatter
+		DecimalFormat df2 = (DecimalFormat) DecimalFormat.getInstance();
+		df2.setGroupingUsed(false);
+		NumberFormatter formatter2 = new NumberFormatter(df2); // create the formatter
 		formatter2.setAllowsInvalid(false); // must specify that invalid chars are not allowed
 
 		// COMPONENTS

@@ -232,6 +232,13 @@ public class ProdutorMenu {
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// REFRESH AQUI
+				table.setModel(new DefaultTableModel(fetchData(), new String[] { "Data", "Consumidor", "Nome", "Pre\u00E7o" }) {
+					Class[] columnTypes = new Class[] { String.class, String.class, String.class, Object.class };
+
+					public Class getColumnClass(int columnIndex) {
+						return columnTypes[columnIndex];
+					}
+				});
 			}
 		});
 		btnRefresh.setForeground(Color.WHITE);

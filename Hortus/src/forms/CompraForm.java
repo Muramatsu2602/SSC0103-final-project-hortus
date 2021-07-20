@@ -43,7 +43,6 @@ public class CompraForm {
 
 	// COMPONENTES
 	private JFrame frame;
-	private JButton btnLess;
 	private JTable tblProdutosLoja;
 	private JPanel panel;
 	private JButton btnSair;
@@ -216,7 +215,8 @@ public class CompraForm {
 
 		});
 		
-		tblProdutosLoja.setModel(new DefaultTableModel(fetchDataProdutos(),
+		tblProdutosLoja.setModel(new DefaultTableModel(
+			fetchDataProdutos(),
 			new String[] {
 				"ProdutoObject", "Nome", "Descri\u00E7\u00E3o", "Org\u00E2nico", "Pre\u00E7o por unidade", "Quantidade Total", "Quantidade Desejada"
 			}
@@ -227,18 +227,14 @@ public class CompraForm {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
-			boolean[] columnEditables = new boolean[] {
-				true, false, false, false, false, false, true
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
 		});
 		tblProdutosLoja.getColumnModel().getColumn(0).setResizable(false);
 		tblProdutosLoja.getColumnModel().getColumn(0).setPreferredWidth(0);
 		tblProdutosLoja.getColumnModel().getColumn(0).setMinWidth(0);
 		tblProdutosLoja.getColumnModel().getColumn(0).setMaxWidth(0);
 		tblProdutosLoja.getColumnModel().getColumn(2).setResizable(false);
+		tblProdutosLoja.getColumnModel().getColumn(3).setPreferredWidth(56);
+		tblProdutosLoja.getColumnModel().getColumn(6).setPreferredWidth(115);
 		tblProdutosLoja.setBounds(482, 125, 397, 525);
 		tblProdutosLoja.setRowSelectionAllowed(true);
 		tblProdutosLoja.getTableHeader().setReorderingAllowed(false);
@@ -263,20 +259,6 @@ public class CompraForm {
 		panel_1.setBounds(451, 674, 624, 52);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
-
-		JButton btnMore = new JButton("+");
-		btnMore.setForeground(new Color(255, 255, 255));
-		btnMore.setBackground(new Color(51, 204, 51));
-		btnMore.setBounds(27, 10, 50, 35);
-		panel_1.add(btnMore);
-		btnMore.setFont(new Font("Tahoma", Font.PLAIN, 22));
-
-		btnLess = new JButton("-");
-		btnLess.setForeground(new Color(255, 255, 255));
-		btnLess.setBackground(new Color(255, 0, 0));
-		btnLess.setBounds(96, 10, 49, 35);
-		panel_1.add(btnLess);
-		btnLess.setFont(new Font("Tahoma", Font.BOLD, 22));
 
 		btnAdicionarNoCarrinho = new JButton("Adicionar no Carrinho");
 		btnAdicionarNoCarrinho.addActionListener(new ActionListener() {
@@ -308,7 +290,9 @@ public class CompraForm {
 								
 						}
 					} catch(Exception err) {
-						JOptionPane.showMessageDialog(null, "Insira uma quantidade válida.");
+						JOptionPane.showMessageDialog(null, "Insira uma quantidade válida no último campo do produto que deseja comprar!");
+						tblProdutosLoja.setColumnSelectionInterval(0, 0);
+						tblProdutosLoja.setRowSelectionInterval(0,0);
 					}
 				}
 				else {
@@ -322,34 +306,6 @@ public class CompraForm {
 		btnAdicionarNoCarrinho.setBackground(new Color(51, 204, 255));
 		btnAdicionarNoCarrinho.setBounds(395, 11, 219, 35);
 		panel_1.add(btnAdicionarNoCarrinho);
-		btnLess.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = tblProdutosLoja.getSelectedRow();
-				if (selectedRow != -1) {
-					double novoValor = (Double) tblProdutosLoja.getValueAt(selectedRow, 5) - 1.0;
-					double quantAntiga = (Double) tblProdutosLoja.getValueAt(selectedRow, 4);
-					if (novoValor >= 0) {
-						tblProdutosLoja.setValueAt(novoValor, selectedRow, 5);
-						quantAntiga += 1;
-						tblProdutosLoja.setValueAt(quantAntiga, selectedRow, 4);
-					}
-				}
-			}
-		});
-		btnMore.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int selectedRow = tblProdutosLoja.getSelectedRow();
-				if (selectedRow != -1) {
-					double novoDesejado = (Double) tblProdutosLoja.getValueAt(selectedRow, 5) + 1.0;
-					double quantAntiga = (Double) tblProdutosLoja.getValueAt(selectedRow, 4);
-					if (quantAntiga != 0) {
-						tblProdutosLoja.setValueAt(novoDesejado, selectedRow, 5);
-						quantAntiga -= 1;
-						tblProdutosLoja.setValueAt(quantAntiga, selectedRow, 4);
-					}
-				}
-			}
-		});
 
 		panel = new JPanel();
 		panel.setLayout(null);
