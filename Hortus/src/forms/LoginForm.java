@@ -131,6 +131,7 @@ public class LoginForm {
 	 */
 	public LoginForm() {
 		initialize();
+		this.frmLogin.setVisible(true);
 	}
 
 	// ================================= GUI ==========================

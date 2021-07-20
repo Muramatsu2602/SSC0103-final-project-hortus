@@ -228,6 +228,18 @@ public class ProdutorMenu {
 		scrollPane.setBounds(10, 81, 624, 585);
 		panelHistoricoDeCompras.add(scrollPane);
 
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// REFRESH AQUI
+			}
+		});
+		btnRefresh.setForeground(Color.WHITE);
+		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnRefresh.setBackground(new Color(51, 204, 102));
+		btnRefresh.setBounds(10, 8, 105, 46);
+		panelHistoricoDeCompras.add(btnRefresh);
+
 		JTextPane txtpnDashboardDoProdutor = new JTextPane();
 		txtpnDashboardDoProdutor.setEditable(false);
 		txtpnDashboardDoProdutor.setText("Dashboard do Produtor");
@@ -276,11 +288,17 @@ public class ProdutorMenu {
 		btnGerenciarEstoque.setBackground(new Color(51, 204, 102));
 		btnGerenciarEstoque.setBounds(46, 195, 381, 86);
 		panel.add(btnGerenciarEstoque);
-		
+
 		JButton btnLogout = new JButton("Sair");
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// LOGOUT
+				int option = JOptionPane.showConfirmDialog(frame, "Deseja realizar log out?", "Close Confirmation",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (option == JOptionPane.YES_OPTION) {
+					frame.dispose();
+					new LoginForm();
+				}
 			}
 		});
 		btnLogout.setBackground(Color.RED);

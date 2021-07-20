@@ -206,6 +206,18 @@ public class ConsumidorMenu {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(10, 81, 624, 585);
 		panelHistoricoDeCompras.add(scrollPane);
+		
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// REFRESH
+			}
+		});
+		btnRefresh.setForeground(Color.WHITE);
+		btnRefresh.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnRefresh.setBackground(new Color(51, 204, 102));
+		btnRefresh.setBounds(10, 8, 105, 46);
+		panelHistoricoDeCompras.add(btnRefresh);
 
 		JTextPane txtpnDashboardDoConsumidor = new JTextPane();
 		txtpnDashboardDoConsumidor.setEditable(false);
@@ -266,6 +278,12 @@ public class ConsumidorMenu {
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// LOGOUT
+				int option = JOptionPane.showConfirmDialog(frame, "Deseja realizar log out?", "Close Confirmation",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (option == JOptionPane.YES_OPTION) {
+					frame.dispose();
+					new LoginForm();
+				}
 			}
 		});
 		btnLogout.setForeground(Color.WHITE);
