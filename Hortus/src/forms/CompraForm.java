@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import hortus.Compra;
+import hortus.Consumidor;
 import hortus.Endereco;
 import hortus.HortusException;
 import hortus.Produto;
@@ -61,6 +62,7 @@ public class CompraForm {
 
 	// DADOS
 	private static Produtor produtor;
+	private static Consumidor consumidor;
 	private static Vector<Produto> produtosLoja;
 	private int produtoSelecionado;
 	private static Object[][] lojaData;
@@ -182,9 +184,10 @@ public class CompraForm {
 	/**
 	 * Create the application.
 	 */
-	public CompraForm(Produtor produtor) {
+	public CompraForm(Produtor produtor, Consumidor consumidor) {
 		
 		this.produtor = produtor;
+		this.consumidor = consumidor;
 		System.out.println(produtor.getId());
 		
 		initialize();
@@ -406,6 +409,30 @@ public class CompraForm {
 		frame.getContentPane().add(panel_2);
 
 		btnFinalizarCompra = new JButton("Finalizar Compra");
+		btnFinalizarCompra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//int option = JOptionPane.showConfirmDialog(frame, "Deseja confirmar a compra?",
+				//		"Confirmar compra", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				
+				String descricao = JOptionPane.showInputDialog(frame, "Digite uma obervação para o produtor", "Confirmar compra");
+				
+				if(descricao != null) {
+					Compra compra = new Compra(0, consumidor, produtor, produtosCarrinho, produtor.getEndereco(), descricao, null);
+					SGBD banco = new SGBD();
+					
+					banco.insereCompra(compra);
+					
+					JOptionPane.showMessageDialog(null, "Compra realizada com sucesso.");
+				}
+				
+				/*
+				if (option == JOptionPane.YES_OPTION) {
+					// Abrir 
+				}
+				*/
+				
+			}
+		});
 		btnFinalizarCompra.setForeground(Color.WHITE);
 		btnFinalizarCompra.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		btnFinalizarCompra.setBackground(new Color(0, 204, 0));
@@ -435,3 +462,4 @@ public class CompraForm {
 
 	}
 }
+

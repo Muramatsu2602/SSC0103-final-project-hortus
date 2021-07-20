@@ -247,8 +247,8 @@ public class PerfilConsumidorForm {
 		this.consumidorLogado = consumidor;
 
 		// carregar na tela os dados do consumidor
-		loadFormData();
 		initialize();
+		loadFormData();
 		frame.setVisible(true);
 	}
 

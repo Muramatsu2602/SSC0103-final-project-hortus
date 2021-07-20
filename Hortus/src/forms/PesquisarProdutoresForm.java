@@ -35,6 +35,7 @@ public class PesquisarProdutoresForm {
 	private JTable table;
 
 	// Dados
+	private static Consumidor consumidor;
 	private static Vector<Produtor> produtores;
 	private static Object[][] tableData;
 
@@ -75,7 +76,7 @@ public class PesquisarProdutoresForm {
 		// dicionario para os tipos de producao
 
 		for (int i = 0; i < produtores.size(); i++) {
-			tableData[i] = new Object[] { produtores.get(i).getNome(), produtores.get(i).getCcir(),
+			tableData[i] = new Object[] { null, produtores.get(i).getNome(), produtores.get(i).getCcir(),
 					tipoProdDict.get(produtores.get(i).getTipoProd()), produtores.get(i).getEndereco().getEndCidade() };
 		}
 		return tableData;
@@ -107,6 +108,7 @@ public class PesquisarProdutoresForm {
 	
 	public PesquisarProdutoresForm(Consumidor consumidor) {
 		initialize();
+		this.consumidor = consumidor;
 		frame.setVisible(true);
 	}
 
@@ -141,7 +143,7 @@ public class PesquisarProdutoresForm {
 		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
-				CompraForm compraForm = new CompraForm(produtores.get(table.getSelectedRow()));
+				CompraForm compraForm = new CompraForm(produtores.get(table.getSelectedRow()), consumidor);
 				//compraForm.setVisible(true);
 			}
 		});

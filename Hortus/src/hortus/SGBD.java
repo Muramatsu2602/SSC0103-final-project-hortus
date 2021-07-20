@@ -390,6 +390,7 @@ public class SGBD {
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+					end.setIdEndereco(rs.getInt("ID_ENDERECO"));
 				}
 				
 				// Inicializar o consumidor e no fim retorná-lo
@@ -423,12 +424,15 @@ public class SGBD {
 				String sql2 = "SELECT * FROM endereco WHERE ID = ?;";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
 				
-				stmt.setInt(1, rs.getInt("ID_ENDERECO"));
+				stmt2.setInt(1, rs.getInt("ID_ENDERECO"));
 				ResultSet rs2 = stmt2.executeQuery();
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+					end.setIdEndereco(rs.getInt("ID_ENDERECO"));
 				}
+				if(end == null)
+					System.out.println("Endereco nulo!!\n");
 				
 				// Inicializar o Produtor e no fim retorná-lo
 				Produtor prodt = new Produtor(rs.getInt("ID"), rs.getString("NOME"), rs.getString("CNPJ"), rs.getString("TELEFONE"), end, rs.getString("EMAIL"), rs.getString("SENHA"), rs.getString("CCIR"), rs.getInt("TIPO_PROD"), rs.getString("DESCRICAO"));
@@ -537,7 +541,7 @@ public class SGBD {
 			return end;
  		} catch(SQLException e)
  		{
- 			System.out.println("erro"+e.getMessage());
+ 			System.out.println("erro get endereco by id"+e.getMessage());
  		}
  		return null;
  	}
@@ -588,7 +592,7 @@ public class SGBD {
  			return produtos;
  		} catch(Exception e)
  		{
- 			System.out.println("erro"+e.getMessage());
+ 			System.out.println("erro produtos produtor "+e.getMessage());
  		}
  		return null;
 	}
@@ -672,7 +676,7 @@ public class SGBD {
  			return compras;
  		} catch(Exception e)
  		{
- 			System.out.println("Erro get compras by consumidor: "+e.getMessage());
+ 			System.out.println("Erro get compras by produto: "+e.getMessage());
  		}
  		return null;
  	}
@@ -782,6 +786,7 @@ public class SGBD {
 			String sql = "UPDATE endereco set RUA = ?, NUMERO = ?, COMPLEMENTO = ?, BAIRRO = ?, CEP = ?, CIDADE = ?, ESTADO = ? WHERE ID = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, end.getEndRua());
+			System.out.println("Rua: "+end.getEndRua());
 			stmt.setString(2, end.getEndNum());
 			stmt.setString(3, end.getEndComplemento());
 			stmt.setString(4, end.getEndBairro());
@@ -789,6 +794,7 @@ public class SGBD {
 			stmt.setString(6, end.getEndCidade());
 			stmt.setString(7, end.getEndEstado());
 			stmt.setInt(8, end.getIdEndereco());
+			System.out.println("ID: "+end.getIdEndereco());
 			stmt.execute();
 			con.close();
 		} catch(SQLException e){
@@ -816,6 +822,7 @@ public class SGBD {
 				if(rs2.next())
 				{
 					end = new Endereco(rs2.getString("RUA"), rs2.getString("NUMERO"), rs2.getString("COMPLEMENTO"), rs2.getString("BAIRRO"), rs2.getString("CEP"), rs2.getString("CIDADE"), rs2.getString("ESTADO"));
+					end.setIdEndereco(rs.getInt("ID_ENDERECO"));
 				}
  				if(end == null) {
  					System.out.println("Erro end nulo");
