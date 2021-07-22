@@ -273,8 +273,26 @@ public class CompraForm {
 						} else if(qtdSelecionada > p.getQuantidade()) {
 							JOptionPane.showMessageDialog(null, "Quantidade selecionada acima da disponível.");
 						} else {
-							double precoTotal = qtdSelecionada * p.getPrecoProduto();
-							produtosCarrinho.put(p, qtdSelecionada);
+							boolean produtoInCarrinho = false;
+							Produto produtoEncontrado = null;
+							Double quantEncontrada = 0.0;
+							for (Map.Entry<Produto, Double> entry : produtosCarrinho.entrySet()) {
+								if (p.getIdProduto() == entry.getKey().getIdProduto()) {
+									produtoEncontrado = entry.getKey();
+									quantEncontrada = entry.getValue();
+									produtoInCarrinho = true;
+								}
+							}
+							if (produtoInCarrinho) {
+								if (quantEncontrada + qtdSelecionada > produtoEncontrado.getQuantidade()) {
+									JOptionPane.showMessageDialog(null, "Quantidade máxima desse produto alcançada.");
+									return;
+								}
+								else
+									produtosCarrinho.put(produtoEncontrado, produtosCarrinho.get(produtoEncontrado) + qtdSelecionada);
+							}
+							else 
+								produtosCarrinho.put(p, qtdSelecionada);
 							// Tenho que converter do Map produtosCarrinho para o Object[][] carrinhoData para que a tabela do carrinho seja atualizada
 							tblCarrinho.setModel(new DefaultTableModel(fetchDataCarrinho(), 
 									new String[] { "Nome", "Quantidade", "Preço Unitário", "Total" }));
@@ -283,7 +301,6 @@ public class CompraForm {
 							for(int i = 0; i < tblCarrinho.getRowCount(); i++) {
 								valorTotal += Double.parseDouble(tblCarrinho.getValueAt(i, 3).toString());
 							}
-							
 							
 							lblValorTotal.setText(String.format("%.2f", valorTotal));
 							
