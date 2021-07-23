@@ -217,6 +217,11 @@ public class ProdutorMenu {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
 		});
 		table.getColumnModel().getColumn(1).setResizable(false);
 		table.setBackground(Color.WHITE);

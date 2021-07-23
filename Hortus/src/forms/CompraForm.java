@@ -227,6 +227,13 @@ public class CompraForm {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			
+			@Override
+	        public boolean isCellEditable(int row, int column)
+	        {
+	            // make read only fields except column 0,13,14
+	            return column == 6;
+	        }
 		});
 		tblProdutosLoja.getColumnModel().getColumn(0).setResizable(false);
 		tblProdutosLoja.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -348,7 +355,9 @@ public class CompraForm {
 
 		tblCarrinho = new JTable();
 		tblCarrinho.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "Nome", "Quantidade", "Preço Unitário", "Total" }));
+			new String[] { "Nome", "Quantidade", "Preço Unitário", "Total" })
+		);
+		tblCarrinho.setDefaultEditor(Object.class, null);
 		tblCarrinho.setRowSelectionAllowed(true);
 		tblCarrinho.setBounds(23, 125, 397, 466);
 
