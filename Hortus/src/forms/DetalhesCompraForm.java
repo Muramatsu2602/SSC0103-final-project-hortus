@@ -17,7 +17,9 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import hortus.Compra;
+import hortus.Endereco;
 import hortus.Produto;
+import hortus.Produtor;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -63,16 +65,39 @@ public class DetalhesCompraForm {
 
 		initialize();
 		String strProdutos = new String();
+		Produtor produtor = compra.getProdutor();
+		Endereco end = compra.getEndereco();
+		strProdutos += "                                                          NFC-e\n";
+		strProdutos += "              PRODUTOR RURAL " + produtor.getNome().toUpperCase() + "      CCIR: " + produtor.getCcir() + "\n";
+		strProdutos += "                     " + end.getEndRua() + ", " + end.getEndNum() + ", " + end.getEndBairro() + "\n";
+		strProdutos += "-----------------------------------------------------------------------------------\n";
+		strProdutos += "                                Documento Auxiliar da Nota Fiscal\n";
+		strProdutos += "                                      de Consumidor Eletronica\n";
+		strProdutos += "-----------------------------------------------------------------------------------\n";
+		strProdutos += "ITEM           CODIGO               DESCRICAO\n";
+		strProdutos += "        QTD          UN X VL.ITEM(R$)                                        TOT.ITEM(R$)\n";
+		strProdutos += "-----------------------------------------------------------------------------------\n";
 		Map<Produto, Double> produtos = compra.getListaProdutos();
+		int i = 1;
 		for(Map.Entry<Produto, Double> prod: produtos.entrySet())
 		{
-			strProdutos += prod.getKey().getNomeProduto() + "\n\n";
-			strProdutos += String.format("Quantidade: %.3f\n", prod.getValue());
-			strProdutos += String.format("Preço: %.2f X %.3f = %.2f\n", prod.getKey().getPrecoProduto(), prod.getValue(),
-					prod.getKey().getPrecoProduto() * prod.getValue());
-			strProdutos += prod.getKey().getDescricao() + "\n";
-			strProdutos += "===================================================================\n\n";
+			strProdutos += "0".repeat(3 - String.valueOf(i).length()) + i + "               ";
+			strProdutos += prod.getKey().getIdProduto() + " ".repeat(27 - String.valueOf(prod.getKey().getIdProduto()).length());
+			strProdutos += prod.getKey().getNomeProduto() + "\n";
+			System.out.println(12 - String.valueOf(prod.getValue().intValue()).length());
+			if (String.valueOf(prod.getValue().intValue()).length() != 1)
+				strProdutos += String.format("        %.3f" + " ".repeat(9), prod.getValue());
+			else
+				strProdutos += String.format("        %.3f" + " ".repeat(12 - String.valueOf(prod.getValue().intValue()).length()), prod.getValue());
+			strProdutos += String.format("UN X %.2f" + " ".repeat(67), prod.getKey().getPrecoProduto());
+			strProdutos += String.format("%.2f\n", prod.getKey().getPrecoProduto() * prod.getValue());
+			i++;
 		}
+		strProdutos += "-----------------------------------------------------------------------------------\n";
+		strProdutos += "Qtde. Total de Itens" + " ".repeat(84 - String.valueOf(i).length()) + i + "\n";
+		strProdutos += "Valor Total R$" + " ".repeat(88 - String.valueOf(compra.getValorFinal().intValue()).length()) + String.format("%.2f\n", compra.getValorFinal());
+		strProdutos += "FORMA DE PAGAMENTO                                                       VALOR PAGO\n";
+		strProdutos += "Outros" + " ".repeat(101 - String.valueOf(compra.getValorFinal().intValue()).length()) + String.format("%.2f\n", compra.getValorFinal());
 		this.txtDetalhes.setText(strProdutos);
 		this.frame.setVisible(true);
 	}
@@ -118,12 +143,13 @@ public class DetalhesCompraForm {
 		panel_1.add(lblNewLabel);
 
 		JPanel panelPrincipal = new JPanel();
-		panelPrincipal.setBackground(Color.WHITE);
+		panelPrincipal.setBackground(new Color(255, 248, 220));
 		panelPrincipal.setBounds(39, 69, 551, 465);
 		frame.getContentPane().add(panelPrincipal);
 		panelPrincipal.setLayout(null);
 
 		txtDetalhes = new JTextArea();
+		txtDetalhes.setBackground(new Color(255, 248, 220));
 		txtDetalhes.setEditable(false);
 		txtDetalhes.setFont(new Font("Tahoma", Font.BOLD, 14));
 		txtDetalhes.setBounds(10, 10, 531, 445);
