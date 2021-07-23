@@ -92,29 +92,7 @@ public class CompraForm {
 			i++;
 		}
 		
-		return tableData;   
-
-		/*
-        // MOCK DATA
-        Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos",
-                "SP");
-        Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456",
-                "1231231", 1, "De São Carlos, sô");
-        Produto produto1 = new Produto(3, produtor, "Maçã GOSTOSA", "Maçã com gosto bom", 12.0, 5.99, 'k', "Maçã, amor",
-                true);
-        Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k',
-                "Banana, macaco e potassio", false);
-        
-        
-
-        Object[][] MockData = new Object[][] {
-                { produto1, produto1.getDescricao(), produto1.getNomeProduto(), isOrganico(produto1.isOrganico()),
-                        produto1.getQuantidade(), 0.0 },
-                { produto2, produto2.getDescricao(), produto2.getNomeProduto(), isOrganico(produto2.isOrganico()),
-                        produto2.getQuantidade(), 0.0 }, };
-
-        return MockData;
-        */
+		return tableData;
     }
 
 	/**
@@ -137,28 +115,6 @@ public class CompraForm {
 					"" };
 		}
 		return tableData;   
-
-		/*
-        // MOCK DATA
-        Endereco end = new Endereco("Jacinto Favoreto", "625", "Apto. 31", "Jardim Luftalla", "123132112", "São Carlos",
-                "SP");
-        Produtor produtor = new Produtor(1, "Gabriel", "06712148", "61991436969", end, "gabriel@gmail.com", "123456",
-                "1231231", 1, "De São Carlos, sô");
-        Produto produto1 = new Produto(3, produtor, "Maçã GOSTOSA", "Maçã com gosto bom", 12.0, 5.99, 'k', "Maçã, amor",
-                true);
-        Produto produto2 = new Produto(4, produtor, "Banana MARAVILHOSA", "Macaco gosta banana", 50.0, 2.00, 'k',
-                "Banana, macaco e potassio", false);
-        
-        
-
-        Object[][] MockData = new Object[][] {
-                { produto1, produto1.getDescricao(), produto1.getNomeProduto(), isOrganico(produto1.isOrganico()),
-                        produto1.getQuantidade(), 0.0 },
-                { produto2, produto2.getDescricao(), produto2.getNomeProduto(), isOrganico(produto2.isOrganico()),
-                        produto2.getQuantidade(), 0.0 }, };
-
-        return MockData;
-        */
     }
 
 	/**
@@ -392,10 +348,7 @@ public class CompraForm {
 
 		btnFinalizarCompra = new JButton("Finalizar Compra");
 		btnFinalizarCompra.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//int option = JOptionPane.showConfirmDialog(frame, "Deseja confirmar a compra?",
-				//		"Confirmar compra", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				
+			public void actionPerformed(ActionEvent e) {				
 				String descricao = JOptionPane.showInputDialog(frame, "Digite uma obervação para o produtor", "Confirmar compra");
 				
 				if(descricao != null) {
@@ -406,13 +359,6 @@ public class CompraForm {
 					
 					JOptionPane.showMessageDialog(null, "Compra realizada com sucesso.");
 				}
-				
-				/*
-				if (option == JOptionPane.YES_OPTION) {
-					// Abrir 
-				}
-				*/
-				
 			}
 		});
 		btnFinalizarCompra.setForeground(Color.WHITE);

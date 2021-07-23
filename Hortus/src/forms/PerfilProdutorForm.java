@@ -170,7 +170,7 @@ public class PerfilProdutorForm {
 			return;
 		}
 
-		// testando se senha bate com confirmaSenha
+		// testando se a senha bate com confirmaSenha
 		if (senha.equals(confirmaSenha)) {
 			// BACKEND GOES HERE
 			submitForm();

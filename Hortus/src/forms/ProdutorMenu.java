@@ -117,7 +117,7 @@ public class ProdutorMenu {
 		String pattern = "dd/MM/yyyy";
 		DateFormat df = new SimpleDateFormat(pattern);
 
-		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
+		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PREFIXO DA COMPRA
 		for (int i = 0; i < vendas.size(); i++) {
 			tableData[i] = new String[] { df.format(vendas.get(i).getDataCompra()),
 					vendas.get(i).getConsumidor().getNome(), vendas.get(i).getValorFinal().toString(),

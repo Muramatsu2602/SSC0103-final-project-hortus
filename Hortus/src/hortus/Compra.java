@@ -38,16 +38,6 @@ public class Compra {
 	public Date getDataCompra() {
 		return dataCompra;
 	}
-	
-	/*
-	public String getDataCompraFormatado() {
-		SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");    
-		Date data = fmt.parse(dataCompra); 
-		String str = fmt.format(data);
-		
-		return str;
-	}
-	*/
 
 	public void setCompraFinalizada()
 	{

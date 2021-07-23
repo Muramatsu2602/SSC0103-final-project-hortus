@@ -74,15 +74,11 @@ public class LoginForm {
 				if (produtorLogado != null) {
 					System.out.println("ID logado: " + produtorLogado.getId());
 					new ProdutorMenu(produtorLogado);
-					// showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com
-					// sucesso!");
 					frmLogin.dispose();
 				}
 			} catch (HortusException err) {
 				showMessageDialog(null, err.getMessage());
 			}
-
-			// Depois de fazer login, ir para o Form de ProdutorMenu
 
 		} else {
 			// Login como Consumidor
@@ -94,16 +90,11 @@ public class LoginForm {
 				if (consumidorLogado != null) {
 					System.out.println("ID logado: " + consumidorLogado.getId());
 					new ConsumidorMenu(consumidorLogado);
-					// showMessageDialog(null, "Login de '" + txtEmail.getText() + "' efetuado com
-					// sucesso!");
 					frmLogin.dispose();
 				}
 			} catch (HortusException err) {
 				showMessageDialog(null, err.getMessage());
 			}
-
-			// Depois de fazer login, ir para o Form de Pro
-			// ConsumidorMenu
 		}
 
 	}
@@ -180,15 +171,6 @@ public class LoginForm {
 		panel.add(txtpnLogin);
 
 		txtEmail = new JTextField();
-		txtEmail.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-//				String email = txtEmail.getText();
-//				if (!email.contains("@")) {
-//					showMessageDialog(null, "E-mail inserido está incorreto!");
-//				}
-			}
-		});
 		txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtEmail.setBounds(45, 209, 286, 42);
 		txtEmail.setHorizontalAlignment(SwingConstants.LEFT);
@@ -238,8 +220,6 @@ public class LoginForm {
 		JButton btnNovoConsumidor = new JButton("Novo Consumidor");
 		btnNovoConsumidor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// this.dispose();//to close the current jframe
-
 				try {
 					CadastroConsumidorForm consumidor = new CadastroConsumidorForm();
 					consumidor.setVisible(true);
@@ -259,8 +239,6 @@ public class LoginForm {
 		btnNovoProdutor.setForeground(new Color(255, 255, 255));
 		btnNovoProdutor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// this.dispose();//to close the current jframe
-
 				try {
 					CadastroProdutorForm produtor = new CadastroProdutorForm();
 					produtor.setVisible(true);

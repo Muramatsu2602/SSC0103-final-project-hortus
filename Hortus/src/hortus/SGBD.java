@@ -232,10 +232,6 @@ public class SGBD {
             System.out.println("erro"+e.getMessage());
         }
 		
-		// Insere item por item da compra realizada na tabela itens_compra
-		/*for(Map<Produto, Double> c : compra.getListaProdutos()) {
-			
-		}*/
 		compra.getListaProdutos().forEach((k, v) -> insereItensCompra(compra, k, v));
 	}	
  	
@@ -335,7 +331,7 @@ public class SGBD {
 			ResultSet rs = stmt.executeQuery();
 			if(!rs.next())
 			{
-				// Não achou nenhum, então pode exlcuir
+				// Não achou nenhum, então pode excluir
 				String sql2 = "UPDATE produto SET EXCLUIDO = 1 WHERE ID = ?;";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
 				stmt2.setInt(1, prod.getIdProduto());
@@ -837,97 +833,5 @@ public class SGBD {
  			System.out.println("Erro get all produtores : "+e.getMessage());
  		}
  		return null;
- 	}
- 	 
- 	public static void main(String args[])
- 	{
- 		SGBD banco = new SGBD();
- 		// Cadastro consumidor
- 		try{
- 			Consumidor consum = banco.getConsumidorById(5);
- 			System.out.print("USUARIO: "+consum.getNome()+"\nENDERECO:"+consum.getEndereco().getIdEndereco()+"\n");
- 		 	
- 	 		Produto produto = banco.getProdutoById(1);
- 	 		Produto produto2 = banco.getProdutoById(2);
- 	 		Produto produto3 = banco.getProdutoById(3);
- 	 		//Produto produto2 = new Produto(4, 1, "Banana MARAVILHOSA", "Macaco gosta banana", (double)50.0, 2.00, 'k', "Banana, macaco e potassio", false);
- 	 		//Produto produto3 = new Produto(5, 1, "Pera SUPREENDENTE", "Pera ai meu caro", (double)20.0, 8.99, 'k', "Pera, to chegando", true);
- 	 		
- 	 		Map<Produto, Double> compras = new HashMap<Produto, Double>();
- 	 		compras.put(produto, 2.5);
- 	 		compras.put(produto2, 4.2);
- 	 		compras.put(produto3, 6.9);
- 	 		Compra compra = new Compra(-1, consum, produto.getProdutor(), compras, consum.getEndereco(), "Essa compra me deixou mais pobre", "2021-01-01");
- 	 		banco.insereCompra(compra);
- 		} catch(Exception err)
- 		{
- 			System.out.println("Erro Main "+err.getMessage());
- 		}
- 		
- 		
- 
- 		//banco.insereEndereco(end);
- 		
- 		//banco.insereConsumidor(consum);
- 		//banco.insereProdutor(prod);
- 		/*banco.insereProduto(produto);
- 		banco.insereProduto(produto2);
- 		banco.insereProduto(produto3);
- 		banco.insereCompra(compra);*/
- 		//banco.insereProdutoFavorito(consum, produto);
- 		
- 		// Login Consumidor
- 		/*String email = "giovanni.shibaki@usp.br";
- 		String senha = "123";
- 			
- 		try{
- 			Consumidor consumidorLogado = banco.loginConsumidor(email, senha);
- 			System.out.println("ID logado: "+consumidorLogado.getId());
- 		} catch(HortusException err)
- 		{
- 			System.out.println(err.getMessage());
- 		}*/
- 		
- 		// Login produtor
- 		/*String email = "seuze.fazendeiro@gmail.com";
- 		String senha = "senhadozé";
- 			
- 		try{
- 			Produtor produtorLogado = banco.loginProdutor(email, senha);
- 			System.out.println("ID logado: "+produtorLogado.getId());
- 		} catch(HortusException err)
- 		{
- 			System.out.println(err.getMessage());
- 		}*/
- 		
- 		/*try{
- 			Consumidor consumidorAchado = banco.getConsumidorById(1);
- 			System.out.println("Nome logado: "+consumidorAchado.getNome());
- 		} catch(HortusException err)
- 		{
- 			System.out.println(err.getMessage());
- 		}*/
- 			
- 		/*try{
-			Produtor produtorAchado = banco.getProdutorById(1);
-			System.out.println("Nome logado: "+produtorAchado.getNome());
-		} catch(HortusException err)
-		{
-			System.out.println(err.getMessage());
-		}*/
- 		
- 		/*Vector<Produto> produtosEncontrados = banco.getProdutosProduto(1);
- 		for(Produto prod : produtosEncontrados)
- 		{
- 			System.out.println("Nome produto: "+prod.getNomeProduto());
- 		}*/
- 		
- 		/*Vector<Produto> produtosEncontrados = banco.getProdutosFavoritos(1);
- 		for(Produto prod : produtosEncontrados)
- 		{
- 			System.out.println("Nome produto: "+prod.getNomeProduto());
- 		}*/
- 		
- 		return;
  	}
 }

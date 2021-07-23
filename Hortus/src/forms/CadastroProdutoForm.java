@@ -80,8 +80,6 @@ public class CadastroProdutoForm {
 		// 3 - Quilograma
 		// 4 - Unitário
 
-		// Produto produto = new Produto();
-
 		SGBD banco = new SGBD();
 
 		try {
@@ -92,7 +90,7 @@ public class CadastroProdutoForm {
 
 			banco.insereProduto(produto);
 
-			// Produto inserido com sucess
+			// Produto inserido com sucesso
 			showMessageDialog(null, "Cadastro do produto '" + txtNome.getText() + "' efetuado com sucesso!");
 			
 			// limpando os campos

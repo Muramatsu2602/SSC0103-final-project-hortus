@@ -64,7 +64,7 @@ public class ConsumidorMenu {
 	 */
 	public String[][] fetchData() {
 		SGBD banco = new SGBD();
-		// Querry para pegar todas compras
+		// Query para pegar todas compras
 		compras = banco.getComprasByConsumidor(consumidor.getId());
 
 		tableData = new String[compras.size()][];
@@ -88,8 +88,6 @@ public class ConsumidorMenu {
 	 */
 	public void loadConsumidorToForm() {
 		SGBD banco = new SGBD();
-		// Agora, buscar todas as informa��es necess�rias para a tela de
-		// consumidor
 
 		lblBemVindo.setText("Bem-vindo(a) " + consumidor.getNome());
 	}
@@ -125,8 +123,6 @@ public class ConsumidorMenu {
 			throw new HortusException("Erro ao carregar as informa��es do Produtor! Objeto vazio");
 
 		consumidor = consumidorAtual;
-
-		// Carregar informacoes do usuario nos componentes desta tela
 
 		// Exibir formulario
 		initialize();

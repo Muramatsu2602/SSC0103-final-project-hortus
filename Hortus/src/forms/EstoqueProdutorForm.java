@@ -165,7 +165,6 @@ public class EstoqueProdutorForm {
 	
 	public static String getUnidadeString(int unidade)
 	{
-		//"Arroba", "Grama", "Metro", "Quilograma", "Unit\u00E1rio" 
 		switch(unidade)
 		{
 			case 0:
@@ -185,13 +184,11 @@ public class EstoqueProdutorForm {
 	public static Object[][] fetchData() {
 		
 		SGBD banco = new SGBD();
-		// Querry para pegar todos os produtor do produtor
+		// Query para pegar todos os produtor do produtor
 		
 		produtos = banco.getProdutosProdutor(produtor.getId(), false);
 		
 		tableData = new Object[produtos.size()][];
-
-		// "Nome", "Organico", "Unidade", "Preco", "Quantidade"
 		
 		for (int i = 0; i < produtos.size(); i++) {
 			tableData[i] = new Object[] { produtos.get(i).getNomeProduto(),

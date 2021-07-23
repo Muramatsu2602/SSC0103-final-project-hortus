@@ -67,8 +67,6 @@ public class CadastroConsumidorForm {
 	@SuppressWarnings("deprecation")
 	public void submitForm() {
 
-//		Consumidor consumidor = new Consumidor();
-
 		showMessageDialog(null, "Cadastro de '" + txtNome.getText() + "' efetuado com sucesso!");
 		
 		SGBD banco = new SGBD();
@@ -344,7 +342,7 @@ public class CadastroConsumidorForm {
 					return;
 				}
 
-				// testando se senha bate com confirmaSenha
+				// testando se a senha bate com confirmaSenha
 				if (senha.equals(confirmaSenha)) {
 					// BACKEND GOES HERE
 					submitForm();

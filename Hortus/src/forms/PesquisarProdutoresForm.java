@@ -62,8 +62,6 @@ public class PesquisarProdutoresForm {
 	public Object[][] fetchData() {
 
 		// Backend
-		// "ProdutorObject", "Nome", "CCIR", "Tipo de Produção", "Cidade"
-
 		SGBD banco = new SGBD();
 		// Querry para pegar todos os produtor do produtor
 		produtores = new Vector<Produtor>();
@@ -144,7 +142,6 @@ public class PesquisarProdutoresForm {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
 				CompraForm compraForm = new CompraForm(produtores.get(table.getSelectedRow()), consumidor);
-				//compraForm.setVisible(true);
 			}
 		});
 

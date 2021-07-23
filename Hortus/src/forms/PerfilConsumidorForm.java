@@ -164,8 +164,7 @@ public class PerfilConsumidorForm {
 			return;
 		}
 
-		// testando se senha bate com confirmaSenha
-		// aqui so pode
+		// testando a se senha bate com confirmaSenha
 		if (senha.equals(confirmaSenha)) {
 			submitForm();
 		} else {
