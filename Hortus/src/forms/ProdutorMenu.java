@@ -11,7 +11,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
@@ -111,10 +113,13 @@ public class ProdutorMenu {
 		vendas = banco.getComprasByProdutor(produtor.getId());
 
 		tableData = new String[vendas.size()][];
+		
+		String pattern = "dd/MM/yyyy";
+		DateFormat df = new SimpleDateFormat(pattern);
 
 		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
 		for (int i = 0; i < vendas.size(); i++) {
-			tableData[i] = new String[] { vendas.get(i).getDataCompra().toString(),
+			tableData[i] = new String[] { df.format(vendas.get(i).getDataCompra()),
 					vendas.get(i).getConsumidor().getNome(), vendas.get(i).getValorFinal().toString(),
 					vendas.get(i).getDescricao() };
 		}

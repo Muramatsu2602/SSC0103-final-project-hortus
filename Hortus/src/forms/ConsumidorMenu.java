@@ -34,7 +34,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import javax.swing.SwingConstants;
 
 public class ConsumidorMenu {
@@ -65,10 +68,13 @@ public class ConsumidorMenu {
 		compras = banco.getComprasByConsumidor(consumidor.getId());
 
 		tableData = new String[compras.size()][];
+		
+		String pattern = "dd/MM/yyyy";
+		DateFormat df = new SimpleDateFormat(pattern);
 
 		// DATA, NOME DO PRODUTOR, NOME DO PRODUTO, PRE�O DA COMPRA
 		for (int i = 0; i < compras.size(); i++) {
-			tableData[i] = new String[] { compras.get(i).getDataCompra().toString(),
+			tableData[i] = new String[] { df.format(compras.get(i).getDataCompra()),
 					compras.get(i).getProdutor().getNome(), Double.toString(compras.get(i).getValorFinal()),
 					compras.get(i).getDescricao() };
 		}
@@ -194,7 +200,7 @@ public class ConsumidorMenu {
 			boolean[] columnEditables = new boolean[] { true, false, false, false };
 
 			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
+				return false;
 			}
 		});
 		table.getColumnModel().getColumn(1).setResizable(false);
