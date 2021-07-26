@@ -47,8 +47,8 @@ public class CadastroProdutorForm {
 	private JPasswordField txtConfirmaSenha;
 	private JFormattedTextField txtTelefone;
 	private JFormattedTextField txtCCIR;
-	private JComboBox cbTipoProducao;
-	private JComboBox cbEstado;
+	private JComboBox<Object> cbTipoProducao;
+	private JComboBox<Object> cbEstado;
 	private JTextArea txtDescricao;
 	private JFormattedTextField txtNum;
 	private JFormattedTextField txtCEP;
@@ -481,8 +481,8 @@ public class CadastroProdutorForm {
 		lblEstado.setBounds(584, 654, 77, 25);
 		panel_1_1.add(lblEstado);
 
-		cbEstado = new JComboBox();
-		cbEstado.setModel(new DefaultComboBoxModel(
+		cbEstado = new JComboBox<Object>();
+		cbEstado.setModel(new DefaultComboBoxModel<Object>(
 				new String[] { "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE",
 						"PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF" }));
 		cbEstado.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -554,8 +554,8 @@ public class CadastroProdutorForm {
 		lblNome_1_7.setBounds(817, 117, 77, 25);
 		panel_1_1.add(lblNome_1_7);
 
-		cbTipoProducao = new JComboBox();
-		cbTipoProducao.setModel(new DefaultComboBoxModel(new String[] { "Apicultura", "Avicultura", "Bovinos",
+		cbTipoProducao = new JComboBox<Object>();
+		cbTipoProducao.setModel(new DefaultComboBoxModel<Object>(new String[] { "Apicultura", "Avicultura", "Bovinos",
 				"Caprinos", "Cogumelos", "Condimentos", "Conservas", "Gr\u00E3os", "HortiFruiti", "Importados",
 				"Latic\u00EDnios", "Ovinos", "Outros" }));
 		cbTipoProducao.setFont(new Font("Tahoma", Font.PLAIN, 20));

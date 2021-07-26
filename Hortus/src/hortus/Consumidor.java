@@ -1,6 +1,5 @@
 package hortus;
 
-import java.util.Vector;
 
 public class Consumidor extends Usuario {
 

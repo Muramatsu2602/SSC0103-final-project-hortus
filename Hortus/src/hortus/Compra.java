@@ -114,4 +114,12 @@ public class Compra {
 		this.produtor = produtor;
 	}
 
+	public boolean isCompraFinalizada() {
+		return compraFinalizada;
+	}
+
+	public void setCompraFinalizada(boolean compraFinalizada) {
+		this.compraFinalizada = compraFinalizada;
+	}
+
 }  

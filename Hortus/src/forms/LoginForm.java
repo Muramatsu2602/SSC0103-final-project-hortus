@@ -6,23 +6,16 @@ import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import java.awt.Font;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
 
-import forms.ConsumidorMenu;
 import hortus.Produtor;
 import hortus.SGBD;
 import hortus.Consumidor;
 import hortus.HortusException;
 
-import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
@@ -32,18 +25,11 @@ import javax.swing.JTextArea;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.SystemColor;
-import java.awt.Canvas;
-import java.awt.Button;
-import java.awt.Scrollbar;
 
 public class LoginForm {
 	// ================================= PROPRIEDADES ==========================
@@ -269,7 +255,7 @@ public class LoginForm {
 		txtpnDesignedAnd.setForeground(new Color(255, 255, 255));
 		txtpnDesignedAnd.setBackground(new Color(153, 102, 255));
 		txtpnDesignedAnd.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtpnDesignedAnd.setText("Designed and programmed with love by USP students ;(");
+		txtpnDesignedAnd.setText("Designed and programmed with love by USP students :D");
 		txtpnDesignedAnd.setBounds(10, 571, 372, 19);
 		frmLogin.getContentPane().add(txtpnDesignedAnd);
 

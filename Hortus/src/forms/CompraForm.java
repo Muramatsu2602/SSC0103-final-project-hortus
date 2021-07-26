@@ -5,26 +5,19 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import java.awt.BorderLayout;
 
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import hortus.Compra;
 import hortus.Consumidor;
-import hortus.Endereco;
-import hortus.HortusException;
 import hortus.Produto;
 import hortus.Produtor;
 import hortus.SGBD;
 
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.AbstractListModel;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -34,7 +27,6 @@ import java.awt.Font;
 import javax.swing.JPanel;
 import java.awt.SystemColor;
 import java.awt.Color;
-import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
@@ -56,16 +48,14 @@ public class CompraForm {
 	private JPanel panel_3;
 	private JLabel lblNewLabel;
 	private JLabel lblValorTotal;
-	private JScrollPane scrollLoja;
 	private JScrollPane scrollCarrinho;
 
 	// DADOS
-	private static Produtor produtor;
-	private static Consumidor consumidor;
-	private static Vector<Produto> produtosLoja;
+	private Produtor produtor;
+	private Consumidor consumidor;
+	private Vector<Produto> produtosLoja;
+	@SuppressWarnings("unused")
 	private int produtoSelecionado;
-	private static Object[][] lojaData;
-	private static Object[][] carrinhoData;
 	private static Map<Produto, Double> produtosCarrinho;
 	
 	public String isOrganico(boolean organico) {
@@ -78,7 +68,6 @@ public class CompraForm {
 	public Object[][] fetchDataCarrinho() {
 
         // Backend
-		SGBD banco = new SGBD();
 		
 		Object[][] tableData = new Object[produtosCarrinho.size()][];
 		int i = 0;
@@ -154,6 +143,7 @@ public class CompraForm {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(153, 102, 255));
@@ -357,7 +347,9 @@ public class CompraForm {
 					
 					banco.insereCompra(compra);
 					
-					JOptionPane.showMessageDialog(null, "Compra realizada com sucesso.");
+					new DetalhesCompraForm(compra);
+					
+					frame.dispose();
 				}
 			}
 		});

@@ -28,7 +28,6 @@ import javax.swing.JTextPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JPasswordField;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.awt.SystemColor;
@@ -45,7 +44,7 @@ public class CadastroProdutoForm {
 	private JTextField txtNome;
 	private JFormattedTextField txtPreco;
 	private JFormattedTextField txtQuantidade;
-	private JComboBox cbUnidade;
+	private JComboBox<Object> cbUnidade;
 	private JTextArea txtDescricao;
 	private JCheckBox ckOrganico;
 	private JTextArea txtIngredientes;
@@ -219,9 +218,9 @@ public class CadastroProdutoForm {
 		separator_2.setBounds(333, 255, 518, 2);
 		panel_1.add(separator_2);
 
-		cbUnidade = new JComboBox();
+		cbUnidade = new JComboBox<Object>();
 		cbUnidade.setModel(
-				new DefaultComboBoxModel(new String[] { "Arroba", "Grama", "Metro", "Quilograma", "Unit\u00E1rio" }));
+				new DefaultComboBoxModel<Object>(new String[] { "Arroba", "Grama", "Metro", "Quilograma", "Unit\u00E1rio" }));
 		cbUnidade.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cbUnidade.setBounds(670, 151, 150, 34);
 		panel_1.add(cbUnidade);

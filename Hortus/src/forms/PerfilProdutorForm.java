@@ -18,7 +18,6 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.text.MaskFormatter;
 
-import hortus.Consumidor;
 import hortus.Endereco;
 import hortus.Produtor;
 import hortus.SGBD;
@@ -50,8 +49,8 @@ public class PerfilProdutorForm {
 	private JPasswordField txtConfirmaSenha;
 	private JFormattedTextField txtTelefone;
 	private JFormattedTextField txtCCIR;
-	private JComboBox cbTipoProducao;
-	private JComboBox cbEstado;
+	private JComboBox<Object> cbTipoProducao;
+	private JComboBox<Object> cbEstado;
 	private JTextArea txtDescricao;
 
 	// Endereco
@@ -272,6 +271,7 @@ public class PerfilProdutorForm {
 	 * 
 	 * @throws ParseException
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initialize() throws ParseException {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(153, 102, 255));
@@ -489,7 +489,7 @@ public class PerfilProdutorForm {
 		lblEstado.setBounds(584, 654, 77, 25);
 		panel_1_1.add(lblEstado);
 
-		cbEstado = new JComboBox();
+		cbEstado = new JComboBox<Object>();
 		cbEstado.setModel(new DefaultComboBoxModel(
 				new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR",
 						"PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF" }));
@@ -588,7 +588,6 @@ public class PerfilProdutorForm {
 		panel.add(btnCriarConta);
 		btnCriarConta.setForeground(new Color(255, 255, 255));
 		btnCriarConta.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				salvarConta();
 			}

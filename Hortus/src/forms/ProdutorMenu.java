@@ -31,7 +31,6 @@ import hortus.Produtor;
 import hortus.SGBD;
 
 import javax.swing.ListSelectionModel;
-import java.awt.Component;
 import java.awt.Cursor;
 
 import javax.swing.ScrollPaneConstants;
@@ -131,6 +130,7 @@ public class ProdutorMenu {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(153, 102, 255));
@@ -159,7 +159,7 @@ public class ProdutorMenu {
 		frame.getContentPane().add(panel_1);
 
 		// TABLE
-		String[] columnNames = { "ID", "NAME", "QUANTIDADE" };
+		//String[] columnNames = { "ID", "NAME", "QUANTIDADE" };
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(804, 112, 396, 2);

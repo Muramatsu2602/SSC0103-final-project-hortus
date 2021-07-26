@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Vector;
+
+
 import java.util.HashMap;
 public class SGBD {
  	
@@ -77,18 +79,13 @@ public class SGBD {
 			CIDADE			CHAR(30)	NOT NULL,
 			ESTADO			CHAR(20)	NOT NULL
 		 );
-		 
-		 CREATE TABLE produto_favorito(
-			 ID				INTEGER		PRIMARY KEY AUTOINCREMENT,
-			 ID_CONSUMIDOR	INTEGER		NOT NULL,
-			 ID_PRODUTO		INTEGER		NOT NULL
-		 );
  	*/
  	
  	public Connection connect(){
         Connection con = null;
         String banco = "Hortus.db";
         try{
+        	Class.forName("org.sqlite.JDBC");
         	File dbfile = new File("db");
             String url = "jdbc:sqlite:"+dbfile.getAbsolutePath()+"\\"+banco;
             con = DriverManager.getConnection(url);
@@ -96,7 +93,6 @@ public class SGBD {
             
         } catch(SQLException e){
             System.out.println("erro1 "+e.getMessage());
-            //JOptionPane.showMessageDialog(null, "Erro \n"+e.getMessage());
         } catch(Exception err)
         {
         	System.out.print("erro2 "+err.getMessage());
@@ -368,8 +364,9 @@ public class SGBD {
  	
  	public Consumidor loginConsumidor(String email, String senha) throws HortusException
  	{
+ 		Connection con = this.connect();
+ 		
  		try {
-			Connection con = this.connect();
  			String sql = "SELECT * FROM consumidor WHERE email = ? AND senha = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
  			stmt.setString(1, email);

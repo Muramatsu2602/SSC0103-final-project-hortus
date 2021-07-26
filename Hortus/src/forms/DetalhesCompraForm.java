@@ -3,14 +3,11 @@ package forms;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.SystemColor;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
@@ -21,8 +18,6 @@ import hortus.Endereco;
 import hortus.Produto;
 import hortus.Produtor;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Map;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -78,7 +73,7 @@ public class DetalhesCompraForm {
 		strProdutos += "        QTD          UN X VL.ITEM(R$)                                        TOT.ITEM(R$)\n";
 		strProdutos += "-----------------------------------------------------------------------------------\n";
 		Map<Produto, Double> produtos = compra.getListaProdutos();
-		int i = 1;
+		int i = 0;
 		for(Map.Entry<Produto, Double> prod: produtos.entrySet())
 		{
 			strProdutos += "0".repeat(3 - String.valueOf(i).length()) + i + "               ";

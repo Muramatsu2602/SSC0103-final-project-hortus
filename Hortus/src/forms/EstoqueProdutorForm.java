@@ -21,8 +21,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.text.NumberFormatter;
 
-import hortus.Compra;
-import hortus.Consumidor;
 import hortus.HortusException;
 import hortus.Produto;
 import hortus.Produtor;
@@ -40,11 +38,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
-import java.awt.Rectangle;
 
 public class EstoqueProdutorForm {
 
@@ -54,7 +49,7 @@ public class EstoqueProdutorForm {
 	private static JTextField txtNome;
 	private static JCheckBox cbOrganico;
 	private static JFormattedTextField txtQuantidade;
-	private static JComboBox cbUnidade;
+	private static JComboBox<Object> cbUnidade;
 	private static JFormattedTextField txtPreco;
 	private static JTextArea txtIngredientes;
 	private static JTextArea txtDescricao;
@@ -69,6 +64,7 @@ public class EstoqueProdutorForm {
 	/**
 	 * Metodos
 	 */
+	@SuppressWarnings("serial")
 	public void salvarProduto(int selectedRowIndex)
 	{
 		int option = JOptionPane.showConfirmDialog(frame, "Deseja mesmo alterar o produto atual?", "Confirmação de alteração.",
@@ -125,6 +121,7 @@ public class EstoqueProdutorForm {
         txtIngredientes.setText("");
     }
 	
+	@SuppressWarnings("serial")
 	public void apagarProduto(int selectedRowIndex)
 	{
 		int option = JOptionPane.showConfirmDialog(frame, "Deseja mesmo apagar o produto atual?", "Confirmação de remoção.",
@@ -255,6 +252,7 @@ public class EstoqueProdutorForm {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("serial")
 	private void initialize() {
 		// Formatters
 		DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance();
@@ -422,9 +420,9 @@ public class EstoqueProdutorForm {
 		txtQuantidade.setBounds(10, 203, 106, 42);
 		panel_3.add(txtQuantidade);
 
-		cbUnidade = new JComboBox();
+		cbUnidade = new JComboBox<Object>();
 		cbUnidade.setModel(
-				new DefaultComboBoxModel(new String[] { "Arroba", "Grama", "Metro", "Quilograma", "Unit\u00E1rio" }));
+				new DefaultComboBoxModel<Object>(new String[] { "Arroba", "Grama", "Metro", "Quilograma", "Unit\u00E1rio" }));
 		cbUnidade.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cbUnidade.setBounds(309, 211, 150, 34);
 		panel_3.add(cbUnidade);

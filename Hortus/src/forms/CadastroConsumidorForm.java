@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -18,7 +17,6 @@ import java.awt.event.MouseEvent;
 import java.text.ParseException;
 
 import javax.swing.JSeparator;
-import javax.swing.JInternalFrame;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -32,11 +30,9 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -54,7 +50,7 @@ public class CadastroConsumidorForm {
 	private JFormattedTextField txtNum;
 
 	// Endereco
-	private JComboBox cbEstado;
+	private JComboBox<Object> cbEstado;
 	private JTextField txtCidade;
 	private JFormattedTextField txtCEP;
 	private JTextField txtBairro;
@@ -457,9 +453,9 @@ public class CadastroConsumidorForm {
 		lblEstado.setBounds(584, 640, 77, 25);
 		panel_1.add(lblEstado);
 
-		cbEstado = new JComboBox();
+		cbEstado = new JComboBox<Object>();
 		cbEstado.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cbEstado.setModel(new DefaultComboBoxModel(new String[] {"AC", "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF"}));
+		cbEstado.setModel(new DefaultComboBoxModel<Object>(new String[] {"AC", "AL", "AP", "AM", "BA", "CE", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO", "DF"}));
 		cbEstado.setBounds(584, 679, 55, 34);
 		panel_1.add(cbEstado);
 

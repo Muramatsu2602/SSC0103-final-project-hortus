@@ -21,7 +21,6 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
 import hortus.Consumidor;
-import hortus.Endereco;
 import hortus.Produtor;
 import hortus.SGBD;
 
@@ -35,7 +34,7 @@ public class PesquisarProdutoresForm {
 	private JTable table;
 
 	// Dados
-	private static Consumidor consumidor;
+	private Consumidor consumidor;
 	private static Vector<Produtor> produtores;
 	private static Object[][] tableData;
 
@@ -113,6 +112,7 @@ public class PesquisarProdutoresForm {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(153, 102, 255));
@@ -141,7 +141,8 @@ public class PesquisarProdutoresForm {
 		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
-				CompraForm compraForm = new CompraForm(produtores.get(table.getSelectedRow()), consumidor);
+				new CompraForm(produtores.get(table.getSelectedRow()), consumidor);
+				frame.dispose();
 			}
 		});
 

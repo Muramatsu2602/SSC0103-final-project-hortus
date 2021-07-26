@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 
@@ -22,7 +21,6 @@ import javax.swing.JTextPane;
 import hortus.Compra;
 import hortus.Consumidor;
 import hortus.HortusException;
-import hortus.Produtor;
 import hortus.SGBD;
 
 import javax.swing.JSeparator;
@@ -37,8 +35,6 @@ import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-import javax.swing.SwingConstants;
 
 public class ConsumidorMenu {
 
@@ -87,7 +83,6 @@ public class ConsumidorMenu {
 	 * @param produtor
 	 */
 	public void loadConsumidorToForm() {
-		SGBD banco = new SGBD();
 
 		lblBemVindo.setText("Bem-vindo(a) " + consumidor.getNome());
 	}
@@ -136,6 +131,7 @@ public class ConsumidorMenu {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("serial")
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(153, 102, 255));
@@ -184,7 +180,7 @@ public class ConsumidorMenu {
 		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA COMPRA
-				DetalhesCompraForm detalhesForm = new DetalhesCompraForm(compras.get(table.getSelectedRow()));
+				new DetalhesCompraForm(compras.get(table.getSelectedRow()));
 
 			}
 
@@ -193,6 +189,7 @@ public class ConsumidorMenu {
 		table.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		table.setModel(new DefaultTableModel(fetchData(),
 				new String[] { "Data", "Produtor", "Pre\u00E7o", "Descri\u00E7\u00E3o" }) {
+			@SuppressWarnings("unused")
 			boolean[] columnEditables = new boolean[] { true, false, false, false };
 
 			public boolean isCellEditable(int row, int column) {
