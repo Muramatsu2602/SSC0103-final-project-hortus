@@ -210,7 +210,8 @@ public class ProdutorMenu {
 		table.getSelectionModel().addListSelectionListener(selectionEvent -> {
 			if (!selectionEvent.getValueIsAdjusting() && selectionEvent.getSource().equals(table.getSelectionModel())) {
 				// AQUI INVOCA A TELA DE DETALHES DA VENDA
-				new DetalhesCompraForm(vendas.get(table.getSelectedRow()));
+				if(table.getSelectedRow() != -1)
+					new DetalhesCompraForm(vendas.get(table.getSelectedRow()));
 			}
 
 		});
