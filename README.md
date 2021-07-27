@@ -19,7 +19,7 @@ Projeto final da disciplina SSC0103 - Programação orientada em objetos.
 - O arquivo executável, juntamente ao arquivo Hortus.db estão presentes no arquivo .zip **Hortus_executavel.zip**
 
 ### Código fonte
-- O código fonte do projeto Hortus encontra-se no arquivo .zip **Hortus_projeto.zip**, ou também no repositório do Github: [![Respositório no github](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)](https://github.com/Muramatsu2602/SSC0103-final-project-hortus)
+- O código fonte do projeto Hortus encontra-se no arquivo .zip **Hortus_projeto.zip**
 
 ## Banco de Dados
 - O banco de dados presente no arquivo **Hortus_executavel.zip** já possui alguns consumidores e produtores cadastrados conforme vídeo de demonstração.
