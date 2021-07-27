@@ -14,7 +14,6 @@ Projeto final da disciplina SSC0103 - Programação orientada em objetos.
 
 ## Observações
 
-
 ### Arquivo executável
 - O arquivo executável, juntamente ao arquivo Hortus.db estão presentes no arquivo .zip **Hortus_executavel.zip**
 
